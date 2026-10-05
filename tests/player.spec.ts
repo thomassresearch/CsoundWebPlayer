@@ -46,6 +46,44 @@ test.beforeEach(async ({ page }) => {
     } as typeof AudioNode.prototype.connect;
   });
   await page.goto('./');
+  // Existing diagnostic checks deliberately enable capture before playback.
+  await page.locator('#console-panel > summary').click();
+});
+
+test('console defaults closed, captures only while expanded, and errors still surface when closed', async ({ page }) => {
+  await page.reload();
+  const panel = page.locator('#console-panel');
+  const toggle = panel.locator('summary');
+  const output = page.locator('#console');
+  const browserMessages: string[] = [];
+  page.on('console', (message) => browserMessages.push(message.text()));
+  await expect(panel).not.toHaveAttribute('open');
+  await expect(output).toBeHidden();
+  const verbose = example.replace('instr 1\n', 'instr 1\n  kTick metro 8\n  printf "CONSOLE_TICK %f\\n", kTick, timeinsts()\n');
+  await select(page, verbose);
+  await play(page);
+  await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks))).toBeGreaterThan(0.01);
+  await expect(output).toBeEmpty();
+  await toggle.click();
+  await expect(output).toContainText('CONSOLE_TICK');
+  await toggle.click();
+  await expect(output).toBeHidden();
+  const captured = await output.textContent();
+  await page.waitForTimeout(600); // Multiple print cycles continue during this interval.
+  await expect(output).toHaveText(captured!);
+  await expect(state(page)).toHaveText('playing');
+  await toggle.click();
+  await expect.poll(() => output.textContent()).not.toBe(captured);
+  await stop(page);
+  expect(browserMessages.filter((message) => message.includes('CONSOLE_TICK'))).toEqual([]);
+
+  await page.getByRole('button', { name: 'Clear console', exact: true }).click();
+  await toggle.click();
+  await select(page, example.replace('oscili aEnv, p4', 'nonexistent_opcode aEnv, p4'));
+  await page.getByRole('button', { name: 'Play', exact: true }).click();
+  await expect(state(page)).toHaveText('error', { timeout: 30_000 });
+  await expect(page.locator('#detail')).toContainText('Expand the Csound console and retry');
+  await expect(output).toBeEmpty();
 });
 
 test('production subpath loads WASM/worklet and emits PCM; Stop, replay and natural completion clean up', async ({ page }) => {
@@ -225,6 +263,7 @@ test('an unsupported audio session request does not prevent Csound playback', as
     } });
   });
   await page.reload();
+  await page.locator('#console-panel > summary').click();
   await page.getByRole('button', { name: 'Play Test tone', exact: true }).click();
   await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
   await expect(page.locator('#console')).toContainText('Could not request playback audio: Policy denied');

@@ -29,6 +29,7 @@ const stopButton = element<HTMLButtonElement>('stop');
 const resumeButton = element<HTMLButtonElement>('resume-audio');
 const clearAssets = element<HTMLButtonElement>('clear-assets');
 const output = element<HTMLPreElement>('console');
+const consolePanel = element<HTMLDetailsElement>('console-panel');
 const dropZone = element('drop-zone');
 let selected: File | undefined;
 const assets = new Map<string, File>();
@@ -88,14 +89,17 @@ function showExamples() {
 }
 
 function log(message: unknown) {
+  // No formatting, buffering or render scheduling while the console is closed.
+  if (!consolePanel.open) return;
   // Batch DOM updates so verbose scores do not render once per Csound message.
   consoleText = (consoleText + String(message).replace(/\u001b\[[0-9;]*m/g, '') + '\n').slice(-100_000);
   if (consoleTimer !== undefined) return;
   consoleTimer = setTimeout(() => {
+    consoleTimer = undefined;
+    if (!consolePanel.open) return;
     const atBottom = output.scrollHeight - output.scrollTop - output.clientHeight < 50;
     output.textContent = consoleText;
     if (atBottom) output.scrollTop = output.scrollHeight;
-    consoleTimer = undefined;
   }, 100);
 }
 
@@ -274,6 +278,9 @@ async function play() {
     if (!engine) throw new Error('Csound did not initialize. See browser and Csound consoles.');
     run.engine = engine;
     const isCurrent = () => active === run && !run.abort.signal.aborted;
+    // The package installs console.log by default. Remove it so hidden output
+    // does not continue flooding the browser's developer console.
+    engine.removeAllListeners('message');
     engine.on('message', (message: string) => {
       if (active !== run) return;
       log(message);
@@ -321,7 +328,7 @@ async function play() {
     const result = await waitFor(engine.compileCSD(playbackText, 1), 'CSD compilation', 120_000, run.abort.signal);
     element('compile-result').textContent = `${result} · ${Math.round(performance.now() - startedAt)} ms`;
     log(`[player] compileCSD returned ${result}.`);
-    if (result !== 0) throw new Error(`CSD compilation failed (code ${result}). See the console for opcode, option or asset errors.`);
+    if (result !== 0) throw new Error(`CSD compilation failed (code ${result}). ${consolePanel.open ? 'See the console for opcode, option or asset errors.' : 'Expand the Csound console and retry to capture error messages.'}`);
 
     // Apply after CsOptions so an exported -o output.wav becomes realtime output.
     const optionResult = await waitFor(engine.setOption('-odac'), 'Realtime output option', 10_000, run.abort.signal);
@@ -426,6 +433,12 @@ dropZone.addEventListener('drop', (event) => {
   selectFiles(Array.from(event.dataTransfer?.files ?? []));
 });
 clearAssets.addEventListener('click', () => { if (!active) { assets.clear(); showFiles(); } });
+consolePanel.addEventListener('toggle', () => {
+  if (!consolePanel.open) {
+    clearTimeout(consoleTimer);
+    consoleTimer = undefined;
+  }
+});
 element('clear-console').addEventListener('click', () => { consoleText = ''; output.textContent = ''; });
 playButton.addEventListener('click', () => { void play(); });
 resumeButton.addEventListener('click', () => {

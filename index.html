@@ -56,11 +56,12 @@
         <p class="muted">No sound on iPhone? Open in Safari, raise media volume, check the speaker/AirPods route and tap Resume audio if shown. On older iOS, turn Silent Mode off. A changing digital output level confirms Csound output, not audible sound.</p>
       </section>
 
-      <section aria-labelledby="console-title">
-        <div class="console-heading"><h2 id="console-title">Csound console</h2><button id="clear-console" type="button">Clear console</button></div>
+      <details id="console-panel">
+        <summary>Csound console</summary>
+        <div class="console-heading"><button id="clear-console" type="button">Clear console</button></div>
         <pre id="console" tabindex="0" aria-label="Csound output"></pre>
-        <p class="muted">Last 100,000 characters shown. Frequent Csound print output can affect performance.</p>
-      </section>
+        <p class="muted">Output is captured only while expanded. Open before playback to diagnose errors. Last 100,000 captured characters shown.</p>
+      </details>
       <footer>Technical validation only. A successful compile does not establish glitch-free realtime performance for your export.</footer>
     </main>
     <script type="module" src="/src/main.ts"></script>

@@ -34,7 +34,8 @@ or HTTPS elsewhere; opening `index.html` via `file://` is not supported.
    Optionally drop its supporting files together with
    it, or use **Add assets** after selecting the CSD.
 3. Click **Play**. Inspect the compile return code, Csound version, effective
-   sample rate, `ksmps`, channel count and console. **Stop** also cancels startup.
+   sample rate, `ksmps` and channel count. Expand **Csound console** before
+   playback if you want to capture output. **Stop** also cancels startup.
 4. Stop and replay, or choose another CSD. Each playback creates a fresh engine,
    virtual filesystem and AudioContext; completion/Stop releases them.
 
@@ -43,6 +44,13 @@ Bundled CSDs live in `public/examples/`; register additional examples in
 button starts audio within the browser user gesture. A failed download offers
 Retry and does not block local file playback. Stop the current example before
 starting another.
+
+The Csound console is collapsible and closed by default. Output is formatted,
+buffered and displayed only while it is expanded; messages received while closed
+are discarded. Collapsing it cancels pending display updates and preserves already
+captured text. The package's default browser-console message logger is disabled.
+Compilation/runtime error detection and status remain active while closed.
+Expand the console and replay to capture detailed errors.
 
 ### iPhone / iPad audio
 
