@@ -29,8 +29,8 @@ or HTTPS elsewhere; opening `index.html` via `file://` is not supported.
 1. In **CSD examples**, click **Play** beside **Test tone**. The bundled
    [`public/examples/test-tone.csd`](public/examples/test-tone.csd) plays eight
    seconds of quiet stereo tones and ends automatically.
-2. Click **Play** beside **HardTrance** for the bundled, unmodified Orchestron export
-   (146 BPM, E minor, about seven minutes), or select/drop your own `.csd`.
+2. Click **Play** beside **HardTrance** for the bundled Orchestron export
+   (48 kHz, `ksmps = 64`, 146 BPM, E minor, about seven minutes), or select/drop your own `.csd`.
    Optionally drop its supporting files together with
    it, or use **Add assets** after selecting the CSD.
 3. Click **Play**. Inspect the compile return code, Csound version, effective
@@ -87,8 +87,9 @@ consistent behavior on Pages and localhost.
 - Use a current Chrome/Edge, Firefox or Safari with WebAssembly, Web Workers,
   AudioWorklet and Web Audio. Playback needs a click/tap. Chromium is covered by
   automated checks; Safari/iOS and Firefox still need manual verification.
-- A supplied AudioContext makes the worker target the browser's sample rate,
-  potentially overriding `sr` in the CSD. The UI reports effective values. An
+- The player requests a 48 kHz AudioContext, so the worker targets 48 kHz,
+  potentially overriding `sr` in a selected CSD. HardTrance uses `sr = 48000` and
+  `ksmps = 64` (`kr = 750 Hz`). The UI reports effective values. An
   explicit incompatible sample-rate option is rejected if it creates a mismatch.
 - Csound 7 and this browser package are beta software. Native-only opcodes,
   binary plugins, OS commands/devices, native audio drivers and arbitrary host
@@ -126,11 +127,18 @@ download retry. **Audio was not audibly verified.** Digital output and successfu
 compilation do not certify glitch-free playback on every device. Listen for
 glitches while checking the console when evaluating your target browser.
 
-A longer test on the deployed Pages site in cloud Chromium produced audio without
+The original 44.1 kHz / `ksmps = 32` test on Pages in cloud Chromium produced audio without
 reported Csound/browser errors, but after 480 seconds of wall time the score had
 reached only about 172.5 seconds. **This environment did not sustain realtime
 throughput for HardTrance.** The player and WASM loading work; target-device
-performance still needs evaluation. The supplied CSD is preserved byte-for-byte.
+performance still needs evaluation. The bundled CSD now differs from the upload
+only in its `sr` and `ksmps` assignments (48 kHz / 64).
+
+A matched 60-second introductory playback check measured about 29.6 seconds of
+score progress at 44.1 kHz / 32 and 29.2 seconds at 48 kHz / 64: approximately
+**0.49× realtime in both runs**, with no material improvement from these changes
+in this cloud environment. These measurements use Csound's timestamped console
+messages, not audible playback. The browser AudioContext advanced about 59 seconds.
 
 Upstream source/API: [Csound browser package](https://github.com/csound/csound/tree/develop/platform/wasm-wasi/browser).
 `@csound/browser` is Apache-2.0; the embedded Csound engine is LGPL-2.1. See the

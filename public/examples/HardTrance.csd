@@ -15,8 +15,8 @@ GitHub: https://github.com/thomassresearch/orchestron
 -d -W -f -o Hardtrance_Demo.wav
 </CsOptions>
 <CsInstruments>
-sr = 44100
-ksmps = 32
+sr = 48000
+ksmps = 64
 nchnls = 2
 0dbfs = 1.0
 opcode vcs_mixer_ramp, a, ki

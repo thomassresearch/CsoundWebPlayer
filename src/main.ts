@@ -190,7 +190,7 @@ async function play() {
       throw new Error('WebAssembly and AudioWorklet require a modern browser on HTTPS or localhost. Opening index.html with file:// is not supported.');
     }
     // Create and resume synchronously within the Play gesture, before WASM/file awaits.
-    const context = new AudioContext({ latencyHint: 'interactive' });
+    const context = new AudioContext({ latencyHint: 'interactive', sampleRate: 48000 });
     session = { context, abort: new AbortController(), started: false, ended: false, runtimeError: false };
     const run = session;
     active = run;
