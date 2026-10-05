@@ -20,12 +20,17 @@
         <div class="actions">
           <label class="file-button">Select CSD<input id="csd-input" type="file" accept=".csd" /></label>
           <label class="file-button">Add assets<input id="asset-input" type="file" multiple /></label>
-          <button id="demo" type="button">Load test tone</button>
         </div>
         <p>Selected: <strong id="filename">No CSD selected</strong></p>
         <p class="muted">Assets use their exact filenames at the virtual filesystem root. Folder drops and nested paths are not supported in this PoC.</p>
         <ul id="asset-list" aria-label="Selected assets"></ul>
         <button id="clear-assets" type="button" disabled>Clear assets</button>
+      </section>
+
+      <section aria-labelledby="examples-title">
+        <h2 id="examples-title">CSD examples</h2>
+        <p class="muted">Play a bundled example directly. Start with a low device volume.</p>
+        <ul id="examples" aria-label="CSD examples"></ul>
       </section>
 
       <section aria-label="Playback">
@@ -34,7 +39,7 @@
           <button id="stop" type="button" disabled>Stop</button>
           <span>Status: <strong id="status" role="status" aria-live="polite" data-state="stopped">stopped</strong></span>
         </div>
-        <p id="detail">Select a CSD or load the included test tone.</p>
+        <p id="detail">Select a CSD or press Play beside an example.</p>
         <dl id="diagnostics">
           <div><dt>Csound version</dt><dd id="version">—</dd></div>
           <div><dt>Csound sample rate</dt><dd id="sample-rate">—</dd></div>
@@ -56,3 +61,4 @@
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
+

@@ -26,15 +26,23 @@ or HTTPS elsewhere; opening `index.html` via `file://` is not supported.
 
 ## Test a CSD
 
-1. Click **Load test tone**, then **Play**. The bundled
+1. In **CSD examples**, click **Play** beside **Test tone**. The bundled
    [`public/examples/test-tone.csd`](public/examples/test-tone.csd) plays eight
    seconds of quiet stereo tones and ends automatically.
-2. Select or drop one `.csd`. Optionally drop its supporting files together with
+2. Click **Play** beside **HardTrance** for the bundled, unmodified Orchestron export
+   (146 BPM, E minor, about seven minutes), or select/drop your own `.csd`.
+   Optionally drop its supporting files together with
    it, or use **Add assets** after selecting the CSD.
 3. Click **Play**. Inspect the compile return code, Csound version, effective
    sample rate, `ksmps`, channel count and console. **Stop** also cancels startup.
 4. Stop and replay, or choose another CSD. Each playback creates a fresh engine,
    virtual filesystem and AudioContext; completion/Stop releases them.
+
+Bundled CSDs live in `public/examples/`; register additional examples in
+`src/examples.ts` to give each its own Play button. Files are prefetched so the
+button starts audio within the browser user gesture. A failed download offers
+Retry and does not block local file playback. Stop the current example before
+starting another.
 
 The complete original CSD is compiled with `compileCSD(text, 1)`. Afterwards the
 player sets `-odac` to route output to Web Audio, including exports using
@@ -112,12 +120,13 @@ replay, natural completion, compile-error recovery, file-output override, WAV
 loading, missing assets and cancellation. No Csound mock or autoplay override is
 used. `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` can select an existing Chromium binary.
 
-The production build and five browser tests passed in cloud Chromium 153.
-**Audio was not audibly verified.** No real complex Orchestron export was supplied,
-so throughput and opcode compatibility for such an export remain to be tested on
-the target device. Start with the bundled tone, then test your demanding export
-and listen for glitches while checking the console.
+The production build and browser tests cover both bundled examples, including
+non-zero digital output from the real HardTrance Orchestron export, plus example
+download retry. **Audio was not audibly verified.** Digital output and successful
+compilation do not certify glitch-free playback on every device. Listen for
+glitches while checking the console when evaluating your target browser.
 
 Upstream source/API: [Csound browser package](https://github.com/csound/csound/tree/develop/platform/wasm-wasi/browser).
 `@csound/browser` is Apache-2.0; the embedded Csound engine is LGPL-2.1. See the
 upstream package's `LICENSE` and `THIRD_PARTY.md` for dependency notices.
+

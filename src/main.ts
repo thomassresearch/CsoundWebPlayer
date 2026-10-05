@@ -1,5 +1,6 @@
 import type { CsoundObj } from '@csound/browser';
 import './style.css';
+import { examples } from './examples';
 
 type Status = 'loading' | 'compiling' | 'playing' | 'stopped' | 'error';
 type Session = {
@@ -22,16 +23,65 @@ const csdInput = element<HTMLInputElement>('csd-input');
 const assetInput = element<HTMLInputElement>('asset-input');
 const playButton = element<HTMLButtonElement>('play');
 const stopButton = element<HTMLButtonElement>('stop');
-const demoButton = element<HTMLButtonElement>('demo');
 const clearAssets = element<HTMLButtonElement>('clear-assets');
 const output = element<HTMLPreElement>('console');
 const dropZone = element('drop-zone');
 let selected: File | undefined;
 const assets = new Map<string, File>();
 let active: Session | undefined;
-let loadingExample = false;
 let consoleText = '';
 let consoleTimer: ReturnType<typeof setTimeout> | undefined;
+const exampleRows: { button: HTMLButtonElement; loading: boolean }[] = [];
+
+// Prefetch bundled files so Play can create/resume AudioContext in the click
+// itself, preserving browser autoplay permission even with a slow connection.
+function showExamples() {
+  for (const example of examples) {
+    const item = document.createElement('li');
+    const info = document.createElement('div');
+    const title = document.createElement('strong');
+    title.textContent = example.title;
+    const description = document.createElement('p');
+    description.className = 'muted';
+    description.textContent = example.description;
+    info.append(title, description);
+    const button = document.createElement('button');
+    button.type = 'button';
+    const row = { button, loading: true };
+    exampleRows.push(row);
+    let file: File | undefined;
+    const load = async () => {
+      row.loading = true;
+      button.textContent = 'Loading…';
+      button.setAttribute('aria-label', `Loading ${example.title}`);
+      controls();
+      try {
+        const response = await fetch(`${import.meta.env.BASE_URL}examples/${encodeURIComponent(example.filename)}`, { signal: AbortSignal.timeout(30_000) });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        file = new File([await response.text()], example.filename, { type: 'text/plain' });
+        description.textContent = example.description;
+        button.textContent = 'Play';
+        button.setAttribute('aria-label', `Play ${example.title}`);
+      } catch (error) {
+        description.textContent = `Could not load example: ${describe(error)}. Retry to download it again.`;
+        button.textContent = 'Retry';
+        button.setAttribute('aria-label', `Retry ${example.title}`);
+      } finally {
+        row.loading = false;
+        controls();
+      }
+    };
+    button.addEventListener('click', () => {
+      if (active || row.loading) return;
+      if (!file) { void load(); return; }
+      selectFiles([file]);
+      void play();
+    });
+    item.append(info, button);
+    element('examples').append(item);
+    void load();
+  }
+}
 
 function log(message: unknown) {
   // Batch DOM updates so verbose scores do not render once per Csound message.
@@ -50,8 +100,9 @@ function describe(error: unknown): string {
 }
 
 function controls() {
-  const busy = !!active || loadingExample;
-  csdInput.disabled = assetInput.disabled = demoButton.disabled = busy;
+  const busy = !!active;
+  csdInput.disabled = assetInput.disabled = busy;
+  for (const example of exampleRows) example.button.disabled = busy || example.loading;
   playButton.disabled = busy || !selected;
   stopButton.disabled = !active || !!active.finishing;
   clearAssets.disabled = busy || assets.size === 0;
@@ -131,7 +182,7 @@ async function fail(error: unknown, session = active) {
 }
 
 async function play() {
-  if (!selected || active || loadingExample) return;
+  if (!selected || active) return;
   resetDiagnostics();
   let session: Session | undefined;
   try {
@@ -245,7 +296,7 @@ function showFiles() {
 }
 
 function selectFiles(files: File[]) {
-  if (active || loadingExample || files.length === 0) return;
+  if (active || files.length === 0) return;
   const csds = files.filter((file) => /\.csd$/i.test(file.name));
   if (csds.length > 1) {
     void fail(new Error('Select one CSD at a time. No files were changed.'));
@@ -286,7 +337,7 @@ window.addEventListener('dragover', (event) => event.preventDefault());
 window.addEventListener('drop', (event) => event.preventDefault());
 dropZone.addEventListener('dragover', (event) => {
   event.preventDefault();
-  if (!active && !loadingExample) dropZone.classList.add('dragging');
+  if (!active) dropZone.classList.add('dragging');
 });
 dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragging'));
 dropZone.addEventListener('drop', (event) => {
@@ -298,21 +349,6 @@ dropZone.addEventListener('drop', (event) => {
     return;
   }
   selectFiles(Array.from(event.dataTransfer?.files ?? []));
-});
-demoButton.addEventListener('click', async () => {
-  if (active || loadingExample) return;
-  loadingExample = true;
-  status('loading', 'Loading the bundled test CSD…');
-  try {
-    const response = await fetch(`${import.meta.env.BASE_URL}examples/test-tone.csd`);
-    if (!response.ok) throw new Error(`Test CSD could not be loaded (HTTP ${response.status}).`);
-    const file = new File([await response.text()], 'test-tone.csd', { type: 'text/plain' });
-    loadingExample = false;
-    selectFiles([file]);
-  } catch (error) {
-    loadingExample = false;
-    await fail(error);
-  }
 });
 clearAssets.addEventListener('click', () => { if (!active) { assets.clear(); showFiles(); } });
 element('clear-console').addEventListener('click', () => { consoleText = ''; output.textContent = ''; });
@@ -327,3 +363,6 @@ window.addEventListener('error', (event) => { void fail(new Error(event.message 
 window.addEventListener('unhandledrejection', (event) => { void fail(event.reason); });
 window.addEventListener('pagehide', () => { if (active) void finish(active, 'stopped', 'Page closed.'); });
 log('[player] Ready. Selected files are read locally and never uploaded.');
+
+
+showExamples();

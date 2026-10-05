@@ -26,3 +26,10 @@ dd { margin: 3px 0 0; font-family: ui-monospace, monospace; overflow-wrap: anywh
 .console-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 #console { background: #101419; border: 1px solid #39424e; padding: 12px; height: 290px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: .8rem/1.5 ui-monospace, monospace; }
 @media (max-width: 560px) { #diagnostics { grid-template-columns: repeat(2, 1fr); } main { padding: 18px 12px; } section { padding: 14px; } }
+
+
+#examples { list-style: none; margin: 0; padding: 0; }
+#examples li { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 12px 0; }
+#examples li + li { border-top: 1px solid #39424e; }
+#examples p { margin: 4px 0 0; }
+#examples button { flex-shrink: 0; min-width: 80px; }

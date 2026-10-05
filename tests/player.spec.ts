@@ -54,9 +54,9 @@ test('production subpath loads WASM/worklet and emits PCM; Stop, replay and natu
   page.on('pageerror', (error) => errors.push(error.message));
   page.on('requestfailed', (request) => failures.push(request.url()));
   await expect.poll(() => page.evaluate(() => crossOriginIsolated)).toBe(false);
-  await page.getByRole('button', { name: 'Load test tone' }).click();
+  await page.getByRole('button', { name: 'Play Test tone', exact: true }).click();
   await expect(page.locator('#filename')).toHaveText('test-tone.csd');
-  await play(page);
+  await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
   await expect(page.locator('#compile-result')).toContainText('0 ·');
   await expect(page.locator('#version')).toContainText('7.');
   await expect(page.locator('#ksmps')).toHaveText('32');
@@ -130,4 +130,32 @@ test('Stop during startup cancels cleanly and rapid clicks do not start concurre
   await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeEnabled();
   await play(page);
   await stop(page);
+});
+
+
+test('HardTrance example plays the unchanged Orchestron export with one click', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.getByRole('button', { name: 'Play HardTrance', exact: true }).click();
+  await expect(page.locator('#filename')).toHaveText('HardTrance.csd');
+  await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
+  await expect(page.locator('#compile-result')).toContainText('0 ·');
+  await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks)), { timeout: 15_000 }).toBeGreaterThan(0.001);
+  await expect(page.getByRole('button', { name: 'Play Test tone', exact: true })).toBeDisabled();
+  await stop(page);
+  await expect(page.getByRole('button', { name: 'Play Test tone', exact: true })).toBeEnabled();
+  await expect(page.locator('#console')).not.toContainText('INIT ERROR');
+  await expect(page.locator('#console')).not.toContainText('PERF ERROR');
+  expect(errors).toEqual([]);
+});
+
+test('failed example download can be retried without blocking local playback', async ({ page }) => {
+  await page.route('**/examples/HardTrance.csd', (route) => route.fulfill({ status: 503, body: 'Unavailable' }));
+  await page.reload();
+  const retry = page.getByRole('button', { name: 'Retry HardTrance', exact: true });
+  await expect(retry).toBeEnabled();
+  await expect(page.locator('#csd-input')).toBeEnabled();
+  await page.unroute('**/examples/HardTrance.csd');
+  await retry.click();
+  await expect(page.getByRole('button', { name: 'Play HardTrance', exact: true })).toBeEnabled();
 });
