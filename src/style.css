@@ -31,7 +31,11 @@ dd { margin: 3px 0 0; font-family: ui-monospace, monospace; overflow-wrap: anywh
 
 
 #examples { list-style: none; margin: 0; padding: 0; }
-#examples li { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 12px 0; }
+#examples li { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; align-items: start; gap: 20px; padding: 12px 0; }
 #examples li + li { border-top: 1px solid #39424e; }
-#examples p { margin: 4px 0 0; }
+#examples p { margin: 0; white-space: pre-line; overflow-wrap: anywhere; }
 #examples button { flex-shrink: 0; min-width: 80px; }
+@media (max-width: 640px) {
+  #examples li { grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
+  #examples .example-info { grid-column: 1 / -1; grid-row: 2; }
+}

@@ -26,13 +26,12 @@ or HTTPS elsewhere; opening `index.html` via `file://` is not supported.
 
 ## Test a CSD
 
-1. In **CSD examples**, click **Play** beside **Test tone**. The bundled
-   [`public/examples/test-tone.csd`](public/examples/test-tone.csd) plays eight
-   seconds of quiet stereo tones and ends automatically.
-2. Click **Play** beside **HardTrance** for the bundled Orchestron export
-   (146 BPM, E minor, about seven minutes), or select/drop your own `.csd`.
-   Optionally drop its supporting files together with
-   it, or use **Add assets** after selecting the CSD.
+1. In **CSD examples**, click **Play** beside **HardTrance** or **Evening at
+   the Lake**. Both are self-contained Orchestron exports. Each song's leading
+   CSD header comment appears beside its title (below it on small screens).
+2. To play your own export, select/drop a `.csd` in the area below the examples.
+   Optionally drop its supporting files together with it, or use **Add assets**
+   after selecting the CSD.
 3. Click **Play**. Inspect the compile return code, Csound version, effective
    sample rate, `ksmps` and channel count. Expand **Csound console** before
    playback if you want to capture output. **Stop** also cancels startup.
@@ -154,6 +153,8 @@ exercise real WASM/worklet loading, non-zero digital PCM output, manual Stop,
 replay, natural completion, compile-error recovery, file-output override, WAV
 loading, missing assets and cancellation. No Csound mock or autoplay override is
 used. `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` can select an existing Chromium binary.
+The trivial self-contained test CSD is kept in `tests/fixtures/test-tone.csd`
+for automated playback checks; it is not a public example.
 Unit tests check preservation of orchestra/score text and local `setksmps`;
 browser tests verify the actual WASM engine overrides conflicting header/rate
 options and supplies the overrides when `CsOptions` is absent.
@@ -163,7 +164,7 @@ suspension, and graceful fallback when the audio-session request is rejected.
 The policy interface is emulated in Chromium; this does not verify iOS routing.
 
 The production build and browser tests cover both bundled examples, including
-non-zero digital output from the real HardTrance Orchestron export, plus example
+non-zero digital output from HardTrance and Evening at the Lake, plus example
 download retry. **Audio was not audibly verified.** Digital output and successful
 compilation do not certify glitch-free playback on every device. Listen for
 glitches while checking the console when evaluating your target browser.

@@ -14,8 +14,14 @@
         <p>Test an Orchestron export directly in your browser. Files stay on your device.</p>
       </header>
 
+      <section aria-labelledby="examples-title">
+        <h2 id="examples-title">CSD examples</h2>
+        <p class="muted">Play a bundled example directly. Start with a low device volume.</p>
+        <ul id="examples" aria-label="CSD examples"></ul>
+      </section>
+
       <section aria-labelledby="files-title" id="drop-zone">
-        <h2 id="files-title">Drop a .csd here</h2>
+        <h2 id="files-title">Drop your own .csd here</h2>
         <p>You can drop accompanying WAV, sample, SoundFont or include files at the same time.</p>
         <div class="actions">
           <label class="file-button">Select CSD<input id="csd-input" type="file" accept=".csd" /></label>
@@ -25,12 +31,6 @@
         <p class="muted">Assets use their exact filenames at the virtual filesystem root. Folder drops and nested paths are not supported in this PoC.</p>
         <ul id="asset-list" aria-label="Selected assets"></ul>
         <button id="clear-assets" type="button" disabled>Clear assets</button>
-      </section>
-
-      <section aria-labelledby="examples-title">
-        <h2 id="examples-title">CSD examples</h2>
-        <p class="muted">Play a bundled example directly. Start with a low device volume.</p>
-        <ul id="examples" aria-label="CSD examples"></ul>
       </section>
 
       <section aria-label="Playback">

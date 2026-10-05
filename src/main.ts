@@ -1,6 +1,6 @@
 import type { CsoundObj } from '@csound/browser';
 import './style.css';
-import { examples } from './examples';
+import { examples, headerComment } from './examples';
 import { PLAYBACK_KSMPS, PLAYBACK_SAMPLE_RATE, prepareCsdForPlayback } from './playback-csd';
 
 type Status = 'loading' | 'compiling' | 'playing' | 'stopped' | 'error';
@@ -43,13 +43,11 @@ const exampleRows: { button: HTMLButtonElement; loading: boolean }[] = [];
 function showExamples() {
   for (const example of examples) {
     const item = document.createElement('li');
-    const info = document.createElement('div');
     const title = document.createElement('strong');
     title.textContent = example.title;
     const description = document.createElement('p');
-    description.className = 'muted';
-    description.textContent = example.description;
-    info.append(title, description);
+    description.className = 'muted example-info';
+    description.textContent = 'Loading CSD info…';
     const button = document.createElement('button');
     button.type = 'button';
     const row = { button, loading: true };
@@ -63,8 +61,9 @@ function showExamples() {
       try {
         const response = await fetch(`${import.meta.env.BASE_URL}examples/${encodeURIComponent(example.filename)}`, { signal: AbortSignal.timeout(30_000) });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        file = new File([await response.text()], example.filename, { type: 'text/plain' });
-        description.textContent = example.description;
+        const csd = await response.text();
+        file = new File([csd], example.filename, { type: 'text/plain' });
+        description.textContent = headerComment(csd) || 'No header comment in this CSD.';
         button.textContent = 'Play';
         button.setAttribute('aria-label', `Play ${example.title}`);
       } catch (error) {
@@ -82,7 +81,7 @@ function showExamples() {
       selectFiles([file]);
       void play();
     });
-    item.append(info, button);
+    item.append(title, description, button);
     element('examples').append(item);
     void load();
   }

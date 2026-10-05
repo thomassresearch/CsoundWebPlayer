@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 
-const example = readFileSync('public/examples/test-tone.csd', 'utf8');
+const example = readFileSync('tests/fixtures/test-tone.csd', 'utf8');
 const select = async (page: Page, text: string, name = 'test.csd') => {
   await page.locator('#csd-input').setInputFiles({ name, mimeType: 'text/plain', buffer: Buffer.from(text) });
 };
@@ -92,8 +92,9 @@ test('production subpath loads WASM/worklet and emits PCM; Stop, replay and natu
   page.on('pageerror', (error) => errors.push(error.message));
   page.on('requestfailed', (request) => failures.push(request.url()));
   await expect.poll(() => page.evaluate(() => crossOriginIsolated)).toBe(false);
-  await page.getByRole('button', { name: 'Play Test tone', exact: true }).click();
-  await expect(page.locator('#filename')).toHaveText('test-tone.csd');
+  await select(page, example);
+  await play(page);
+  await expect(page.locator('#filename')).toHaveText('test.csd');
   await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
   await expect(page.locator('#compile-result')).toContainText('0 ·');
   await expect(page.locator('#version')).toContainText('7.');
@@ -188,24 +189,36 @@ test('Stop during startup cancels cleanly and rapid clicks do not start concurre
 });
 
 
-test('HardTrance source with ksmps 1 plays at 48 kHz with ksmps 64', async ({ page }) => {
-  const errors: string[] = [];
-  page.on('pageerror', (error) => errors.push(error.message));
-  await page.getByRole('button', { name: 'Play HardTrance', exact: true }).click();
-  await expect(page.locator('#filename')).toHaveText('HardTrance.csd');
-  await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
-  await expect(page.locator('#sample-rate')).toHaveText('48000 Hz');
-  await expect(page.locator('#ksmps')).toHaveText('64');
-  await expect(page.locator('#audio-context')).toContainText('48000 Hz');
-  await expect(page.locator('#compile-result')).toContainText('0 ·');
-  await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks)), { timeout: 15_000 }).toBeGreaterThan(0.001);
-  await expect(page.getByRole('button', { name: 'Play Test tone', exact: true })).toBeDisabled();
-  await stop(page);
-  await expect(page.getByRole('button', { name: 'Play Test tone', exact: true })).toBeEnabled();
-  await expect(page.locator('#console')).not.toContainText('INIT ERROR');
-  await expect(page.locator('#console')).not.toContainText('PERF ERROR');
-  expect(errors).toEqual([]);
-});
+for (const song of [
+  { filename: 'HardTrance.csd', title: 'HardTrance', other: 'Evening at the Lake' },
+  { filename: 'Evening_at_the_Lake.csd', title: 'Evening at the Lake', other: 'HardTrance' },
+]) {
+  test(`${song.title} shows its header and plays at 48 kHz with ksmps 64`, async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    const button = page.getByRole('button', { name: `Play ${song.title}`, exact: true });
+    await expect(button).toBeEnabled();
+    const header = /^\s*<!--([\s\S]*?)-->/.exec(readFileSync(`public/examples/${song.filename}`, 'utf8'))![1].trim();
+    await expect(button.locator('..').locator('.example-info')).toHaveText(header);
+    await expect(page.locator('#examples li > strong')).toHaveText(['HardTrance', 'Evening at the Lake']);
+    expect(await page.locator('#examples').evaluate((examples) => Boolean(examples.compareDocumentPosition(document.getElementById('drop-zone')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
+    await expect(page.getByRole('button', { name: 'Play Test tone', exact: true })).toHaveCount(0);
+    await button.click();
+    await expect(page.locator('#filename')).toHaveText(song.filename);
+    await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
+    await expect(page.locator('#sample-rate')).toHaveText('48000 Hz');
+    await expect(page.locator('#ksmps')).toHaveText('64');
+    await expect(page.locator('#audio-context')).toContainText('48000 Hz');
+    await expect(page.locator('#compile-result')).toContainText('0 ·');
+    await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks)), { timeout: 15_000 }).toBeGreaterThan(0.001);
+    await expect(page.getByRole('button', { name: `Play ${song.other}`, exact: true })).toBeDisabled();
+    await stop(page);
+    await expect(page.getByRole('button', { name: `Play ${song.other}`, exact: true })).toBeEnabled();
+    await expect(page.locator('#console')).not.toContainText('INIT ERROR');
+    await expect(page.locator('#console')).not.toContainText('PERF ERROR');
+    expect(errors).toEqual([]);
+  });
+}
 
 test('failed example download can be retried without blocking local playback', async ({ page }) => {
   await page.route('**/examples/HardTrance.csd', (route) => route.fulfill({ status: 503, body: 'Unavailable' }));
@@ -232,7 +245,8 @@ test('media playback audio is requested inside the Play gesture before context c
     } });
   });
   await page.reload();
-  await page.getByRole('button', { name: 'Play Test tone', exact: true }).click();
+  await select(page, example);
+  await play(page);
   await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
   expect(await page.evaluate(() => (window as any).__audioSessionRequests[0])).toEqual({ type: 'playback', gesture: true, contexts: 0 });
   await expect(page.locator('#audio-session')).toHaveText('playback');
@@ -264,7 +278,8 @@ test('an unsupported audio session request does not prevent Csound playback', as
   });
   await page.reload();
   await page.locator('#console-panel > summary').click();
-  await page.getByRole('button', { name: 'Play Test tone', exact: true }).click();
+  await select(page, example);
+  await play(page);
   await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
   await expect(page.locator('#console')).toContainText('Could not request playback audio: Policy denied');
   await expect(page.locator('#output-level')).toContainText('dBFS');
