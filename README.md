@@ -30,7 +30,7 @@ or HTTPS elsewhere; opening `index.html` via `file://` is not supported.
    [`public/examples/test-tone.csd`](public/examples/test-tone.csd) plays eight
    seconds of quiet stereo tones and ends automatically.
 2. Click **Play** beside **HardTrance** for the bundled Orchestron export
-   (48 kHz, `ksmps = 1`, 146 BPM, E minor, about seven minutes), or select/drop your own `.csd`.
+   (146 BPM, E minor, about seven minutes), or select/drop your own `.csd`.
    Optionally drop its supporting files together with
    it, or use **Add assets** after selecting the CSD.
 3. Click **Play**. Inspect the compile return code, Csound version, effective
@@ -64,11 +64,17 @@ See [WebKit's Silent Mode behavior and playback audio-session setting](https://b
 This fix has automated policy-ordering and real context suspend/resume coverage;
 physical iPhone audio still needs confirmation on the device.
 
-The complete original CSD is compiled with `compileCSD(text, 1)`. Afterwards the
-player sets `-odac` to route output to Web Audio, including exports using
-`-o output.wav`. It does not modify the selected file, orchestra or score.
-Other CSD options are retained, so incompatible native options produce visible
-errors rather than being silently removed.
+Every CSD plays with **`sr = 48000` and `ksmps = 64`** (`kr = 750 Hz`), regardless
+of its original header or rate options. Before `compileCSD(text, 1)`, the player
+adds Csound's `--sample-rate=48000 --control-rate=750 --ksmps=64` overrides to the
+end of `CsOptions` in an in-memory copy. If the section is absent, it is added.
+The selected/bundled file, orchestra, score and local UDO `setksmps` instructions
+are preserved. The console records the overrides and the diagnostics show the
+effective values. HardTrance's stored `ksmps = 1` remains unchanged.
+
+After compilation the player sets `-odac` to route output to Web Audio, including
+exports using `-o output.wav`. Other CSD options are retained, so incompatible
+native options produce visible errors rather than being silently removed.
 
 Selected CSDs are read with the File API. Assets are copied to Csound's in-memory
 filesystem; neither is uploaded or persisted. Asset filenames are case-sensitive
@@ -107,10 +113,10 @@ consistent behavior on Pages and localhost.
 - Use a current Chrome/Edge, Firefox or Safari with WebAssembly, Web Workers,
   AudioWorklet and Web Audio. Playback needs a click/tap. Chromium is covered by
   automated checks; Safari/iOS and Firefox still need manual verification.
-- The player requests a 48 kHz AudioContext, so the worker targets 48 kHz,
-  potentially overriding `sr` in a selected CSD. HardTrance uses `sr = 48000` and
-  `ksmps = 1` (`kr = 48000 Hz`). The UI reports effective values. An
-  explicit incompatible sample-rate option is rejected if it creates a mismatch.
+- The player requests a 48 kHz AudioContext and overrides every CSD to 48 kHz /
+  `ksmps = 64`. It checks the effective engine settings before starting. This
+  changes control-rate timing for scores originally designed with another
+  global `ksmps`; the original file is preserved.
 - Csound 7 and this browser package are beta software. Native-only opcodes,
   binary plugins, OS commands/devices, native audio drivers and arbitrary host
   filesystem paths may be unavailable. Additional WASM plugins are not loaded.
@@ -140,6 +146,9 @@ exercise real WASM/worklet loading, non-zero digital PCM output, manual Stop,
 replay, natural completion, compile-error recovery, file-output override, WAV
 loading, missing assets and cancellation. No Csound mock or autoplay override is
 used. `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` can select an existing Chromium binary.
+Unit tests check preservation of orchestra/score text and local `setksmps`;
+browser tests verify the actual WASM engine overrides conflicting header/rate
+options and supplies the overrides when `CsOptions` is absent.
 Additional tests check the playback audio-session request precedes context
 creation in the Play gesture, recovery with Resume audio after a real context
 suspension, and graceful fallback when the audio-session request is rejected.
@@ -157,6 +166,10 @@ reached only about 172.5 seconds. **This environment did not sustain realtime
 throughput for HardTrance.** The player and WASM loading work; target-device
 performance still needs evaluation. The bundled CSD now differs from the upload
 only in its `sr` and `ksmps` assignments (48 kHz / 1).
+
+The user subsequently confirmed realtime playback on an iPhone at `ksmps = 64`,
+but reported chopped audio at `ksmps = 1`. Playback now always overrides to
+48 kHz / 64 in memory, while HardTrance keeps its stored `ksmps = 1`.
 
 A matched 60-second introductory playback check measured about 29.6 seconds of
 score progress at 44.1 kHz / 32 and 29.2 seconds at 48 kHz / 64: approximately

@@ -1,6 +1,7 @@
 import type { CsoundObj } from '@csound/browser';
 import './style.css';
 import { examples } from './examples';
+import { PLAYBACK_KSMPS, PLAYBACK_SAMPLE_RATE, prepareCsdForPlayback } from './playback-csd';
 
 type Status = 'loading' | 'compiling' | 'playing' | 'stopped' | 'error';
 type Session = {
@@ -244,7 +245,7 @@ async function play() {
     }
     // Create and resume synchronously within the Play gesture, before WASM/file awaits.
     configureAudioSession();
-    const context = new AudioContext({ latencyHint: 'interactive', sampleRate: 48000 });
+    const context = new AudioContext({ latencyHint: 'interactive', sampleRate: PLAYBACK_SAMPLE_RATE });
     session = { context, abort: new AbortController(), started: false, ended: false, runtimeError: false };
     const run = session;
     active = run;
@@ -315,7 +316,9 @@ async function play() {
 
     status('compiling', 'Compiling the complete CSD…');
     const startedAt = performance.now();
-    const result = await waitFor(engine.compileCSD(text, 1), 'CSD compilation', 120_000, run.abort.signal);
+    const playbackText = prepareCsdForPlayback(text);
+    log(`[player] Playback overrides: sr=${PLAYBACK_SAMPLE_RATE}, ksmps=${PLAYBACK_KSMPS}. Source CSD unchanged.`);
+    const result = await waitFor(engine.compileCSD(playbackText, 1), 'CSD compilation', 120_000, run.abort.signal);
     element('compile-result').textContent = `${result} · ${Math.round(performance.now() - startedAt)} ms`;
     log(`[player] compileCSD returned ${result}.`);
     if (result !== 0) throw new Error(`CSD compilation failed (code ${result}). See the console for opcode, option or asset errors.`);
@@ -332,7 +335,9 @@ async function play() {
     element('channels').textContent = String(channels);
     if (!outputName?.startsWith('dac')) throw new Error(`Realtime output was not selected: ${outputName}`);
     log(`[player] ${sr} Hz, ksmps=${ksmps}, channels=${channels}, output=${outputName}; Web Audio ${context.sampleRate} Hz.`);
-    if (sr !== context.sampleRate) throw new Error(`Sample-rate mismatch (${sr} vs ${context.sampleRate} Hz). Use the browser's sample rate in your CSD/CsOptions.`);
+    if (sr !== PLAYBACK_SAMPLE_RATE || ksmps !== PLAYBACK_KSMPS || sr !== context.sampleRate) {
+      throw new Error(`Playback overrides did not take effect: sr=${sr}, ksmps=${ksmps}, Web Audio=${context.sampleRate} Hz.`);
+    }
 
     status('compiling', 'Starting realtime AudioWorklet performance…');
     const startResult = await waitFor(engine.start(), 'AudioWorklet startup', 30_000, run.abort.signal);

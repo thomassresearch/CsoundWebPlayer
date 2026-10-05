@@ -59,7 +59,7 @@ test('production subpath loads WASM/worklet and emits PCM; Stop, replay and natu
   await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
   await expect(page.locator('#compile-result')).toContainText('0 ·');
   await expect(page.locator('#version')).toContainText('7.');
-  await expect(page.locator('#ksmps')).toHaveText('32');
+  await expect(page.locator('#ksmps')).toHaveText('64');
   await expect(page.locator('#channels')).toHaveText('2');
   await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks))).toBeGreaterThan(0.01);
   await expect(page.locator('#output-level')).toContainText('dBFS');
@@ -91,6 +91,22 @@ test('a file-output CSD is routed to realtime audio', async ({ page }) => {
   await expect(page.locator('#console')).toContainText('output=dac');
   await stop(page);
 });
+
+for (const options of ['conflicting', 'missing'] as const) {
+  test(`local CSD rate overrides win with ${options} CsOptions`, async ({ page }) => {
+    let csd = example.replace('sr = 48000', 'sr = 96000\nkr = 96000').replace('ksmps = 32', 'ksmps = 1');
+    csd = options === 'conflicting'
+      ? csd.replace('-odac -d', '-odac -d -r 22050 -k 11025 --ksmps=2 ; original settings')
+      : csd.replace(/<CsOptions>[\s\S]*?<\/CsOptions>\n/, '');
+    await select(page, csd);
+    await play(page);
+    await expect(page.locator('#sample-rate')).toHaveText('48000 Hz');
+    await expect(page.locator('#ksmps')).toHaveText('64');
+    await expect(page.locator('#console')).toContainText('Playback overrides: sr=48000, ksmps=64. Source CSD unchanged.');
+    await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks))).toBeGreaterThan(0.01);
+    await stop(page);
+  });
+}
 
 test('local sample copied to virtual FS, missing asset reports errors, and files are never uploaded', async ({ page }) => {
   const requests: string[] = [];
@@ -134,14 +150,14 @@ test('Stop during startup cancels cleanly and rapid clicks do not start concurre
 });
 
 
-test('HardTrance example plays at 48 kHz with ksmps 1', async ({ page }) => {
+test('HardTrance source with ksmps 1 plays at 48 kHz with ksmps 64', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.getByRole('button', { name: 'Play HardTrance', exact: true }).click();
   await expect(page.locator('#filename')).toHaveText('HardTrance.csd');
   await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
   await expect(page.locator('#sample-rate')).toHaveText('48000 Hz');
-  await expect(page.locator('#ksmps')).toHaveText('1');
+  await expect(page.locator('#ksmps')).toHaveText('64');
   await expect(page.locator('#audio-context')).toContainText('48000 Hz');
   await expect(page.locator('#compile-result')).toContainText('0 ·');
   await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks)), { timeout: 15_000 }).toBeGreaterThan(0.001);
