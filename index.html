@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#17242e" />
+    <title>Csound Web Player · Realtime WASM test</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">CSOUND 7 / WEBASSEMBLY</p>
+        <h1>Realtime CSD test player</h1>
+        <p>Run an exported CSD in your browser. Files stay on this device.</p>
+      </header>
+      <section id="drop-zone" aria-label="CSD and asset drop area">
+        <strong>Drop one .csd and optional assets here</strong>
+        <p>WAV, samples, SoundFonts and include files are copied into memory.</p>
+        <div class="actions">
+          <label class="file-button">Choose CSD<input id="csd-input" type="file" accept=".csd" /></label>
+          <label class="file-button">Add assets<input id="asset-input" type="file" multiple /></label>
+          <button id="example" type="button">Load test tone</button>
+        </div>
+      </section>
+      <p>Selected: <strong id="filename">No CSD selected</strong></p>
+      <details id="asset-details">
+        <summary>Assets (<span id="asset-count">0</span>)</summary>
+        <p>Paths are relative to the virtual filesystem root and must match the CSD exactly (case-sensitive). Edit a path for references such as <code>samples/kick.wav</code>.</p>
+        <ul id="assets"></ul>
+        <button id="clear-assets" type="button">Clear assets</button>
+      </details>
+      <section class="transport" aria-label="Playback">
+        <button id="play" type="button" disabled>Play</button>
+        <button id="stop" type="button" disabled>Stop</button>
+        <div role="status" aria-live="polite"><strong id="status">stopped</strong><span id="status-detail">Select a CSD to begin.</span></div>
+      </section>
+      <p class="hint">Start with a low device volume. Playback runs until the score ends or you press Stop.</p>
+      <section aria-label="Diagnostics">
+        <h2>Diagnostics</h2>
+        <dl id="diagnostics">
+          <div><dt>Package</dt><dd>@csound/browser 7.0.0-beta36</dd></div>
+          <div><dt>Csound version</dt><dd id="version">—</dd></div>
+          <div><dt>Csound sample rate</dt><dd id="sample-rate">—</dd></div>
+          <div><dt>Device context rate</dt><dd id="context-rate">—</dd></div>
+          <div><dt>ksmps</dt><dd id="ksmps">—</dd></div>
+          <div><dt>Output channels</dt><dd id="channels">—</dd></div>
+          <div><dt>Compile result</dt><dd id="compile-result">—</dd></div>
+          <div><dt>Start result</dt><dd id="start-result">—</dd></div>
+          <div><dt>AudioContext</dt><dd id="context-state">—</dd></div>
+          <div><dt>Engine</dt><dd>Worker + AudioWorklet (no SAB)</dd></div>
+        </dl>
+      </section>
+      <section aria-label="Csound console">
+        <div class="console-heading"><h2>Csound console</h2><button id="clear-console" type="button">Clear console</button></div>
+        <pre id="console" tabindex="0" aria-label="Csound messages and errors"></pre>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
