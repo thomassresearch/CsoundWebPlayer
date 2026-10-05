@@ -13,6 +13,7 @@ button, .file-button { font: inherit; display: inline-block; padding: 8px 15px; 
 .file-button input { position: absolute; inset: 0; opacity: 0; width: 100%; cursor: pointer; }
 .file-button:focus-within, button:focus-visible, pre:focus-visible { outline: 2px solid #84d5cb; outline-offset: 3px; }
 button:disabled, .file-button:has(input:disabled) { opacity: .45; cursor: not-allowed; }
+button[hidden] { display: none; }
 #play { background: #81d5c9; color: #102b29; border-color: #81d5c9; font-weight: 650; }
 .actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .muted, footer { color: #a9b5c3; font-size: .85rem; }

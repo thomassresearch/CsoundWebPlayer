@@ -62,6 +62,7 @@ test('production subpath loads WASM/worklet and emits PCM; Stop, replay and natu
   await expect(page.locator('#ksmps')).toHaveText('32');
   await expect(page.locator('#channels')).toHaveText('2');
   await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks))).toBeGreaterThan(0.01);
+  await expect(page.locator('#output-level')).toContainText('dBFS');
   await stop(page);
   await expect.poll(() => page.evaluate(() => (window as any).__audioContexts.every((context: AudioContext) => context.state === 'closed'))).toBe(true);
   await play(page);
@@ -161,4 +162,56 @@ test('failed example download can be retried without blocking local playback', a
   await page.unroute('**/examples/HardTrance.csd');
   await retry.click();
   await expect(page.getByRole('button', { name: 'Play HardTrance', exact: true })).toBeEnabled();
+});
+
+test('media playback audio is requested inside the Play gesture before context creation', async ({ page }) => {
+  // Chromium has no Audio Session API: emulate only its policy interface.
+  // Real Csound, WASM, AudioContext, AudioWorklet and PCM remain in use.
+  await page.addInitScript(() => {
+    const requests: { type: string; gesture: boolean; contexts: number }[] = [];
+    Object.assign(window, { __audioSessionRequests: requests });
+    Object.defineProperty(navigator, 'audioSession', { configurable: true, value: {
+      get type() { return requests.at(-1)?.type ?? 'auto'; },
+      set type(type: string) {
+        requests.push({ type, gesture: navigator.userActivation.isActive, contexts: (window as any).__audioContexts.length });
+      },
+    } });
+  });
+  await page.reload();
+  await page.getByRole('button', { name: 'Play Test tone', exact: true }).click();
+  await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
+  expect(await page.evaluate(() => (window as any).__audioSessionRequests[0])).toEqual({ type: 'playback', gesture: true, contexts: 0 });
+  await expect(page.locator('#audio-session')).toHaveText('playback');
+  await expect(page.locator('#output-level')).toContainText('dBFS');
+  await stop(page);
+});
+
+test('blocked audio exposes a Resume gesture and restores the running context', async ({ page }) => {
+  await select(page, example.replace('\ne\n', '\nf 0 60\ne\n'));
+  await play(page);
+  await page.evaluate(() => (window as any).__audioContexts[0].suspend());
+  await expect(page.locator('#audio-context')).toContainText('suspended');
+  await expect(state(page)).not.toHaveText('playing');
+  const resume = page.getByRole('button', { name: 'Resume audio', exact: true });
+  await expect(resume).toBeVisible();
+  await resume.click();
+  await expect(state(page)).toHaveText('playing');
+  await expect(page.locator('#audio-context')).toContainText('running');
+  await expect(resume).toBeHidden();
+  await stop(page);
+  await expect(resume).toBeHidden();
+});
+
+test('an unsupported audio session request does not prevent Csound playback', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'audioSession', { configurable: true, value: {
+      set type(_value: string) { throw new Error('Policy denied'); },
+    } });
+  });
+  await page.reload();
+  await page.getByRole('button', { name: 'Play Test tone', exact: true }).click();
+  await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
+  await expect(page.locator('#console')).toContainText('Could not request playback audio: Policy denied');
+  await expect(page.locator('#output-level')).toContainText('dBFS');
+  await stop(page);
 });

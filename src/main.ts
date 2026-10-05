@@ -10,6 +10,8 @@ type Session = {
   started: boolean;
   ended: boolean;
   runtimeError: boolean;
+  analyser?: AnalyserNode;
+  meterTimer?: ReturnType<typeof setInterval>;
   finishing?: Promise<void>;
 };
 
@@ -23,6 +25,7 @@ const csdInput = element<HTMLInputElement>('csd-input');
 const assetInput = element<HTMLInputElement>('asset-input');
 const playButton = element<HTMLButtonElement>('play');
 const stopButton = element<HTMLButtonElement>('stop');
+const resumeButton = element<HTMLButtonElement>('resume-audio');
 const clearAssets = element<HTMLButtonElement>('clear-assets');
 const output = element<HTMLPreElement>('console');
 const dropZone = element('drop-zone');
@@ -105,6 +108,7 @@ function controls() {
   for (const example of exampleRows) example.button.disabled = busy || example.loading;
   playButton.disabled = busy || !selected;
   stopButton.disabled = !active || !!active.finishing;
+  resumeButton.hidden = !active || !!active.finishing || active.context.state === 'running' || active.context.state === 'closed';
   clearAssets.disabled = busy || assets.size === 0;
 }
 
@@ -120,8 +124,55 @@ function audioInfo(context: AudioContext) {
   element('audio-context').textContent = `${context.sampleRate} Hz · ${context.state}`;
 }
 
+function audioState(session: Session) {
+  if (active !== session) return;
+  audioInfo(session.context);
+  log(`[audio] Context ${session.context.state}.`);
+  if (session.started && !session.ended && !session.finishing) {
+    if (session.context.state === 'running') {
+      status('playing', 'Realtime performance running in this browser.');
+    } else {
+      status('compiling', `Audio is ${session.context.state}. Tap Resume audio; keep this page in the foreground.`);
+    }
+  }
+  controls();
+}
+
+function configureAudioSession() {
+  // Safari defaults Web Audio to ambient audio, which obeys the iPhone's
+  // Silent Mode. Request media playback before creating/resuming the context.
+  const audioSession = (navigator as Navigator & { audioSession?: { type: string } }).audioSession;
+  if (!audioSession) {
+    element('audio-session').textContent = 'Unavailable';
+    log('[audio] Audio Session API unavailable. On older iOS, turn Silent Mode off.');
+    return;
+  }
+  try {
+    audioSession.type = 'playback';
+    element('audio-session').textContent = audioSession.type;
+    log(`[audio] Session type: ${audioSession.type}.`);
+  } catch (error) {
+    element('audio-session').textContent = 'Playback request failed';
+    log(`[audio] Could not request playback audio: ${describe(error)}. Check Silent Mode.`);
+  }
+}
+
+function monitorOutput(session: Session, node: AudioWorkletNode) {
+  const analyser = session.context.createAnalyser();
+  analyser.fftSize = 256;
+  node.connect(analyser);
+  session.analyser = analyser;
+  const samples = new Float32Array(analyser.fftSize);
+  session.meterTimer = setInterval(() => {
+    if (active !== session || session.finishing) return;
+    analyser.getFloatTimeDomainData(samples);
+    const peak = samples.reduce((max, sample) => Math.max(max, Math.abs(sample)), 0);
+    element('output-level').textContent = peak > 0.00001 ? `${(20 * Math.log10(peak)).toFixed(1)} dBFS` : 'Silent';
+  }, 250);
+}
+
 function resetDiagnostics() {
-  for (const id of ['version', 'sample-rate', 'ksmps', 'channels', 'compile-result', 'audio-context']) {
+  for (const id of ['version', 'sample-rate', 'ksmps', 'channels', 'compile-result', 'audio-context', 'audio-session', 'output-level']) {
     element(id).textContent = '—';
   }
 }
@@ -143,6 +194,8 @@ function waitFor<T>(promise: Promise<T>, label: string, ms = 30_000, signal?: Ab
 }
 
 async function dispose(session: Session) {
+  clearInterval(session.meterTimer);
+  session.analyser?.disconnect();
   const engine = session.engine;
   if (engine) {
     if (session.started && !session.ended) {
@@ -190,14 +243,21 @@ async function play() {
       throw new Error('WebAssembly and AudioWorklet require a modern browser on HTTPS or localhost. Opening index.html with file:// is not supported.');
     }
     // Create and resume synchronously within the Play gesture, before WASM/file awaits.
+    configureAudioSession();
     const context = new AudioContext({ latencyHint: 'interactive', sampleRate: 48000 });
     session = { context, abort: new AbortController(), started: false, ended: false, runtimeError: false };
     const run = session;
     active = run;
     const resumed = context.resume();
+    // Exercise the output graph during the gesture, before slow WASM startup.
+    const unlock = context.createBufferSource();
+    unlock.buffer = context.createBuffer(1, 1, context.sampleRate);
+    unlock.connect(context.destination);
+    unlock.onended = () => unlock.disconnect();
+    unlock.start();
     status('loading', 'Initializing Csound WASM and reading local files…');
     log(`\n[player] Loading ${selected.name}; @csound/browser 7.0.0-beta36; worker + AudioWorklet, no SAB.`);
-    context.onstatechange = () => { if (active === run) audioInfo(context); };
+    context.onstatechange = () => audioState(run);
     audioInfo(context);
     await waitFor(resumed, 'AudioContext resume', 15_000, run.abort.signal);
 
@@ -219,6 +279,8 @@ async function play() {
       if (/\b(?:PERF ERROR|INIT ERROR|error:|[1-9]\d* errors? in performance)\b/i.test(message)) run.runtimeError = true;
     });
     engine.on('onAudioNodeCreated', (node: AudioWorkletNode) => {
+      if (!isCurrent()) return;
+      monitorOutput(run, node);
       node.addEventListener('processorerror', () => {
         if (isCurrent()) void fail(new Error('AudioWorklet processor failed. See the browser console for details.'), run);
       });
@@ -276,7 +338,15 @@ async function play() {
     const startResult = await waitFor(engine.start(), 'AudioWorklet startup', 30_000, run.abort.signal);
     log(`[player] start returned ${startResult}.`);
     if (startResult !== 0) throw new Error(`Csound start failed (code ${startResult}).`);
-    if (isCurrent() && !run.ended) status('playing', 'Realtime performance running in this browser.');
+    if (isCurrent() && !run.ended) {
+      // A phone may suspend/interrupt audio while WASM is loading. Do not report
+      // successful playback when the output context is blocked.
+      if (context.state !== 'running') {
+        void waitFor(context.resume(), 'Audio resume after startup', 5_000, run.abort.signal)
+          .catch((error) => { if (isCurrent()) log(`[audio] ${describe(error)} Tap Resume audio.`); });
+      }
+      audioState(run);
+    }
   } catch (error) {
     if (session?.abort.signal.aborted) return;
     await fail(error, session);
@@ -353,6 +423,15 @@ dropZone.addEventListener('drop', (event) => {
 clearAssets.addEventListener('click', () => { if (!active) { assets.clear(); showFiles(); } });
 element('clear-console').addEventListener('click', () => { consoleText = ''; output.textContent = ''; });
 playButton.addEventListener('click', () => { void play(); });
+resumeButton.addEventListener('click', () => {
+  const run = active;
+  if (!run || run.finishing) return;
+  configureAudioSession();
+  // Call resume immediately in this new gesture, without awaiting anything first.
+  void waitFor(run.context.resume(), 'Audio resume', 5_000, run.abort.signal)
+    .then(() => audioState(run))
+    .catch((error) => { if (active === run && !run.finishing) log(`[audio] ${describe(error)}`); });
+});
 stopButton.addEventListener('click', () => {
   if (active) {
     log('[player] Stop requested.');

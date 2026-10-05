@@ -44,6 +44,26 @@ button starts audio within the browser user gesture. A failed download offers
 Retry and does not block local file playback. Stop the current example before
 starting another.
 
+### iPhone / iPad audio
+
+Open the page in Safari and keep it foregrounded. Play requests
+`navigator.audioSession.type = 'playback'` when supported, before creating the
+AudioContext, so iOS treats it as media audio even in Silent Mode. A silent buffer
+and `resume()` activate the output graph during the button gesture before WASM
+loads. If audio becomes suspended or interrupted, **Resume audio** provides a new
+user gesture; the player does not display `playing` while the context is blocked.
+
+For no sound, check **Web Audio** is `running`, **Audio session** is `playback`,
+raise the media volume and check the output route (speaker/AirPods/Bluetooth).
+Older browsers without the Audio Session API may need Silent Mode turned off.
+**Digital output level** samples the Csound AudioWorklet signal: a changing dBFS
+value confirms synthesized PCM, not that the device speakers are audible. If the
+problem persists, share the status, these diagnostics and the Csound console.
+
+See [WebKit's Silent Mode behavior and playback audio-session setting](https://bugs.webkit.org/show_bug.cgi?id=237322).
+This fix has automated policy-ordering and real context suspend/resume coverage;
+physical iPhone audio still needs confirmation on the device.
+
 The complete original CSD is compiled with `compileCSD(text, 1)`. Afterwards the
 player sets `-odac` to route output to Web Audio, including exports using
 `-o output.wav`. It does not modify the selected file, orchestra or score.
@@ -120,6 +140,10 @@ exercise real WASM/worklet loading, non-zero digital PCM output, manual Stop,
 replay, natural completion, compile-error recovery, file-output override, WAV
 loading, missing assets and cancellation. No Csound mock or autoplay override is
 used. `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` can select an existing Chromium binary.
+Additional tests check the playback audio-session request precedes context
+creation in the Play gesture, recovery with Resume audio after a real context
+suspension, and graceful fallback when the audio-session request is rejected.
+The policy interface is emulated in Chromium; this does not verify iOS routing.
 
 The production build and browser tests cover both bundled examples, including
 non-zero digital output from the real HardTrance Orchestron export, plus example
@@ -143,4 +167,3 @@ messages, not audible playback. The browser AudioContext advanced about 59 secon
 Upstream source/API: [Csound browser package](https://github.com/csound/csound/tree/develop/platform/wasm-wasi/browser).
 `@csound/browser` is Apache-2.0; the embedded Csound engine is LGPL-2.1. See the
 upstream package's `LICENSE` and `THIRD_PARTY.md` for dependency notices.
-
