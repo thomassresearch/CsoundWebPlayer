@@ -1,0 +1,28 @@
+:root { font-family: system-ui, sans-serif; color: #e0e6ed; background: #13181e; color-scheme: dark; line-height: 1.5; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 940px; margin: 0 auto; padding: 30px 20px; }
+h1 { margin: 0; font-size: 2rem; }
+h2 { font-size: 1.05rem; margin: 0 0 10px; }
+.eyebrow { color: #84d5cb; font: 0.75rem ui-monospace, monospace; letter-spacing: .08em; }
+section { background: #1c232c; border: 1px solid #39424e; border-radius: 8px; padding: 20px; margin: 20px 0; }
+#drop-zone { border-style: dashed; }
+#drop-zone.dragging { border-color: #84d5cb; background: #243a3c; }
+button, .file-button { font: inherit; display: inline-block; padding: 8px 15px; border-radius: 5px; border: 1px solid #657687; background: #293542; color: inherit; cursor: pointer; }
+.file-button { position: relative; overflow: hidden; }
+.file-button input { position: absolute; inset: 0; opacity: 0; width: 100%; cursor: pointer; }
+.file-button:focus-within, button:focus-visible, pre:focus-visible { outline: 2px solid #84d5cb; outline-offset: 3px; }
+button:disabled, .file-button:has(input:disabled) { opacity: .45; cursor: not-allowed; }
+#play { background: #81d5c9; color: #102b29; border-color: #81d5c9; font-weight: 650; }
+.actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.muted, footer { color: #a9b5c3; font-size: .85rem; }
+#filename, #asset-list { overflow-wrap: anywhere; }
+#asset-list { max-height: 160px; overflow: auto; padding-left: 20px; font: .85rem ui-monospace, monospace; }
+#diagnostics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+dt { color: #a9b5c3; font-size: .8rem; }
+dd { margin: 3px 0 0; font-family: ui-monospace, monospace; overflow-wrap: anywhere; }
+#status[data-state="playing"] { color: #84d5cb; }
+#status[data-state="error"] { color: #ff9b9b; }
+.console-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+#console { background: #101419; border: 1px solid #39424e; padding: 12px; height: 290px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: .8rem/1.5 ui-monospace, monospace; }
+@media (max-width: 560px) { #diagnostics { grid-template-columns: repeat(2, 1fr); } main { padding: 18px 12px; } section { padding: 14px; } }

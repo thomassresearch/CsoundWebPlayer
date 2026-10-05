@@ -1,0 +1,19 @@
+{
+  "name": "csound-web-player",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.13.0" },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "playwright test"
+  },
+  "dependencies": { "@csound/browser": "7.0.0-beta36" },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.2"
+  }
+}
