@@ -126,6 +126,12 @@ download retry. **Audio was not audibly verified.** Digital output and successfu
 compilation do not certify glitch-free playback on every device. Listen for
 glitches while checking the console when evaluating your target browser.
 
+A longer test on the deployed Pages site in cloud Chromium produced audio without
+reported Csound/browser errors, but after 480 seconds of wall time the score had
+reached only about 172.5 seconds. **This environment did not sustain realtime
+throughput for HardTrance.** The player and WASM loading work; target-device
+performance still needs evaluation. The supplied CSD is preserved byte-for-byte.
+
 Upstream source/API: [Csound browser package](https://github.com/csound/csound/tree/develop/platform/wasm-wasi/browser).
 `@csound/browser` is Apache-2.0; the embedded Csound engine is LGPL-2.1. See the
 upstream package's `LICENSE` and `THIRD_PARTY.md` for dependency notices.
