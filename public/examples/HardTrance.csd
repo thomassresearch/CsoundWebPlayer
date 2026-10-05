@@ -16,7 +16,7 @@ GitHub: https://github.com/thomassresearch/orchestron
 </CsOptions>
 <CsInstruments>
 sr = 48000
-ksmps = 64
+ksmps = 1
 nchnls = 2
 0dbfs = 1.0
 opcode vcs_mixer_ramp, a, ki

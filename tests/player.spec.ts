@@ -134,14 +134,14 @@ test('Stop during startup cancels cleanly and rapid clicks do not start concurre
 });
 
 
-test('HardTrance example plays at 48 kHz with ksmps 64', async ({ page }) => {
+test('HardTrance example plays at 48 kHz with ksmps 1', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.getByRole('button', { name: 'Play HardTrance', exact: true }).click();
   await expect(page.locator('#filename')).toHaveText('HardTrance.csd');
   await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
   await expect(page.locator('#sample-rate')).toHaveText('48000 Hz');
-  await expect(page.locator('#ksmps')).toHaveText('64');
+  await expect(page.locator('#ksmps')).toHaveText('1');
   await expect(page.locator('#audio-context')).toContainText('48000 Hz');
   await expect(page.locator('#compile-result')).toContainText('0 ·');
   await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks)), { timeout: 15_000 }).toBeGreaterThan(0.001);

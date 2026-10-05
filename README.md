@@ -30,7 +30,7 @@ or HTTPS elsewhere; opening `index.html` via `file://` is not supported.
    [`public/examples/test-tone.csd`](public/examples/test-tone.csd) plays eight
    seconds of quiet stereo tones and ends automatically.
 2. Click **Play** beside **HardTrance** for the bundled Orchestron export
-   (48 kHz, `ksmps = 64`, 146 BPM, E minor, about seven minutes), or select/drop your own `.csd`.
+   (48 kHz, `ksmps = 1`, 146 BPM, E minor, about seven minutes), or select/drop your own `.csd`.
    Optionally drop its supporting files together with
    it, or use **Add assets** after selecting the CSD.
 3. Click **Play**. Inspect the compile return code, Csound version, effective
@@ -109,7 +109,7 @@ consistent behavior on Pages and localhost.
   automated checks; Safari/iOS and Firefox still need manual verification.
 - The player requests a 48 kHz AudioContext, so the worker targets 48 kHz,
   potentially overriding `sr` in a selected CSD. HardTrance uses `sr = 48000` and
-  `ksmps = 64` (`kr = 750 Hz`). The UI reports effective values. An
+  `ksmps = 1` (`kr = 48000 Hz`). The UI reports effective values. An
   explicit incompatible sample-rate option is rejected if it creates a mismatch.
 - Csound 7 and this browser package are beta software. Native-only opcodes,
   binary plugins, OS commands/devices, native audio drivers and arbitrary host
@@ -156,7 +156,7 @@ reported Csound/browser errors, but after 480 seconds of wall time the score had
 reached only about 172.5 seconds. **This environment did not sustain realtime
 throughput for HardTrance.** The player and WASM loading work; target-device
 performance still needs evaluation. The bundled CSD now differs from the upload
-only in its `sr` and `ksmps` assignments (48 kHz / 64).
+only in its `sr` and `ksmps` assignments (48 kHz / 1).
 
 A matched 60-second introductory playback check measured about 29.6 seconds of
 score progress at 44.1 kHz / 32 and 29.2 seconds at 48 kHz / 64: approximately
