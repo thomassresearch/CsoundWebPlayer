@@ -1,7 +1,7 @@
 <!--
 Performance: Hardtrance Demo
 Description: 146 BPM · E minor · 256 bars / 7:01. Slow atmospheric buildup, rolling hard-trance bass, acid call, supersaw theme, breakdown at 3:30, main arrival at 5:16, final crest and fading outro. One-shot arrangement.
-Created: 2026-10-04T18:57:41.430Z
+Created: 2026-10-06T18:46:04.665Z
 
 This CSD was created with Orchestron.
 Design instruments visually and hear ideas take shape.
@@ -19,273 +19,8 @@ sr = 48000
 ksmps = 1
 nchnls = 2
 0dbfs = 1.0
-opcode vcs_mixer_ramp, a, ki
- setksmps 1
- kTarget, iInitial xin
- kValue init iInitial
- kPrevious init iInitial
- kRemaining init 0
- if kTarget != kPrevious then
-  kRemaining = 0.02
-  kPrevious = kTarget
- endif
- if kRemaining > 0 then
-  kValue = kValue + (kTarget - kValue) / max(1, kRemaining * kr)
-  kRemaining = max(0, kRemaining - 1 / kr)
- else
-  kValue = kTarget
- endif
- aValue interp kValue
- if timeinstk() == 1 then
-  aValue = iInitial
- endif
- xout aValue
-endop
 ; Mixer routing: patch, strip and route instruments execute in signal-flow order.
-chnset 0.58210321777087137, "__vcs_mixer_strip_bad76b2daa79923b4d4593e8_gain"
-chnset 1, "__vcs_mixer_strip_bad76b2daa79923b4d4593e8_left"
-chnset 0.78000000000000003, "__vcs_mixer_strip_bad76b2daa79923b4d4593e8_right"
-chnset 1, "__vcs_mixer_strip_bad76b2daa79923b4d4593e8_mute"
-chnset 0.29174270140011677, "__vcs_mixer_strip_8cd32066fc3e746357fe40f7_gain"
-chnset 1, "__vcs_mixer_strip_8cd32066fc3e746357fe40f7_left"
-chnset 1, "__vcs_mixer_strip_8cd32066fc3e746357fe40f7_right"
-chnset 1, "__vcs_mixer_strip_8cd32066fc3e746357fe40f7_mute"
-chnset 1.8620871366628675, "__vcs_mixer_strip_14559139f723d60468f91a4f_gain"
-chnset 1, "__vcs_mixer_strip_14559139f723d60468f91a4f_left"
-chnset 0.69999999999999996, "__vcs_mixer_strip_14559139f723d60468f91a4f_right"
-chnset 1, "__vcs_mixer_strip_14559139f723d60468f91a4f_mute"
-chnset 0.3981071705534972, "__vcs_mixer_strip_b21ae25633e3575379c0cd0f_gain"
-chnset 0.64000000000000001, "__vcs_mixer_strip_b21ae25633e3575379c0cd0f_left"
-chnset 1, "__vcs_mixer_strip_b21ae25633e3575379c0cd0f_right"
-chnset 1, "__vcs_mixer_strip_b21ae25633e3575379c0cd0f_mute"
-chnset 0.83176377110267097, "__vcs_mixer_strip_6cc32acc5b494446f03ac17b_gain"
-chnset 1, "__vcs_mixer_strip_6cc32acc5b494446f03ac17b_left"
-chnset 0.54000000000000004, "__vcs_mixer_strip_6cc32acc5b494446f03ac17b_right"
-chnset 1, "__vcs_mixer_strip_6cc32acc5b494446f03ac17b_mute"
-chnset 0.63095734448019325, "__vcs_mixer_strip_44d513e47c631f99f7a3e562_gain"
-chnset 1, "__vcs_mixer_strip_44d513e47c631f99f7a3e562_left"
-chnset 0.81000000000000005, "__vcs_mixer_strip_44d513e47c631f99f7a3e562_right"
-chnset 1, "__vcs_mixer_strip_44d513e47c631f99f7a3e562_mute"
-chnset 0.74989420933245587, "__vcs_mixer_strip_b9da087f272fb5e723933d0d_gain"
-chnset 0.84999999999999998, "__vcs_mixer_strip_b9da087f272fb5e723933d0d_left"
-chnset 1, "__vcs_mixer_strip_b9da087f272fb5e723933d0d_right"
-chnset 1, "__vcs_mixer_strip_b9da087f272fb5e723933d0d_mute"
-chnset 0.49545019080479025, "__vcs_mixer_strip_c345ff0eaa07a4cf1d076198_gain"
-chnset 1, "__vcs_mixer_strip_c345ff0eaa07a4cf1d076198_left"
-chnset 1, "__vcs_mixer_strip_c345ff0eaa07a4cf1d076198_right"
-chnset 1, "__vcs_mixer_strip_c345ff0eaa07a4cf1d076198_mute"
-chnset 3.9810717055349722, "__vcs_mixer_strip_32b902f3e717905c808bc3b3_gain"
-chnset 1, "__vcs_mixer_strip_32b902f3e717905c808bc3b3_left"
-chnset 0.97999999999999998, "__vcs_mixer_strip_32b902f3e717905c808bc3b3_right"
-chnset 1, "__vcs_mixer_strip_32b902f3e717905c808bc3b3_mute"
-chnset 1.7179083871575882, "__vcs_mixer_strip_bfc1a1b7430c287732affae4_gain"
-chnset 1, "__vcs_mixer_strip_bfc1a1b7430c287732affae4_left"
-chnset 0.35999999999999999, "__vcs_mixer_strip_bfc1a1b7430c287732affae4_right"
-chnset 1, "__vcs_mixer_strip_bfc1a1b7430c287732affae4_mute"
-chnset 1, "__vcs_mixer_strip_3d24d38fbb86f53cbadf2925_gain"
-chnset 0.43999999999999995, "__vcs_mixer_strip_3d24d38fbb86f53cbadf2925_left"
-chnset 1, "__vcs_mixer_strip_3d24d38fbb86f53cbadf2925_right"
-chnset 1, "__vcs_mixer_strip_3d24d38fbb86f53cbadf2925_mute"
-chnset 1, "__vcs_mixer_strip_55a2288beedf45404ab748af_gain"
-chnset 0.63, "__vcs_mixer_strip_55a2288beedf45404ab748af_left"
-chnset 1, "__vcs_mixer_strip_55a2288beedf45404ab748af_right"
-chnset 1, "__vcs_mixer_strip_55a2288beedf45404ab748af_mute"
-chnset 0.54954087385762451, "__vcs_mixer_strip_4ff4cffa30256d4b88100c02_gain"
-chnset 1, "__vcs_mixer_strip_4ff4cffa30256d4b88100c02_left"
-chnset 1, "__vcs_mixer_strip_4ff4cffa30256d4b88100c02_right"
-chnset 1, "__vcs_mixer_strip_4ff4cffa30256d4b88100c02_mute"
-chnset 1, "__vcs_mixer_strip_18240bf957b1c70986590896_gain"
-chnset 1, "__vcs_mixer_strip_18240bf957b1c70986590896_left"
-chnset 0.58000000000000007, "__vcs_mixer_strip_18240bf957b1c70986590896_right"
-chnset 1, "__vcs_mixer_strip_18240bf957b1c70986590896_mute"
-chnset 1, "__vcs_mixer_strip_a6256f0694d7a38eb55eee87_gain"
-chnset 1, "__vcs_mixer_strip_a6256f0694d7a38eb55eee87_left"
-chnset 0.45999999999999996, "__vcs_mixer_strip_a6256f0694d7a38eb55eee87_right"
-chnset 1, "__vcs_mixer_strip_a6256f0694d7a38eb55eee87_mute"
-chnset 0.31622776601683794, "__vcs_mixer_strip_b5c7638620f2f38a657a5790_gain"
-chnset 1, "__vcs_mixer_strip_b5c7638620f2f38a657a5790_left"
-chnset 1, "__vcs_mixer_strip_b5c7638620f2f38a657a5790_right"
-chnset 1, "__vcs_mixer_strip_b5c7638620f2f38a657a5790_mute"
-chnset 1, "__vcs_mixer_route_030b0c1ee70d90df6cc290e9_gain"
-chnset 1, "__vcs_mixer_route_030b0c1ee70d90df6cc290e9_post"
-chnset 1, "__vcs_mixer_route_030b0c1ee70d90df6cc290e9_pan"
-chnset 1, "__vcs_mixer_route_fe338ba6c98a13b8fee998c7_gain"
-chnset 1, "__vcs_mixer_route_fe338ba6c98a13b8fee998c7_post"
-chnset 1, "__vcs_mixer_route_fe338ba6c98a13b8fee998c7_pan"
-chnset 1, "__vcs_mixer_route_1bdd707b8154ef4b993e8b29_gain"
-chnset 1, "__vcs_mixer_route_1bdd707b8154ef4b993e8b29_post"
-chnset 1, "__vcs_mixer_route_1bdd707b8154ef4b993e8b29_pan"
-chnset 1, "__vcs_mixer_route_375853de2f37eecb08896a61_gain"
-chnset 1, "__vcs_mixer_route_375853de2f37eecb08896a61_post"
-chnset 1, "__vcs_mixer_route_375853de2f37eecb08896a61_pan"
-chnset 1, "__vcs_mixer_route_5e4b8ac6df68947c9abf1454_gain"
-chnset 1, "__vcs_mixer_route_5e4b8ac6df68947c9abf1454_post"
-chnset 1, "__vcs_mixer_route_5e4b8ac6df68947c9abf1454_pan"
-chnset 1, "__vcs_mixer_route_eed59fb6a5255fd69d9337f1_gain"
-chnset 1, "__vcs_mixer_route_eed59fb6a5255fd69d9337f1_post"
-chnset 1, "__vcs_mixer_route_eed59fb6a5255fd69d9337f1_pan"
-chnset 1, "__vcs_mixer_route_e73ee7621eb3a4c13901ea8b_gain"
-chnset 1, "__vcs_mixer_route_e73ee7621eb3a4c13901ea8b_post"
-chnset 1, "__vcs_mixer_route_e73ee7621eb3a4c13901ea8b_pan"
-chnset 1, "__vcs_mixer_route_d8b1e8dcc8eb12889af9661c_gain"
-chnset 1, "__vcs_mixer_route_d8b1e8dcc8eb12889af9661c_post"
-chnset 1, "__vcs_mixer_route_d8b1e8dcc8eb12889af9661c_pan"
-chnset 1, "__vcs_mixer_route_cc66606b123efcd807c3bcc9_gain"
-chnset 1, "__vcs_mixer_route_cc66606b123efcd807c3bcc9_post"
-chnset 1, "__vcs_mixer_route_cc66606b123efcd807c3bcc9_pan"
-chnset 1, "__vcs_mixer_route_a30c7f1aaac6106b60c8bf1e_gain"
-chnset 1, "__vcs_mixer_route_a30c7f1aaac6106b60c8bf1e_post"
-chnset 1, "__vcs_mixer_route_a30c7f1aaac6106b60c8bf1e_pan"
-chnset 1, "__vcs_mixer_route_ab636af1f47d3f846c91adcd_gain"
-chnset 1, "__vcs_mixer_route_ab636af1f47d3f846c91adcd_post"
-chnset 1, "__vcs_mixer_route_ab636af1f47d3f846c91adcd_pan"
-chnset 1, "__vcs_mixer_route_97e56d52c2522952ccb1b07c_gain"
-chnset 1, "__vcs_mixer_route_97e56d52c2522952ccb1b07c_post"
-chnset 1, "__vcs_mixer_route_97e56d52c2522952ccb1b07c_pan"
-chnset 1, "__vcs_mixer_route_5d7c201c2b1bc8b6a06c0402_gain"
-chnset 1, "__vcs_mixer_route_5d7c201c2b1bc8b6a06c0402_post"
-chnset 1, "__vcs_mixer_route_5d7c201c2b1bc8b6a06c0402_pan"
-chnset 1, "__vcs_mixer_route_8c42b5ebd60e4df4dfa599ba_gain"
-chnset 1, "__vcs_mixer_route_8c42b5ebd60e4df4dfa599ba_post"
-chnset 1, "__vcs_mixer_route_8c42b5ebd60e4df4dfa599ba_pan"
-chnset 1, "__vcs_mixer_route_9e67d665aecc908cdeee6a97_gain"
-chnset 1, "__vcs_mixer_route_9e67d665aecc908cdeee6a97_post"
-chnset 1, "__vcs_mixer_route_9e67d665aecc908cdeee6a97_pan"
-chnset 1, "__vcs_mixer_route_d4662d3ad8cbca9edcc6f5ae_gain"
-chnset 1, "__vcs_mixer_route_d4662d3ad8cbca9edcc6f5ae_post"
-chnset 1, "__vcs_mixer_route_d4662d3ad8cbca9edcc6f5ae_pan"
-chnset 1, "__vcs_mixer_route_460c6d17907501ede33a6848_gain"
-chnset 1, "__vcs_mixer_route_460c6d17907501ede33a6848_post"
-chnset 1, "__vcs_mixer_route_460c6d17907501ede33a6848_pan"
-chnset 1, "__vcs_mixer_route_91e164bcf8d4e0d1f65cbc8f_gain"
-chnset 1, "__vcs_mixer_route_91e164bcf8d4e0d1f65cbc8f_post"
-chnset 1, "__vcs_mixer_route_91e164bcf8d4e0d1f65cbc8f_pan"
-chnset 1, "__vcs_mixer_route_243e39b4858f7193fa09530a_gain"
-chnset 1, "__vcs_mixer_route_243e39b4858f7193fa09530a_post"
-chnset 1, "__vcs_mixer_route_243e39b4858f7193fa09530a_pan"
-chnset 1, "__vcs_mixer_route_8e4d4960ebc7d83ccb40b41e_gain"
-chnset 1, "__vcs_mixer_route_8e4d4960ebc7d83ccb40b41e_post"
-chnset 1, "__vcs_mixer_route_8e4d4960ebc7d83ccb40b41e_pan"
-chnset 1, "__vcs_mixer_route_f61f4652529a694883fd6bc7_gain"
-chnset 1, "__vcs_mixer_route_f61f4652529a694883fd6bc7_post"
-chnset 1, "__vcs_mixer_route_f61f4652529a694883fd6bc7_pan"
-chnset 1, "__vcs_mixer_route_9e74979841d2aca1fc31d317_gain"
-chnset 1, "__vcs_mixer_route_9e74979841d2aca1fc31d317_post"
-chnset 1, "__vcs_mixer_route_9e74979841d2aca1fc31d317_pan"
-chnset 1, "__vcs_mixer_route_5d41266d70469702a2318702_gain"
-chnset 1, "__vcs_mixer_route_5d41266d70469702a2318702_post"
-chnset 1, "__vcs_mixer_route_5d41266d70469702a2318702_pan"
-chnset 1, "__vcs_mixer_route_d32c2140a36de30f298cdf0e_gain"
-chnset 1, "__vcs_mixer_route_d32c2140a36de30f298cdf0e_post"
-chnset 1, "__vcs_mixer_route_d32c2140a36de30f298cdf0e_pan"
-chnset 1, "__vcs_mixer_route_77fb424075875a8de636592c_gain"
-chnset 1, "__vcs_mixer_route_77fb424075875a8de636592c_post"
-chnset 1, "__vcs_mixer_route_77fb424075875a8de636592c_pan"
-chnset 1, "__vcs_mixer_route_934341a03a3226b4537ad15f_gain"
-chnset 1, "__vcs_mixer_route_934341a03a3226b4537ad15f_post"
-chnset 1, "__vcs_mixer_route_934341a03a3226b4537ad15f_pan"
-chnset 1, "__vcs_mixer_route_8f1311fb2fe500f5ba81da4a_gain"
-chnset 1, "__vcs_mixer_route_8f1311fb2fe500f5ba81da4a_post"
-chnset 1, "__vcs_mixer_route_8f1311fb2fe500f5ba81da4a_pan"
-chnset 1, "__vcs_mixer_route_511c261d13d0c350c7233197_gain"
-chnset 1, "__vcs_mixer_route_511c261d13d0c350c7233197_post"
-chnset 1, "__vcs_mixer_route_511c261d13d0c350c7233197_pan"
-chnset 0.54954087385762451, "__vcs_mixer_route_a4996fc7f6a32a08356594fe_gain"
-chnset 1, "__vcs_mixer_route_a4996fc7f6a32a08356594fe_post"
-chnset 1, "__vcs_mixer_route_a4996fc7f6a32a08356594fe_pan"
-chnset 0.54954087385762451, "__vcs_mixer_route_68d588f623688c8c24d957d2_gain"
-chnset 1, "__vcs_mixer_route_68d588f623688c8c24d957d2_post"
-chnset 1, "__vcs_mixer_route_68d588f623688c8c24d957d2_pan"
-chnset 1.9952623149688795, "__vcs_mixer_route_f6ecc17fcf816ae2e2bf82ba_gain"
-chnset 1, "__vcs_mixer_route_f6ecc17fcf816ae2e2bf82ba_post"
-chnset 1, "__vcs_mixer_route_f6ecc17fcf816ae2e2bf82ba_pan"
-chnset 1.9952623149688795, "__vcs_mixer_route_1e397dc21f4378658e91b5e5_gain"
-chnset 1, "__vcs_mixer_route_1e397dc21f4378658e91b5e5_post"
-chnset 1, "__vcs_mixer_route_1e397dc21f4378658e91b5e5_pan"
-chnset 0.0038018939632056088, "__vcs_mixer_route_2170e5f12703cd3a193f6abd_gain"
-chnset 1, "__vcs_mixer_route_2170e5f12703cd3a193f6abd_post"
-chnset 1, "__vcs_mixer_route_2170e5f12703cd3a193f6abd_pan"
-chnset 0.0038018939632056088, "__vcs_mixer_route_c48fcae2ce8ff4458b0e451f_gain"
-chnset 1, "__vcs_mixer_route_c48fcae2ce8ff4458b0e451f_post"
-chnset 1, "__vcs_mixer_route_c48fcae2ce8ff4458b0e451f_pan"
-chnset 0.82224264994707108, "__vcs_mixer_route_715ef9f48a5c69653ddebd2d_gain"
-chnset 1, "__vcs_mixer_route_715ef9f48a5c69653ddebd2d_post"
-chnset 1, "__vcs_mixer_route_715ef9f48a5c69653ddebd2d_pan"
-chnset 0.82224264994707108, "__vcs_mixer_route_a968ade595d69c835565089d_gain"
-chnset 1, "__vcs_mixer_route_a968ade595d69c835565089d_post"
-chnset 1, "__vcs_mixer_route_a968ade595d69c835565089d_pan"
-chnset 0.11091748152624009, "__vcs_mixer_route_5904028fef78407b0749cf13_gain"
-chnset 1, "__vcs_mixer_route_5904028fef78407b0749cf13_post"
-chnset 1, "__vcs_mixer_route_5904028fef78407b0749cf13_pan"
-chnset 0.11091748152624009, "__vcs_mixer_route_df5d3b33795c697587450e2f_gain"
-chnset 1, "__vcs_mixer_route_df5d3b33795c697587450e2f_post"
-chnset 1, "__vcs_mixer_route_df5d3b33795c697587450e2f_pan"
-chnset 0.077624711662869161, "__vcs_mixer_route_85942b72be0bb4c9f548ef38_gain"
-chnset 1, "__vcs_mixer_route_85942b72be0bb4c9f548ef38_post"
-chnset 1, "__vcs_mixer_route_85942b72be0bb4c9f548ef38_pan"
-chnset 0.077624711662869161, "__vcs_mixer_route_f5e6bfb58a21758867bddcc0_gain"
-chnset 1, "__vcs_mixer_route_f5e6bfb58a21758867bddcc0_post"
-chnset 1, "__vcs_mixer_route_f5e6bfb58a21758867bddcc0_pan"
-chnset 1.6788040181225603, "__vcs_mixer_route_0613931e96821796b634d111_gain"
-chnset 1, "__vcs_mixer_route_0613931e96821796b634d111_post"
-chnset 1, "__vcs_mixer_route_0613931e96821796b634d111_pan"
-chnset 1.6788040181225603, "__vcs_mixer_route_a846aca0bfe525d6f2040603_gain"
-chnset 1, "__vcs_mixer_route_a846aca0bfe525d6f2040603_post"
-chnset 1, "__vcs_mixer_route_a846aca0bfe525d6f2040603_pan"
-chnset 0.0011614486138403425, "__vcs_mixer_route_659b8c3b0c18418c8c46a07a_gain"
-chnset 1, "__vcs_mixer_route_659b8c3b0c18418c8c46a07a_post"
-chnset 1, "__vcs_mixer_route_659b8c3b0c18418c8c46a07a_pan"
-chnset 0.0011614486138403425, "__vcs_mixer_route_907268ecfedd366edc8573f5_gain"
-chnset 1, "__vcs_mixer_route_907268ecfedd366edc8573f5_post"
-chnset 1, "__vcs_mixer_route_907268ecfedd366edc8573f5_pan"
-chnset 0.88104887300801404, "__vcs_mixer_route_5999c467d7fc1272efcc324c_gain"
-chnset 1, "__vcs_mixer_route_5999c467d7fc1272efcc324c_post"
-chnset 1, "__vcs_mixer_route_5999c467d7fc1272efcc324c_pan"
-chnset 0.88104887300801404, "__vcs_mixer_route_46f875c3b474ce8c98617728_gain"
-chnset 1, "__vcs_mixer_route_46f875c3b474ce8c98617728_post"
-chnset 1, "__vcs_mixer_route_46f875c3b474ce8c98617728_pan"
-chnset 0.3630780547701013, "__vcs_mixer_route_ce04c4e5be234ab330b3982d_gain"
-chnset 1, "__vcs_mixer_route_ce04c4e5be234ab330b3982d_post"
-chnset 1, "__vcs_mixer_route_ce04c4e5be234ab330b3982d_pan"
-chnset 0.3630780547701013, "__vcs_mixer_route_c4cfd980b5ffadef1f20d62b_gain"
-chnset 1, "__vcs_mixer_route_c4cfd980b5ffadef1f20d62b_post"
-chnset 1, "__vcs_mixer_route_c4cfd980b5ffadef1f20d62b_pan"
-chnset 0.3126079367123954, "__vcs_mixer_route_4e8a5b0bd27cb1557ce0d7a8_gain"
-chnset 1, "__vcs_mixer_route_4e8a5b0bd27cb1557ce0d7a8_post"
-chnset 1, "__vcs_mixer_route_4e8a5b0bd27cb1557ce0d7a8_pan"
-chnset 0.3126079367123954, "__vcs_mixer_route_ac60e390d9f4cc8a7bc4d933_gain"
-chnset 1, "__vcs_mixer_route_ac60e390d9f4cc8a7bc4d933_post"
-chnset 1, "__vcs_mixer_route_ac60e390d9f4cc8a7bc4d933_pan"
-chnset 0.0072443596007498983, "__vcs_mixer_route_e53d687e91a0e5c309a651aa_gain"
-chnset 1, "__vcs_mixer_route_e53d687e91a0e5c309a651aa_post"
-chnset 1, "__vcs_mixer_route_e53d687e91a0e5c309a651aa_pan"
-chnset 0.0072443596007498983, "__vcs_mixer_route_5475fb8a3751bcad0bf81535_gain"
-chnset 1, "__vcs_mixer_route_5475fb8a3751bcad0bf81535_post"
-chnset 1, "__vcs_mixer_route_5475fb8a3751bcad0bf81535_pan"
-chnset 0.003090295432513589, "__vcs_mixer_route_b901b446594dfdde9ac11226_gain"
-chnset 1, "__vcs_mixer_route_b901b446594dfdde9ac11226_post"
-chnset 1, "__vcs_mixer_route_b901b446594dfdde9ac11226_pan"
-chnset 0.003090295432513589, "__vcs_mixer_route_d7f17e412b1e26334d506d5d_gain"
-chnset 1, "__vcs_mixer_route_d7f17e412b1e26334d506d5d_post"
-chnset 1, "__vcs_mixer_route_d7f17e412b1e26334d506d5d_pan"
-chnset 1, "__vcs_mixer_route_d03a9bfb8537849a25f30638_gain"
-chnset 1, "__vcs_mixer_route_d03a9bfb8537849a25f30638_post"
-chnset 1, "__vcs_mixer_route_d03a9bfb8537849a25f30638_pan"
-chnset 1, "__vcs_mixer_route_77f21ffca96ba56dbec00253_gain"
-chnset 1, "__vcs_mixer_route_77f21ffca96ba56dbec00253_post"
-chnset 1, "__vcs_mixer_route_77f21ffca96ba56dbec00253_pan"
-chnset 1, "__vcs_mixer_route_6e2ccee4f710b9c0a61d256f_gain"
-chnset 1, "__vcs_mixer_route_6e2ccee4f710b9c0a61d256f_post"
-chnset 1, "__vcs_mixer_route_6e2ccee4f710b9c0a61d256f_pan"
-chnset 1, "__vcs_mixer_route_97cfabdca1118d23ac27f030_gain"
-chnset 1, "__vcs_mixer_route_97cfabdca1118d23ac27f030_post"
-chnset 1, "__vcs_mixer_route_97cfabdca1118d23ac27f030_pan"
-chnset 1, "__vcs_mixer_route_ebe4d00ca1570557781dee01_gain"
-chnset 1, "__vcs_mixer_route_ebe4d00ca1570557781dee01_post"
-chnset 1, "__vcs_mixer_route_ebe4d00ca1570557781dee01_pan"
-chnset 1, "__vcs_mixer_route_208ab40923d5bf707587f01b_gain"
-chnset 1, "__vcs_mixer_route_208ab40923d5bf707587f01b_post"
-chnset 1, "__vcs_mixer_route_208ab40923d5bf707587f01b_pan"
+; Offline mixer: saved coefficients; no interactive mixer controls or meters.
 gk_vcs_score_cc[] init 2048
 instr 9000
   iindex = int(p4)
@@ -1694,29 +1429,13 @@ endin
 ; initial gain: -2.5 dB; balance/pan: 0.15; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_9152adbd4f9979234fa00f60
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_b9da087f272fb5e723933d0d_gain"
- a_gain vcs_mixer_ramp k_gain, 0.74989420933245587
- k_left chnget "__vcs_mixer_strip_b9da087f272fb5e723933d0d_left"
- a_left vcs_mixer_ramp k_left, 0.84999999999999998
- k_right chnget "__vcs_mixer_strip_b9da087f272fb5e723933d0d_right"
- a_right vcs_mixer_ramp k_right, 1
- k_mute chnget "__vcs_mixer_strip_b9da087f272fb5e723933d0d_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 0.74989420933245587
+ a_left = 0.84999999999999998
+ a_right = 1
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_b9da087f272fb5e723933d0d_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_b9da087f272fb5e723933d0d_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_b9da087f272fb5e723933d0d_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_b9da087f272fb5e723933d0d_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -1728,15 +1447,12 @@ endin
 ; from: Psy Rotor Bass [051948ac-ebf9-43ec-8bf3-df399a268365] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: -22.2 dB; source mute and mixer solo gate this route.
 instr vcs_mix_bf40d7bbfd0bc17d72854104
- k_post chnget "__vcs_mixer_route_85942b72be0bb4c9f548ef38_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_85942b72be0bb4c9f548ef38_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_85942b72be0bb4c9f548ef38_gain"
- a_send vcs_mixer_ramp k_send, 0.077624711662869161
+ a_send = 0.077624711662869161
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -1746,15 +1462,12 @@ endin
 ; from: Psy Rotor Bass [051948ac-ebf9-43ec-8bf3-df399a268365] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_76dac9c487deb7fc5fc7cad2
- k_post chnget "__vcs_mixer_route_a30c7f1aaac6106b60c8bf1e_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_a30c7f1aaac6106b60c8bf1e_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_a30c7f1aaac6106b60c8bf1e_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -1764,15 +1477,12 @@ endin
 ; from: Psy Rotor Bass [051948ac-ebf9-43ec-8bf3-df399a268365] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: -22.2 dB; source mute and mixer solo gate this route.
 instr vcs_mix_196fd89531c3ff1fbc6d14e0
- k_post chnget "__vcs_mixer_route_f5e6bfb58a21758867bddcc0_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_f5e6bfb58a21758867bddcc0_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_f5e6bfb58a21758867bddcc0_gain"
- a_send vcs_mixer_ramp k_send, 0.077624711662869161
+ a_send = 0.077624711662869161
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -1782,15 +1492,12 @@ endin
 ; from: Psy Rotor Bass [051948ac-ebf9-43ec-8bf3-df399a268365] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_98059306e38eda156aa00315
- k_post chnget "__vcs_mixer_route_cc66606b123efcd807c3bcc9_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_cc66606b123efcd807c3bcc9_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_cc66606b123efcd807c3bcc9_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -1800,29 +1507,13 @@ endin
 ; initial gain: -4 dB; balance/pan: -0.19; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_41f59d49bae86a0bb110a8a1
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_44d513e47c631f99f7a3e562_gain"
- a_gain vcs_mixer_ramp k_gain, 0.63095734448019325
- k_left chnget "__vcs_mixer_strip_44d513e47c631f99f7a3e562_left"
- a_left vcs_mixer_ramp k_left, 1
- k_right chnget "__vcs_mixer_strip_44d513e47c631f99f7a3e562_right"
- a_right vcs_mixer_ramp k_right, 0.81000000000000005
- k_mute chnget "__vcs_mixer_strip_44d513e47c631f99f7a3e562_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 0.63095734448019325
+ a_left = 1
+ a_right = 0.81000000000000005
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_44d513e47c631f99f7a3e562_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_44d513e47c631f99f7a3e562_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_44d513e47c631f99f7a3e562_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_44d513e47c631f99f7a3e562_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -1834,15 +1525,12 @@ endin
 ; from: Rubber Core FM Bass [05624905-6283-4138-ab16-f4161548d16b] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: -19.1 dB; source mute and mixer solo gate this route.
 instr vcs_mix_7afadbee9b0c3fa70e976250
- k_post chnget "__vcs_mixer_route_5904028fef78407b0749cf13_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_5904028fef78407b0749cf13_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_5904028fef78407b0749cf13_gain"
- a_send vcs_mixer_ramp k_send, 0.11091748152624009
+ a_send = 0.11091748152624009
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -1852,15 +1540,12 @@ endin
 ; from: Rubber Core FM Bass [05624905-6283-4138-ab16-f4161548d16b] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_eb05476ab8a7bca004e6aa15
- k_post chnget "__vcs_mixer_route_e73ee7621eb3a4c13901ea8b_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_e73ee7621eb3a4c13901ea8b_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_e73ee7621eb3a4c13901ea8b_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -1870,15 +1555,12 @@ endin
 ; from: Rubber Core FM Bass [05624905-6283-4138-ab16-f4161548d16b] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: -19.1 dB; source mute and mixer solo gate this route.
 instr vcs_mix_8cc4c5a31fca54fff161bbd8
- k_post chnget "__vcs_mixer_route_df5d3b33795c697587450e2f_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_df5d3b33795c697587450e2f_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_df5d3b33795c697587450e2f_gain"
- a_send vcs_mixer_ramp k_send, 0.11091748152624009
+ a_send = 0.11091748152624009
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -1888,15 +1570,12 @@ endin
 ; from: Rubber Core FM Bass [05624905-6283-4138-ab16-f4161548d16b] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_5ac8bd6ec7cab5b3e43b9b28
- k_post chnget "__vcs_mixer_route_d8b1e8dcc8eb12889af9661c_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_d8b1e8dcc8eb12889af9661c_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_d8b1e8dcc8eb12889af9661c_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -1906,29 +1585,13 @@ endin
 ; initial gain: 0 dB; balance/pan: -0.54; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_b6b0d23858a7c7ab2ec02e72
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_a6256f0694d7a38eb55eee87_gain"
- a_gain vcs_mixer_ramp k_gain, 1
- k_left chnget "__vcs_mixer_strip_a6256f0694d7a38eb55eee87_left"
- a_left vcs_mixer_ramp k_left, 1
- k_right chnget "__vcs_mixer_strip_a6256f0694d7a38eb55eee87_right"
- a_right vcs_mixer_ramp k_right, 0.45999999999999996
- k_mute chnget "__vcs_mixer_strip_a6256f0694d7a38eb55eee87_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 1
+ a_left = 1
+ a_right = 0.45999999999999996
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_a6256f0694d7a38eb55eee87_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_a6256f0694d7a38eb55eee87_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_a6256f0694d7a38eb55eee87_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_a6256f0694d7a38eb55eee87_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -1940,15 +1603,12 @@ endin
 ; from: TB303 style Bass [10663596-a11f-4ab9-a028-b61242369c74] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: -50.2 dB; source mute and mixer solo gate this route.
 instr vcs_mix_6ce8c161a4881ef23d7228db
- k_post chnget "__vcs_mixer_route_b901b446594dfdde9ac11226_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_b901b446594dfdde9ac11226_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_b901b446594dfdde9ac11226_gain"
- a_send vcs_mixer_ramp k_send, 0.003090295432513589
+ a_send = 0.003090295432513589
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -1958,15 +1618,12 @@ endin
 ; from: TB303 style Bass [10663596-a11f-4ab9-a028-b61242369c74] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_4385eae94f347b60ff1a523f
- k_post chnget "__vcs_mixer_route_934341a03a3226b4537ad15f_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_934341a03a3226b4537ad15f_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_934341a03a3226b4537ad15f_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -1976,15 +1633,12 @@ endin
 ; from: TB303 style Bass [10663596-a11f-4ab9-a028-b61242369c74] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: -50.2 dB; source mute and mixer solo gate this route.
 instr vcs_mix_e23d5820464c82d1c3f1ecb6
- k_post chnget "__vcs_mixer_route_d7f17e412b1e26334d506d5d_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_d7f17e412b1e26334d506d5d_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_d7f17e412b1e26334d506d5d_gain"
- a_send vcs_mixer_ramp k_send, 0.003090295432513589
+ a_send = 0.003090295432513589
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -1994,15 +1648,12 @@ endin
 ; from: TB303 style Bass [10663596-a11f-4ab9-a028-b61242369c74] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_1d7fea538bc1ccd2882951fb
- k_post chnget "__vcs_mixer_route_77fb424075875a8de636592c_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_77fb424075875a8de636592c_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_77fb424075875a8de636592c_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2012,29 +1663,13 @@ endin
 ; initial gain: 4.7 dB; balance/pan: -0.64; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_8929c5bcc40fd958387d739d
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_bfc1a1b7430c287732affae4_gain"
- a_gain vcs_mixer_ramp k_gain, 1.7179083871575882
- k_left chnget "__vcs_mixer_strip_bfc1a1b7430c287732affae4_left"
- a_left vcs_mixer_ramp k_left, 1
- k_right chnget "__vcs_mixer_strip_bfc1a1b7430c287732affae4_right"
- a_right vcs_mixer_ramp k_right, 0.35999999999999999
- k_mute chnget "__vcs_mixer_strip_bfc1a1b7430c287732affae4_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 1.7179083871575882
+ a_left = 1
+ a_right = 0.35999999999999999
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_bfc1a1b7430c287732affae4_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_bfc1a1b7430c287732affae4_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_bfc1a1b7430c287732affae4_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_bfc1a1b7430c287732affae4_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -2046,15 +1681,12 @@ endin
 ; from: Event Horizon Riser [22da2642-cc40-4022-b247-6744a601b60f] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_471af3743ff16a0d8f72f5ab
- k_post chnget "__vcs_mixer_route_5d7c201c2b1bc8b6a06c0402_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_5d7c201c2b1bc8b6a06c0402_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_5d7c201c2b1bc8b6a06c0402_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2064,15 +1696,12 @@ endin
 ; from: Event Horizon Riser [22da2642-cc40-4022-b247-6744a601b60f] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: -1.1 dB; source mute and mixer solo gate this route.
 instr vcs_mix_03cba347a182a33969acb2cb
- k_post chnget "__vcs_mixer_route_46f875c3b474ce8c98617728_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_46f875c3b474ce8c98617728_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_46f875c3b474ce8c98617728_gain"
- a_send vcs_mixer_ramp k_send, 0.88104887300801404
+ a_send = 0.88104887300801404
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2082,15 +1711,12 @@ endin
 ; from: Event Horizon Riser [22da2642-cc40-4022-b247-6744a601b60f] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: -1.1 dB; source mute and mixer solo gate this route.
 instr vcs_mix_3fa1361afef1b5caad87f11b
- k_post chnget "__vcs_mixer_route_5999c467d7fc1272efcc324c_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_5999c467d7fc1272efcc324c_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_5999c467d7fc1272efcc324c_gain"
- a_send vcs_mixer_ramp k_send, 0.88104887300801404
+ a_send = 0.88104887300801404
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2100,15 +1726,12 @@ endin
 ; from: Event Horizon Riser [22da2642-cc40-4022-b247-6744a601b60f] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_4593d190d6d07a644767f4ca
- k_post chnget "__vcs_mixer_route_8c42b5ebd60e4df4dfa599ba_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_8c42b5ebd60e4df4dfa599ba_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_8c42b5ebd60e4df4dfa599ba_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2118,29 +1741,13 @@ endin
 ; initial gain: 5.4 dB; balance/pan: -0.3; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_f616c599d1394aedcbebf807
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_14559139f723d60468f91a4f_gain"
- a_gain vcs_mixer_ramp k_gain, 1.8620871366628675
- k_left chnget "__vcs_mixer_strip_14559139f723d60468f91a4f_left"
- a_left vcs_mixer_ramp k_left, 1
- k_right chnget "__vcs_mixer_strip_14559139f723d60468f91a4f_right"
- a_right vcs_mixer_ramp k_right, 0.69999999999999996
- k_mute chnget "__vcs_mixer_strip_14559139f723d60468f91a4f_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 1.8620871366628675
+ a_left = 1
+ a_right = 0.69999999999999996
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_14559139f723d60468f91a4f_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_14559139f723d60468f91a4f_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_14559139f723d60468f91a4f_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_14559139f723d60468f91a4f_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -2152,15 +1759,12 @@ endin
 ; from: Alloy Sequence Voice [2f97744d-6693-44e7-b2e2-08d84a51da6d] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_d161a913d4f386c34b22a475
- k_post chnget "__vcs_mixer_route_fe338ba6c98a13b8fee998c7_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_fe338ba6c98a13b8fee998c7_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_fe338ba6c98a13b8fee998c7_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2170,15 +1774,12 @@ endin
 ; from: Alloy Sequence Voice [2f97744d-6693-44e7-b2e2-08d84a51da6d] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: 6 dB; source mute and mixer solo gate this route.
 instr vcs_mix_32f21102db8a4718e2242c15
- k_post chnget "__vcs_mixer_route_f6ecc17fcf816ae2e2bf82ba_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_f6ecc17fcf816ae2e2bf82ba_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_f6ecc17fcf816ae2e2bf82ba_gain"
- a_send vcs_mixer_ramp k_send, 1.9952623149688795
+ a_send = 1.9952623149688795
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2188,15 +1789,12 @@ endin
 ; from: Alloy Sequence Voice [2f97744d-6693-44e7-b2e2-08d84a51da6d] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: 6 dB; source mute and mixer solo gate this route.
 instr vcs_mix_b5230e80783cf5999155aef4
- k_post chnget "__vcs_mixer_route_1e397dc21f4378658e91b5e5_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_1e397dc21f4378658e91b5e5_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_1e397dc21f4378658e91b5e5_gain"
- a_send vcs_mixer_ramp k_send, 1.9952623149688795
+ a_send = 1.9952623149688795
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2206,15 +1804,12 @@ endin
 ; from: Alloy Sequence Voice [2f97744d-6693-44e7-b2e2-08d84a51da6d] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_a6f155646994ebd8a6357ffe
- k_post chnget "__vcs_mixer_route_030b0c1ee70d90df6cc290e9_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_030b0c1ee70d90df6cc290e9_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_030b0c1ee70d90df6cc290e9_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2224,29 +1819,13 @@ endin
 ; initial gain: -6.1 dB; balance/pan: 0; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_899f076410de4fc4acd8fdd6
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_c345ff0eaa07a4cf1d076198_gain"
- a_gain vcs_mixer_ramp k_gain, 0.49545019080479025
- k_left chnget "__vcs_mixer_strip_c345ff0eaa07a4cf1d076198_left"
- a_left vcs_mixer_ramp k_left, 1
- k_right chnget "__vcs_mixer_strip_c345ff0eaa07a4cf1d076198_right"
- a_right vcs_mixer_ramp k_right, 1
- k_mute chnget "__vcs_mixer_strip_c345ff0eaa07a4cf1d076198_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 0.49545019080479025
+ a_left = 1
+ a_right = 1
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_c345ff0eaa07a4cf1d076198_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_c345ff0eaa07a4cf1d076198_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_c345ff0eaa07a4cf1d076198_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_c345ff0eaa07a4cf1d076198_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -2258,15 +1837,12 @@ endin
 ; from: JP-8000 Supersaw [786c76df-2174-41fd-b95f-877e42d94975] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_2c6f8f01b3386940969a24fa
- k_post chnget "__vcs_mixer_route_ab636af1f47d3f846c91adcd_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_ab636af1f47d3f846c91adcd_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_ab636af1f47d3f846c91adcd_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2276,15 +1852,12 @@ endin
 ; from: JP-8000 Supersaw [786c76df-2174-41fd-b95f-877e42d94975] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: 4.5 dB; source mute and mixer solo gate this route.
 instr vcs_mix_f2b20a5ef277f1d1849b8d86
- k_post chnget "__vcs_mixer_route_a846aca0bfe525d6f2040603_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_a846aca0bfe525d6f2040603_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_a846aca0bfe525d6f2040603_gain"
- a_send vcs_mixer_ramp k_send, 1.6788040181225603
+ a_send = 1.6788040181225603
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2294,15 +1867,12 @@ endin
 ; from: JP-8000 Supersaw [786c76df-2174-41fd-b95f-877e42d94975] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: 4.5 dB; source mute and mixer solo gate this route.
 instr vcs_mix_8e14ded79ce68847b3e66c04
- k_post chnget "__vcs_mixer_route_0613931e96821796b634d111_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_0613931e96821796b634d111_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_0613931e96821796b634d111_gain"
- a_send vcs_mixer_ramp k_send, 1.6788040181225603
+ a_send = 1.6788040181225603
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2312,15 +1882,12 @@ endin
 ; from: JP-8000 Supersaw [786c76df-2174-41fd-b95f-877e42d94975] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_118e05d62b2b5f15b84d4c2b
- k_post chnget "__vcs_mixer_route_97e56d52c2522952ccb1b07c_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_97e56d52c2522952ccb1b07c_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_97e56d52c2522952ccb1b07c_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2330,29 +1897,13 @@ endin
 ; initial gain: -1.6 dB; balance/pan: -0.46; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_09c877bcef3d1b63094e6c61
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_6cc32acc5b494446f03ac17b_gain"
- a_gain vcs_mixer_ramp k_gain, 0.83176377110267097
- k_left chnget "__vcs_mixer_strip_6cc32acc5b494446f03ac17b_left"
- a_left vcs_mixer_ramp k_left, 1
- k_right chnget "__vcs_mixer_strip_6cc32acc5b494446f03ac17b_right"
- a_right vcs_mixer_ramp k_right, 0.54000000000000004
- k_mute chnget "__vcs_mixer_strip_6cc32acc5b494446f03ac17b_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 0.83176377110267097
+ a_left = 1
+ a_right = 0.54000000000000004
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_6cc32acc5b494446f03ac17b_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_6cc32acc5b494446f03ac17b_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_6cc32acc5b494446f03ac17b_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_6cc32acc5b494446f03ac17b_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -2364,15 +1915,12 @@ endin
 ; from: Prism FM Pluck [b300f7fe-3b85-42c0-bac2-8f8bdfa84a34] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_7ef3e3a053f24f231d201d43
- k_post chnget "__vcs_mixer_route_5e4b8ac6df68947c9abf1454_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_5e4b8ac6df68947c9abf1454_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_5e4b8ac6df68947c9abf1454_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2382,15 +1930,12 @@ endin
 ; from: Prism FM Pluck [b300f7fe-3b85-42c0-bac2-8f8bdfa84a34] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: -1.7 dB; source mute and mixer solo gate this route.
 instr vcs_mix_d934fafb9df283be15ecf22c
- k_post chnget "__vcs_mixer_route_715ef9f48a5c69653ddebd2d_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_715ef9f48a5c69653ddebd2d_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_715ef9f48a5c69653ddebd2d_gain"
- a_send vcs_mixer_ramp k_send, 0.82224264994707108
+ a_send = 0.82224264994707108
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2400,15 +1945,12 @@ endin
 ; from: Prism FM Pluck [b300f7fe-3b85-42c0-bac2-8f8bdfa84a34] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_893edd60eb17de09ec98b1be
- k_post chnget "__vcs_mixer_route_eed59fb6a5255fd69d9337f1_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_eed59fb6a5255fd69d9337f1_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_eed59fb6a5255fd69d9337f1_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2418,15 +1960,12 @@ endin
 ; from: Prism FM Pluck [b300f7fe-3b85-42c0-bac2-8f8bdfa84a34] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: -1.7 dB; source mute and mixer solo gate this route.
 instr vcs_mix_3cfa38d0bf9209936805eef8
- k_post chnget "__vcs_mixer_route_a968ade595d69c835565089d_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_a968ade595d69c835565089d_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_a968ade595d69c835565089d_gain"
- a_send vcs_mixer_ramp k_send, 0.82224264994707108
+ a_send = 0.82224264994707108
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2436,29 +1975,13 @@ endin
 ; initial gain: 0 dB; balance/pan: 0.56; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_a1101bc84507692ee94bc59b
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_3d24d38fbb86f53cbadf2925_gain"
- a_gain vcs_mixer_ramp k_gain, 1
- k_left chnget "__vcs_mixer_strip_3d24d38fbb86f53cbadf2925_left"
- a_left vcs_mixer_ramp k_left, 0.43999999999999995
- k_right chnget "__vcs_mixer_strip_3d24d38fbb86f53cbadf2925_right"
- a_right vcs_mixer_ramp k_right, 1
- k_mute chnget "__vcs_mixer_strip_3d24d38fbb86f53cbadf2925_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 1
+ a_left = 0.43999999999999995
+ a_right = 1
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_3d24d38fbb86f53cbadf2925_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_3d24d38fbb86f53cbadf2925_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_3d24d38fbb86f53cbadf2925_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_3d24d38fbb86f53cbadf2925_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -2470,15 +1993,12 @@ endin
 ; from: Astral Laser Zaps [bad0b25f-7b9b-4854-8062-2c9298451447] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: -8.8 dB; source mute and mixer solo gate this route.
 instr vcs_mix_77d81c60650bb510029db407
- k_post chnget "__vcs_mixer_route_ce04c4e5be234ab330b3982d_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_ce04c4e5be234ab330b3982d_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_ce04c4e5be234ab330b3982d_gain"
- a_send vcs_mixer_ramp k_send, 0.3630780547701013
+ a_send = 0.3630780547701013
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2488,15 +2008,12 @@ endin
 ; from: Astral Laser Zaps [bad0b25f-7b9b-4854-8062-2c9298451447] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_1ff035113f22abf03b680ea5
- k_post chnget "__vcs_mixer_route_d4662d3ad8cbca9edcc6f5ae_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_d4662d3ad8cbca9edcc6f5ae_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_d4662d3ad8cbca9edcc6f5ae_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2506,15 +2023,12 @@ endin
 ; from: Astral Laser Zaps [bad0b25f-7b9b-4854-8062-2c9298451447] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: -8.8 dB; source mute and mixer solo gate this route.
 instr vcs_mix_80d8f9d47004759a0bb61786
- k_post chnget "__vcs_mixer_route_c4cfd980b5ffadef1f20d62b_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_c4cfd980b5ffadef1f20d62b_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_c4cfd980b5ffadef1f20d62b_gain"
- a_send vcs_mixer_ramp k_send, 0.3630780547701013
+ a_send = 0.3630780547701013
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2524,15 +2038,12 @@ endin
 ; from: Astral Laser Zaps [bad0b25f-7b9b-4854-8062-2c9298451447] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_7d7cfc5f15191e0ebf542d3d
- k_post chnget "__vcs_mixer_route_9e67d665aecc908cdeee6a97_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_9e67d665aecc908cdeee6a97_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_9e67d665aecc908cdeee6a97_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2542,29 +2053,13 @@ endin
 ; initial gain: 0 dB; balance/pan: 0.37; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_bc93846608190ff6ad62067d
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_55a2288beedf45404ab748af_gain"
- a_gain vcs_mixer_ramp k_gain, 1
- k_left chnget "__vcs_mixer_strip_55a2288beedf45404ab748af_left"
- a_left vcs_mixer_ramp k_left, 0.63
- k_right chnget "__vcs_mixer_strip_55a2288beedf45404ab748af_right"
- a_right vcs_mixer_ramp k_right, 1
- k_mute chnget "__vcs_mixer_strip_55a2288beedf45404ab748af_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 1
+ a_left = 0.63
+ a_right = 1
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_55a2288beedf45404ab748af_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_55a2288beedf45404ab748af_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_55a2288beedf45404ab748af_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_55a2288beedf45404ab748af_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -2576,15 +2071,12 @@ endin
 ; from: Mandala Acid Lead [cc004901-9dcf-4375-982d-851284b67dd2] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: -10.1 dB; source mute and mixer solo gate this route.
 instr vcs_mix_a172ff8ac91c52ba9f6593d3
- k_post chnget "__vcs_mixer_route_ac60e390d9f4cc8a7bc4d933_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_ac60e390d9f4cc8a7bc4d933_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_ac60e390d9f4cc8a7bc4d933_gain"
- a_send vcs_mixer_ramp k_send, 0.3126079367123954
+ a_send = 0.3126079367123954
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2594,15 +2086,12 @@ endin
 ; from: Mandala Acid Lead [cc004901-9dcf-4375-982d-851284b67dd2] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: -10.1 dB; source mute and mixer solo gate this route.
 instr vcs_mix_d6b7b1e4da4b20cc5d2c5e21
- k_post chnget "__vcs_mixer_route_4e8a5b0bd27cb1557ce0d7a8_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_4e8a5b0bd27cb1557ce0d7a8_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_4e8a5b0bd27cb1557ce0d7a8_gain"
- a_send vcs_mixer_ramp k_send, 0.3126079367123954
+ a_send = 0.3126079367123954
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2612,15 +2101,12 @@ endin
 ; from: Mandala Acid Lead [cc004901-9dcf-4375-982d-851284b67dd2] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_a41ba115108d7b5d9eac9b6d
- k_post chnget "__vcs_mixer_route_460c6d17907501ede33a6848_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_460c6d17907501ede33a6848_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_460c6d17907501ede33a6848_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2630,15 +2116,12 @@ endin
 ; from: Mandala Acid Lead [cc004901-9dcf-4375-982d-851284b67dd2] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_62ca969d250ff30eb88781ec
- k_post chnget "__vcs_mixer_route_91e164bcf8d4e0d1f65cbc8f_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_91e164bcf8d4e0d1f65cbc8f_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_91e164bcf8d4e0d1f65cbc8f_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2648,29 +2131,13 @@ endin
 ; initial gain: 0 dB; balance/pan: -0.42; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_eb31e675d375b0200b94afdf
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_18240bf957b1c70986590896_gain"
- a_gain vcs_mixer_ramp k_gain, 1
- k_left chnget "__vcs_mixer_strip_18240bf957b1c70986590896_left"
- a_left vcs_mixer_ramp k_left, 1
- k_right chnget "__vcs_mixer_strip_18240bf957b1c70986590896_right"
- a_right vcs_mixer_ramp k_right, 0.58000000000000007
- k_mute chnget "__vcs_mixer_strip_18240bf957b1c70986590896_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 1
+ a_left = 1
+ a_right = 0.58000000000000007
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_18240bf957b1c70986590896_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_18240bf957b1c70986590896_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_18240bf957b1c70986590896_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_18240bf957b1c70986590896_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -2682,15 +2149,12 @@ endin
 ; from: Goa Ray Lead [e5317d66-5579-44ee-80f0-fc4128c2ae0d] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_b971bb40cf335c3d9f2398ba
- k_post chnget "__vcs_mixer_route_d32c2140a36de30f298cdf0e_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_d32c2140a36de30f298cdf0e_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_d32c2140a36de30f298cdf0e_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2700,15 +2164,12 @@ endin
 ; from: Goa Ray Lead [e5317d66-5579-44ee-80f0-fc4128c2ae0d] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: -42.8 dB; source mute and mixer solo gate this route.
 instr vcs_mix_9ce45dce1e80860220376330
- k_post chnget "__vcs_mixer_route_e53d687e91a0e5c309a651aa_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_e53d687e91a0e5c309a651aa_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_e53d687e91a0e5c309a651aa_gain"
- a_send vcs_mixer_ramp k_send, 0.0072443596007498983
+ a_send = 0.0072443596007498983
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2718,15 +2179,12 @@ endin
 ; from: Goa Ray Lead [e5317d66-5579-44ee-80f0-fc4128c2ae0d] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_063efbfc5b85c25fae777919
- k_post chnget "__vcs_mixer_route_5d41266d70469702a2318702_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_5d41266d70469702a2318702_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_5d41266d70469702a2318702_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2736,15 +2194,12 @@ endin
 ; from: Goa Ray Lead [e5317d66-5579-44ee-80f0-fc4128c2ae0d] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: -42.8 dB; source mute and mixer solo gate this route.
 instr vcs_mix_0fa3df020621c82abf16382c
- k_post chnget "__vcs_mixer_route_5475fb8a3751bcad0bf81535_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_5475fb8a3751bcad0bf81535_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_5475fb8a3751bcad0bf81535_gain"
- a_send vcs_mixer_ramp k_send, 0.0072443596007498983
+ a_send = 0.0072443596007498983
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2754,29 +2209,13 @@ endin
 ; initial gain: 12 dB; balance/pan: -0.02; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_b99b7ec8f15ac9e237849672
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_32b902f3e717905c808bc3b3_gain"
- a_gain vcs_mixer_ramp k_gain, 3.9810717055349722
- k_left chnget "__vcs_mixer_strip_32b902f3e717905c808bc3b3_left"
- a_left vcs_mixer_ramp k_left, 1
- k_right chnget "__vcs_mixer_strip_32b902f3e717905c808bc3b3_right"
- a_right vcs_mixer_ramp k_right, 0.97999999999999998
- k_mute chnget "__vcs_mixer_strip_32b902f3e717905c808bc3b3_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 3.9810717055349722
+ a_left = 1
+ a_right = 0.97999999999999998
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_32b902f3e717905c808bc3b3_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_32b902f3e717905c808bc3b3_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_32b902f3e717905c808bc3b3_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_32b902f3e717905c808bc3b3_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -2788,15 +2227,12 @@ endin
 ; from: Analog Drumkit [eabfdd82-d96f-44cd-ac33-6617c708a9cb] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: -58.7 dB; source mute and mixer solo gate this route.
 instr vcs_mix_6c2f021cb2ab44bda010649b
- k_post chnget "__vcs_mixer_route_659b8c3b0c18418c8c46a07a_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_659b8c3b0c18418c8c46a07a_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_659b8c3b0c18418c8c46a07a_gain"
- a_send vcs_mixer_ramp k_send, 0.0011614486138403425
+ a_send = 0.0011614486138403425
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2806,15 +2242,12 @@ endin
 ; from: Analog Drumkit [eabfdd82-d96f-44cd-ac33-6617c708a9cb] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: -58.7 dB; source mute and mixer solo gate this route.
 instr vcs_mix_e690308b9ccd231763633b4d
- k_post chnget "__vcs_mixer_route_907268ecfedd366edc8573f5_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_907268ecfedd366edc8573f5_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_907268ecfedd366edc8573f5_gain"
- a_send vcs_mixer_ramp k_send, 0.0011614486138403425
+ a_send = 0.0011614486138403425
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2824,15 +2257,12 @@ endin
 ; from: Analog Drumkit [eabfdd82-d96f-44cd-ac33-6617c708a9cb] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_56d53795eac571187cf74c65
- k_post chnget "__vcs_mixer_route_511c261d13d0c350c7233197_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_511c261d13d0c350c7233197_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_511c261d13d0c350c7233197_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2842,15 +2272,12 @@ endin
 ; from: Analog Drumkit [eabfdd82-d96f-44cd-ac33-6617c708a9cb] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_d41a6d68633478f7dc26eb5b
- k_post chnget "__vcs_mixer_route_8f1311fb2fe500f5ba81da4a_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_8f1311fb2fe500f5ba81da4a_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_8f1311fb2fe500f5ba81da4a_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2860,29 +2287,13 @@ endin
 ; initial gain: -4.7 dB; balance/pan: -0.22; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_2d3abc7194d9a93abbb3d71b
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_bad76b2daa79923b4d4593e8_gain"
- a_gain vcs_mixer_ramp k_gain, 0.58210321777087137
- k_left chnget "__vcs_mixer_strip_bad76b2daa79923b4d4593e8_left"
- a_left vcs_mixer_ramp k_left, 1
- k_right chnget "__vcs_mixer_strip_bad76b2daa79923b4d4593e8_right"
- a_right vcs_mixer_ramp k_right, 0.78000000000000003
- k_mute chnget "__vcs_mixer_strip_bad76b2daa79923b4d4593e8_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 0.58210321777087137
+ a_left = 1
+ a_right = 0.78000000000000003
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_bad76b2daa79923b4d4593e8_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_bad76b2daa79923b4d4593e8_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_bad76b2daa79923b4d4593e8_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_bad76b2daa79923b4d4593e8_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -2894,15 +2305,12 @@ endin
 ; from: Undertow Motion Pad [f5b3e51b-b01d-4673-9cd6-6e907fd988ad] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_27879694f89d94168f055bd5
- k_post chnget "__vcs_mixer_route_6e2ccee4f710b9c0a61d256f_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_6e2ccee4f710b9c0a61d256f_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_6e2ccee4f710b9c0a61d256f_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2912,15 +2320,12 @@ endin
 ; from: Undertow Motion Pad [f5b3e51b-b01d-4673-9cd6-6e907fd988ad] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: -5.2 dB; source mute and mixer solo gate this route.
 instr vcs_mix_066668fadb7f0bcbc9d6a4f8
- k_post chnget "__vcs_mixer_route_68d588f623688c8c24d957d2_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_68d588f623688c8c24d957d2_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_68d588f623688c8c24d957d2_gain"
- a_send vcs_mixer_ramp k_send, 0.54954087385762451
+ a_send = 0.54954087385762451
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2930,15 +2335,12 @@ endin
 ; from: Undertow Motion Pad [f5b3e51b-b01d-4673-9cd6-6e907fd988ad] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_cfa31b751979e1caad0a51d1
- k_post chnget "__vcs_mixer_route_97cfabdca1118d23ac27f030_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_97cfabdca1118d23ac27f030_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_97cfabdca1118d23ac27f030_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2948,15 +2350,12 @@ endin
 ; from: Undertow Motion Pad [f5b3e51b-b01d-4673-9cd6-6e907fd988ad] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: -5.2 dB; source mute and mixer solo gate this route.
 instr vcs_mix_fe09165720a17029571c7608
- k_post chnget "__vcs_mixer_route_a4996fc7f6a32a08356594fe_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_a4996fc7f6a32a08356594fe_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_a4996fc7f6a32a08356594fe_gain"
- a_send vcs_mixer_ramp k_send, 0.54954087385762451
+ a_send = 0.54954087385762451
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -2966,29 +2365,13 @@ endin
 ; initial gain: -8 dB; balance/pan: 0.36; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_4cbc36c24ee222c3b14b97a7
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_b21ae25633e3575379c0cd0f_gain"
- a_gain vcs_mixer_ramp k_gain, 0.3981071705534972
- k_left chnget "__vcs_mixer_strip_b21ae25633e3575379c0cd0f_left"
- a_left vcs_mixer_ramp k_left, 0.64000000000000001
- k_right chnget "__vcs_mixer_strip_b21ae25633e3575379c0cd0f_right"
- a_right vcs_mixer_ramp k_right, 1
- k_mute chnget "__vcs_mixer_strip_b21ae25633e3575379c0cd0f_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 0.3981071705534972
+ a_left = 0.64000000000000001
+ a_right = 1
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_b21ae25633e3575379c0cd0f_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_b21ae25633e3575379c0cd0f_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_b21ae25633e3575379c0cd0f_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_b21ae25633e3575379c0cd0f_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -3000,15 +2383,12 @@ endin
 ; from: Furnace Techno Stab [f7c7c61b-3518-4ab6-a326-8cdde9f87f98] port:right stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:input
 ; tap: post-fader; initial route gain: -48.4 dB; source mute and mixer solo gate this route.
 instr vcs_mix_c2f6d2e7f6c31aeb6e0595d9
- k_post chnget "__vcs_mixer_route_c48fcae2ce8ff4458b0e451f_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_c48fcae2ce8ff4458b0e451f_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_c48fcae2ce8ff4458b0e451f_gain"
- a_send vcs_mixer_ramp k_send, 0.0038018939632056088
+ a_send = 0.0038018939632056088
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -3018,15 +2398,12 @@ endin
 ; from: Furnace Techno Stab [f7c7c61b-3518-4ab6-a326-8cdde9f87f98] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_b028d078a3f89d56e69cda7c
- k_post chnget "__vcs_mixer_route_1bdd707b8154ef4b993e8b29_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_1bdd707b8154ef4b993e8b29_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_1bdd707b8154ef4b993e8b29_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -3036,15 +2413,12 @@ endin
 ; from: Furnace Techno Stab [f7c7c61b-3518-4ab6-a326-8cdde9f87f98] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_b8f7e60a3f22795d41848b1a
- k_post chnget "__vcs_mixer_route_375853de2f37eecb08896a61_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_375853de2f37eecb08896a61_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_375853de2f37eecb08896a61_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -3054,15 +2428,12 @@ endin
 ; from: Furnace Techno Stab [f7c7c61b-3518-4ab6-a326-8cdde9f87f98] port:left stage:strip -> Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:input
 ; tap: post-fader; initial route gain: -48.4 dB; source mute and mixer solo gate this route.
 instr vcs_mix_27bb71f669b265bcd4c09e8f
- k_post chnget "__vcs_mixer_route_2170e5f12703cd3a193f6abd_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_2170e5f12703cd3a193f6abd_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_2170e5f12703cd3a193f6abd_gain"
- a_send vcs_mixer_ramp k_send, 0.0038018939632056088
+ a_send = 0.0038018939632056088
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -3092,29 +2463,13 @@ endin
 ; initial gain: -10.7 dB; balance/pan: 0; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_ac1227af2c1ee2726806c2a4
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_8cd32066fc3e746357fe40f7_gain"
- a_gain vcs_mixer_ramp k_gain, 0.29174270140011677
- k_left chnget "__vcs_mixer_strip_8cd32066fc3e746357fe40f7_left"
- a_left vcs_mixer_ramp k_left, 1
- k_right chnget "__vcs_mixer_strip_8cd32066fc3e746357fe40f7_right"
- a_right vcs_mixer_ramp k_right, 1
- k_mute chnget "__vcs_mixer_strip_8cd32066fc3e746357fe40f7_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 0.29174270140011677
+ a_left = 1
+ a_right = 1
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_8cd32066fc3e746357fe40f7_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_8cd32066fc3e746357fe40f7_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_8cd32066fc3e746357fe40f7_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_8cd32066fc3e746357fe40f7_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -3126,15 +2481,12 @@ endin
 ; from: Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_52e931c54fe8d60a5d931460
- k_post chnget "__vcs_mixer_route_8e4d4960ebc7d83ccb40b41e_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_8e4d4960ebc7d83ccb40b41e_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_8e4d4960ebc7d83ccb40b41e_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -3144,15 +2496,12 @@ endin
 ; from: Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:right stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_4d7010d90a3625606ead2505
- k_post chnget "__vcs_mixer_route_77f21ffca96ba56dbec00253_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_77f21ffca96ba56dbec00253_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_77f21ffca96ba56dbec00253_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -3162,15 +2511,12 @@ endin
 ; from: Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_7b7fa115d61e566d4af5a143
- k_post chnget "__vcs_mixer_route_d03a9bfb8537849a25f30638_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_d03a9bfb8537849a25f30638_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_d03a9bfb8537849a25f30638_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -3180,15 +2526,12 @@ endin
 ; from: Reverb Effect [83a4e643-b5d2-428b-b893-07f83614d0ef] port:left stage:strip -> Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_68ddc69c251efd7a9ba04c5a
- k_post chnget "__vcs_mixer_route_243e39b4858f7193fa09530a_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_243e39b4858f7193fa09530a_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_243e39b4858f7193fa09530a_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -3223,29 +2566,13 @@ endin
 ; initial gain: -5.2 dB; balance/pan: 0; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_9ebe6268ed7dcbd3a68eb58b
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_4ff4cffa30256d4b88100c02_gain"
- a_gain vcs_mixer_ramp k_gain, 0.54954087385762451
- k_left chnget "__vcs_mixer_strip_4ff4cffa30256d4b88100c02_left"
- a_left vcs_mixer_ramp k_left, 1
- k_right chnget "__vcs_mixer_strip_4ff4cffa30256d4b88100c02_right"
- a_right vcs_mixer_ramp k_right, 1
- k_mute chnget "__vcs_mixer_strip_4ff4cffa30256d4b88100c02_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 0.54954087385762451
+ a_left = 1
+ a_right = 1
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
  a_p_27042f4e6eca7d0b2a7ee402_post = a_p_27042f4e6eca7d0b2a7ee402 * a_gain * a_right
- a_meter_left = a_p_360f84035942243c6a36537a_post * a_mute
- a_meter_right = a_p_27042f4e6eca7d0b2a7ee402_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_4ff4cffa30256d4b88100c02_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_4ff4cffa30256d4b88100c02_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_4ff4cffa30256d4b88100c02_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_4ff4cffa30256d4b88100c02_rmsR"
  outleta "pre_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a
  outleta "post_p_360f84035942243c6a36537a", a_p_360f84035942243c6a36537a_post
  outleta "pre_p_27042f4e6eca7d0b2a7ee402", a_p_27042f4e6eca7d0b2a7ee402
@@ -3257,15 +2584,12 @@ endin
 ; from: Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:right stage:strip -> Master [$master] port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_7ce7413b69a06da8545196c6
- k_post chnget "__vcs_mixer_route_9e74979841d2aca1fc31d317_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_9e74979841d2aca1fc31d317_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_9e74979841d2aca1fc31d317_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -3275,15 +2599,12 @@ endin
 ; from: Compressor Effect [e6868d20-5ec4-444c-9d43-fe4115692097] port:left stage:strip -> Master [$master] port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_70d35df948aaad0ebb528d8d
- k_post chnget "__vcs_mixer_route_f61f4652529a694883fd6bc7_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_f61f4652529a694883fd6bc7_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_f61f4652529a694883fd6bc7_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -3305,29 +2626,13 @@ endin
 ; initial gain: -10 dB; balance/pan: 0; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_0644eeee2942927583ef32ed
- k_meter metro 15
- k_gain chnget "__vcs_mixer_strip_b5c7638620f2f38a657a5790_gain"
- a_gain vcs_mixer_ramp k_gain, 0.31622776601683794
- k_left chnget "__vcs_mixer_strip_b5c7638620f2f38a657a5790_left"
- a_left vcs_mixer_ramp k_left, 1
- k_right chnget "__vcs_mixer_strip_b5c7638620f2f38a657a5790_right"
- a_right vcs_mixer_ramp k_right, 1
- k_mute chnget "__vcs_mixer_strip_b5c7638620f2f38a657a5790_mute"
- a_mute vcs_mixer_ramp k_mute, 1
+ a_gain = 0.31622776601683794
+ a_left = 1
+ a_right = 1
  a_p_2336acbd28828ab05deafe52 inleta "p_2336acbd28828ab05deafe52"
  a_p_2336acbd28828ab05deafe52_post = a_p_2336acbd28828ab05deafe52 * a_gain * a_left
  a_p_2a250433534f9aea9d512171 inleta "p_2a250433534f9aea9d512171"
  a_p_2a250433534f9aea9d512171_post = a_p_2a250433534f9aea9d512171 * a_gain * a_right
- a_meter_left = a_p_2336acbd28828ab05deafe52_post * a_mute
- a_meter_right = a_p_2a250433534f9aea9d512171_post * a_mute
- k_peakL max_k a_meter_left, k_meter, 1
- k_rmsL rms a_meter_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_b5c7638620f2f38a657a5790_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_b5c7638620f2f38a657a5790_rmsL"
- k_peakR max_k a_meter_right, k_meter, 1
- k_rmsR rms a_meter_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_b5c7638620f2f38a657a5790_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_b5c7638620f2f38a657a5790_rmsR"
  outleta "pre_p_2336acbd28828ab05deafe52", a_p_2336acbd28828ab05deafe52
  outleta "post_p_2336acbd28828ab05deafe52", a_p_2336acbd28828ab05deafe52_post
  outleta "pre_p_2a250433534f9aea9d512171", a_p_2a250433534f9aea9d512171
@@ -3339,15 +2644,12 @@ endin
 ; from: Master [$master] port:$direct.left stage:strip -> Audio Output port:left stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_ec8b1641891924a3e102560a
- k_post chnget "__vcs_mixer_route_ebe4d00ca1570557781dee01_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_ebe4d00ca1570557781dee01_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_ebe4d00ca1570557781dee01_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -3357,15 +2659,12 @@ endin
 ; from: Master [$master] port:$direct.right stage:strip -> Audio Output port:right stage:input
 ; tap: post-fader; initial route gain: 0 dB; source mute and mixer solo gate this route.
 instr vcs_mix_5f16b779ade2ce91f307ff35
- k_post chnget "__vcs_mixer_route_208ab40923d5bf707587f01b_post"
- a_post vcs_mixer_ramp k_post, 1
- k_pan chnget "__vcs_mixer_route_208ab40923d5bf707587f01b_pan"
- a_pan vcs_mixer_ramp k_pan, 1
+ a_post = 1
+ a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- k_send chnget "__vcs_mixer_route_208ab40923d5bf707587f01b_gain"
- a_send vcs_mixer_ramp k_send, 1
+ a_send = 1
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -3376,15 +2675,6 @@ instr vcs_mix_9cea1be1f8255375a6cf7b93
  a_left inleta "left"
  a_right inleta "right"
  outs a_left, a_right
- k_meter metro 15
- k_peakL max_k a_left, k_meter, 1
- k_rmsL rms a_left
- chnset k_peakL / 1.0, "__vcs_mixer_meter_9cea1be1f8255375a6cf7b93_peakL"
- chnset k_rmsL / 1.0, "__vcs_mixer_meter_9cea1be1f8255375a6cf7b93_rmsL"
- k_peakR max_k a_right, k_meter, 1
- k_rmsR rms a_right
- chnset k_peakR / 1.0, "__vcs_mixer_meter_9cea1be1f8255375a6cf7b93_peakR"
- chnset k_rmsR / 1.0, "__vcs_mixer_meter_9cea1be1f8255375a6cf7b93_rmsR"
 endin
 
 </CsInstruments>
