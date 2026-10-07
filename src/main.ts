@@ -2,6 +2,7 @@ import type { CsoundObj } from '@csound/browser';
 import './style.css';
 import { examples, headerComment } from './examples';
 import { PLAYBACK_SAMPLE_RATE, prepareCsdForPlayback } from './playback-csd';
+import { audioBufferSettings } from './audio-buffer';
 
 type Status = 'loading' | 'compiling' | 'playing' | 'stopped' | 'error';
 type Session = {
@@ -27,6 +28,7 @@ const assetInput = element<HTMLInputElement>('asset-input');
 const playButton = element<HTMLButtonElement>('play');
 const stopButton = element<HTMLButtonElement>('stop');
 const ksmpsSelect = element<HTMLSelectElement>('ksmps-select');
+const bufferSelect = element<HTMLSelectElement>('audio-buffer-select');
 const resumeButton = element<HTMLButtonElement>('resume-audio');
 const clearAssets = element<HTMLButtonElement>('clear-assets');
 const output = element<HTMLPreElement>('console');
@@ -111,6 +113,7 @@ function controls() {
   const busy = !!active;
   csdInput.disabled = assetInput.disabled = busy;
   ksmpsSelect.disabled = busy;
+  bufferSelect.disabled = busy;
   for (const example of exampleRows) example.button.disabled = busy || example.loading;
   playButton.disabled = busy || !selected;
   stopButton.disabled = !active || !!active.finishing;
@@ -178,7 +181,7 @@ function monitorOutput(session: Session, node: AudioWorkletNode) {
 }
 
 function resetDiagnostics() {
-  for (const id of ['version', 'sample-rate', 'ksmps', 'channels', 'compile-result', 'audio-context', 'audio-session', 'output-level']) {
+  for (const id of ['version', 'sample-rate', 'ksmps', 'channels', 'compile-result', 'audio-context', 'audio-session', 'output-level', 'audio-buffer', 'buffer-underruns']) {
     element(id).textContent = '—';
   }
 }
@@ -246,6 +249,9 @@ async function play() {
   let session: Session | undefined;
   try {
     const requestedKsmps = Number(ksmpsSelect.value);
+    const bufferSettings = audioBufferSettings(bufferSelect.value);
+    let bufferReady: () => void;
+    const buffered = new Promise<void>((resolve) => { bufferReady = resolve; });
     if (!window.isSecureContext || !window.AudioContext || !window.AudioWorkletNode || !window.WebAssembly) {
       throw new Error('WebAssembly and AudioWorklet require a modern browser on HTTPS or localhost. Opening index.html with file:// is not supported.');
     }
@@ -290,6 +296,23 @@ async function play() {
     });
     engine.on('onAudioNodeCreated', (node: AudioWorkletNode) => {
       if (!isCurrent()) return;
+      node.port.addEventListener('message', ({ data }) => {
+        if (!isCurrent()) return;
+        if (data.playerBuffer === 'configured') {
+          element('audio-buffer').textContent = `${(1000 * data.targetFrames / PLAYBACK_SAMPLE_RATE).toFixed(1)} ms · ${data.targetFrames} frames`;
+          element('buffer-underruns').textContent = '0';
+          log(`[audio] Queue ${data.targetFrames} frames; prefill ${data.prefillFrames}; capacity ${data.capacity} frames per channel.`);
+        } else if (data.playerBuffer === 'ready') {
+          bufferReady();
+        } else if (data.playerBuffer === 'underruns') {
+          element('buffer-underruns').textContent = String(data.count);
+        } else if (data.playerBuffer === 'drained') {
+          void waitFor(engine.stop(), 'Natural completion', 10_000).catch((error) => {
+            if (isCurrent()) void fail(error, run);
+          });
+        }
+      });
+      node.port.postMessage({ playerBuffer: 'configure', ...bufferSettings });
       monitorOutput(run, node);
       node.addEventListener('processorerror', () => {
         if (isCurrent()) void fail(new Error('AudioWorklet processor failed. See the browser console for details.'), run);
@@ -352,6 +375,10 @@ async function play() {
     const startResult = await waitFor(engine.start(), 'AudioWorklet startup', 30_000, run.abort.signal);
     log(`[player] start returned ${startResult}.`);
     if (startResult !== 0) throw new Error(`Csound start failed (code ${startResult}).`);
+    if (isCurrent()) {
+      status('compiling', 'Filling the selected audio buffer…');
+      await waitFor(buffered, 'Audio buffer prefill', 120_000, run.abort.signal);
+    }
     if (isCurrent() && !run.ended) {
       // A phone may suspend/interrupt audio while WASM is loading. Do not report
       // successful playback when the output context is blocked.

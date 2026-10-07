@@ -171,6 +171,52 @@ test('ksmps dropdown defaults to 64 and applies every value on subsequent plays'
   }
 });
 
+test('audio buffer presets configure real queues, replay cleanly, and Stop discards queued audio', async ({ page }) => {
+  const dropdown = page.getByRole('combobox', { name: 'Audio buffer', exact: true });
+  await expect(dropdown).toHaveValue('50');
+  await expect(dropdown.locator('option')).toHaveText(['50 ms', '500 ms', '5000 ms']);
+  await select(page, example);
+  await page.getByRole('combobox', { name: 'ksmps', exact: true }).selectOption('1');
+  for (const preset of [
+    { value: '50', diagnostic: '42.7 ms · 2048 frames', prefill: 8192, capacity: 16384 },
+    { value: '500', diagnostic: '501.3 ms · 24064 frames', prefill: 24064, capacity: 65536 },
+    { value: '5000', diagnostic: '5000.0 ms · 240000 frames', prefill: 240000, capacity: 524288 },
+  ]) {
+    await dropdown.selectOption(preset.value);
+    await page.evaluate(() => { (window as any).__audioPeaks.length = 0; });
+    await play(page);
+    await expect(dropdown).toBeDisabled();
+    await expect(page.locator('#audio-buffer')).toHaveText(preset.diagnostic);
+    await expect(page.locator('#console')).toContainText(`prefill ${preset.prefill}; capacity ${preset.capacity}`);
+    await expect(page.locator('#ksmps')).toHaveText('1');
+    await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks))).toBeGreaterThan(0.01);
+    const stoppedAt = Date.now();
+    await stop(page);
+    expect(Date.now() - stoppedAt).toBeLessThan(2000);
+    await expect(dropdown).toBeEnabled();
+    await expect(dropdown).toHaveValue(preset.value);
+  }
+});
+
+test('five-second queue preserves the end of the score and plays scores shorter than prefill', async ({ page }) => {
+  await page.getByRole('combobox', { name: 'Audio buffer', exact: true }).selectOption('5000');
+  await select(page, example);
+  await play(page);
+  const began = await page.evaluate(() => (window as any).__audioContexts.at(-1).currentTime);
+  await expect(state(page)).toHaveText('stopped', { timeout: 20_000 });
+  const finished = await page.evaluate(() => (window as any).__audioContexts.at(-1).currentTime);
+  expect(finished - began).toBeGreaterThan(7); // Eight-second score, including its buffered tail.
+  await expect(page.locator('#detail')).toContainText('Performance ended');
+  await page.evaluate(() => { (window as any).__audioPeaks.length = 0; });
+  const short = example.replace(/i 1 0 2[\s\S]*?\ne\n/, 'i 1 0 0.5 440\ne\n');
+  await select(page, short);
+  await page.getByRole('button', { name: 'Play', exact: true }).click();
+  await expect(page.locator('#compile-result')).toContainText('0 ·', { timeout: 30_000 });
+  await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks))).toBeGreaterThan(0.01);
+  await expect(state(page)).toHaveText('stopped', { timeout: 10_000 });
+  await expect(page.locator('#detail')).toContainText('Performance ended');
+});
+
 test('local sample copied to virtual FS, missing asset reports errors, and files are never uploaded', async ({ page }) => {
   const requests: string[] = [];
   page.on('request', (request) => {

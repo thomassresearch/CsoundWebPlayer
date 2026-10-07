@@ -46,6 +46,13 @@
               <option value="128">128</option>
             </select>
           </label>
+          <label for="audio-buffer-select">Audio buffer
+            <select id="audio-buffer-select">
+              <option value="50" selected>50 ms</option>
+              <option value="500">500 ms</option>
+              <option value="5000">5000 ms</option>
+            </select>
+          </label>
           <button id="resume-audio" type="button" hidden>Resume audio</button>
           <span>Status: <strong id="status" role="status" aria-live="polite" data-state="stopped">stopped</strong></span>
         </div>
@@ -59,9 +66,12 @@
           <div><dt>Web Audio</dt><dd id="audio-context">—</dd></div>
           <div><dt>Audio session</dt><dd id="audio-session">—</dd></div>
           <div><dt>Digital output level</dt><dd id="output-level">—</dd></div>
+          <div><dt>Audio buffer</dt><dd id="audio-buffer">—</dd></div>
+          <div><dt>Buffer underruns</dt><dd id="buffer-underruns">—</dd></div>
         </dl>
         <p class="muted">Worker + AudioWorklet · SharedArrayBuffer disabled for GitHub Pages compatibility.</p>
         <p class="muted">All CSDs play at 48000 Hz with the selected ksmps (default 64). Stop playback to change it. Overrides apply in memory; source files stay unchanged.</p>
+        <p class="muted">50 ms keeps the original ~43 ms audio queue. Larger buffers prefill more audio and add latency. Stop playback to change the buffer.</p>
         <p class="muted">No sound on iPhone? Open in Safari, raise media volume, check the speaker/AirPods route and tap Resume audio if shown. On older iOS, turn Silent Mode off. A changing digital output level confirms Csound output, not audible sound.</p>
       </section>
 

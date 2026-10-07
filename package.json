@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22.13.0" },
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -11,9 +13,12 @@
     "test:unit": "node --experimental-strip-types --test tests/*.unit.ts",
     "test": "npm run test:unit && playwright test"
   },
-  "dependencies": { "@csound/browser": "7.0.0-beta36" },
+  "dependencies": {
+    "@csound/browser": "7.0.0-beta36"
+  },
   "devDependencies": {
     "@playwright/test": "1.63.0",
+    "@types/node": "24.19.1",
     "typescript": "7.0.2",
     "vite": "8.3.2"
   }

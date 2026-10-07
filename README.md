@@ -34,7 +34,8 @@ or HTTPS elsewhere; opening `index.html` via `file://` is not supported.
    after selecting the CSD.
 3. Choose **ksmps** beside Play/Stop (1, 16, 32, 64 or 128; default 64), then
    click **Play** for a local file or the song's Play button for an example.
-   Stop playback before changing ksmps. Inspect the compile return code, Csound
+   **Audio buffer** offers 50 ms (the original ~43 ms queue), 500 ms and 5000 ms.
+   Stop playback before changing either dropdown. Inspect the compile return code, Csound
    version, effective sample rate, `ksmps` and channel count. Expand **Csound console** before
    playback if you want to capture output. **Stop** also cancels startup.
 4. Stop and replay, or choose another CSD. Each playback creates a fresh engine,
@@ -83,6 +84,35 @@ The selected/bundled file, orchestra, score and local UDO `setksmps` instruction
 are preserved. The console records the overrides and the diagnostics show the
 effective values. HardTrance's stored `ksmps = 1` remains unchanged.
 
+The **Audio buffer** dropdown controls the actual worker-to-AudioWorklet output
+queue and startup prefill, independently of ksmps:
+
+| Label | Queue target | Startup prefill | Ring capacity per channel |
+| --- | ---: | ---: | ---: |
+| 50 ms (default) | 2048 frames / 42.7 ms | 8192 frames | 16384 frames |
+| 500 ms | 24064 frames / 501.3 ms | 24064 frames | 65536 frames |
+| 5000 ms | 240000 frames / 5000 ms | 240000 frames | 524288 frames |
+
+Larger queues add latency and memory use. They can absorb temporary rendering or
+scheduling stalls; they cannot compensate for sustained synthesis below realtime
+speed. Startup waits for the prefill or the end of a shorter score. Natural
+completion drains the entire queued tail; explicit Stop discards it after a short
+fade. Audio buffer diagnostics report the applied target and buffer underruns
+(after initial prefill; a partially unfilled Web Audio block counts once).
+
+The pinned browser package hardcodes these sizes. `build/csound-buffer-plugin.ts`
+extends its existing non-SAB AudioWorklet and adjusts its existing synthesis
+worker's EOF/partial-packet delivery **in memory during Vite dev/build**. Csound
+WASM, opcodes, worker rendering and audio routing remain provided by
+`@csound/browser`; there is no alternative engine or playback backend. The patch
+checks the upstream worker/worklet SHA-256 hashes and fails the build if an
+upgrade changes those internals. Review/update the adapter when upgrading the
+package. It also bounds requests to one in-flight packet of at most 8192 frames,
+so requests do not pile up during a worker stall. The larger presets batch
+refills in at least 2048-frame chunks to reduce inter-thread message overhead. Natural EOF is delivered through
+the existing audio port; the player invokes upstream Stop after queued audio has
+played. Native Csound `-b`/`-B` flags do not configure this queue.
+
 After compilation the player sets `-odac` to route output to Web Audio, including
 exports using `-o output.wav`. Other CSD options are retained, so incompatible
 native options produce visible errors rather than being silently removed.
@@ -117,7 +147,8 @@ JavaScript distribution. Vite builds a lazy-loaded Csound chunk; no CDN imports,
 manual WASM copying, service worker or cross-origin isolation headers are needed.
 Its approximately 3 MB uncompressed chunk is expected and produces a Vite size
 warning. The engine uses the package's `useWorker: true, useSAB: false` mode for
-consistent behavior on Pages and localhost.
+consistent behavior on Pages and localhost. Node type definitions are a
+development-only dependency for the Vite buffering plugin.
 
 ## Browser requirements and limitations
 
@@ -162,8 +193,11 @@ for automated playback checks; it is not a public example.
 Unit tests check preservation of orchestra/score text and local `setksmps`;
 browser tests verify the actual WASM engine overrides conflicting header/rate
 options and supplies the overrides when `CsOptions` is absent. They also verify
-every dropdown value across repeated playback and a non-default value for a
-bundled song, while preserving the selected source file.
+every ksmps dropdown value across repeated playback and a non-default value for a
+bundled song, while preserving source CSD text. Buffer tests cover every preset at
+ksmps 1, clean Stop/replay, full playback of the queued tail and scores shorter
+than the five-second prefill. Queue unit tests cover wraparound, bounded pending
+requests, short-score EOF and Stop fades.
 Additional tests check the playback audio-session request precedes context
 creation in the Play gesture, recovery with Resume audio after a real context
 suspension, and graceful fallback when the audio-session request is rejected.
