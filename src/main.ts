@@ -1,7 +1,7 @@
 import type { CsoundObj } from '@csound/browser';
 import './style.css';
 import { examples, headerComment } from './examples';
-import { PLAYBACK_KSMPS, PLAYBACK_SAMPLE_RATE, prepareCsdForPlayback } from './playback-csd';
+import { PLAYBACK_SAMPLE_RATE, prepareCsdForPlayback } from './playback-csd';
 
 type Status = 'loading' | 'compiling' | 'playing' | 'stopped' | 'error';
 type Session = {
@@ -26,6 +26,7 @@ const csdInput = element<HTMLInputElement>('csd-input');
 const assetInput = element<HTMLInputElement>('asset-input');
 const playButton = element<HTMLButtonElement>('play');
 const stopButton = element<HTMLButtonElement>('stop');
+const ksmpsSelect = element<HTMLSelectElement>('ksmps-select');
 const resumeButton = element<HTMLButtonElement>('resume-audio');
 const clearAssets = element<HTMLButtonElement>('clear-assets');
 const output = element<HTMLPreElement>('console');
@@ -109,6 +110,7 @@ function describe(error: unknown): string {
 function controls() {
   const busy = !!active;
   csdInput.disabled = assetInput.disabled = busy;
+  ksmpsSelect.disabled = busy;
   for (const example of exampleRows) example.button.disabled = busy || example.loading;
   playButton.disabled = busy || !selected;
   stopButton.disabled = !active || !!active.finishing;
@@ -243,6 +245,7 @@ async function play() {
   resetDiagnostics();
   let session: Session | undefined;
   try {
+    const requestedKsmps = Number(ksmpsSelect.value);
     if (!window.isSecureContext || !window.AudioContext || !window.AudioWorkletNode || !window.WebAssembly) {
       throw new Error('WebAssembly and AudioWorklet require a modern browser on HTTPS or localhost. Opening index.html with file:// is not supported.');
     }
@@ -322,8 +325,8 @@ async function play() {
 
     status('compiling', 'Compiling the complete CSD…');
     const startedAt = performance.now();
-    const playbackText = prepareCsdForPlayback(text);
-    log(`[player] Playback overrides: sr=${PLAYBACK_SAMPLE_RATE}, ksmps=${PLAYBACK_KSMPS}. Source CSD unchanged.`);
+    const playbackText = prepareCsdForPlayback(text, requestedKsmps);
+    log(`[player] Playback overrides: sr=${PLAYBACK_SAMPLE_RATE}, ksmps=${requestedKsmps}. Source CSD unchanged.`);
     const result = await waitFor(engine.compileCSD(playbackText, 1), 'CSD compilation', 120_000, run.abort.signal);
     element('compile-result').textContent = `${result} · ${Math.round(performance.now() - startedAt)} ms`;
     log(`[player] compileCSD returned ${result}.`);
@@ -341,7 +344,7 @@ async function play() {
     element('channels').textContent = String(channels);
     if (!outputName?.startsWith('dac')) throw new Error(`Realtime output was not selected: ${outputName}`);
     log(`[player] ${sr} Hz, ksmps=${ksmps}, channels=${channels}, output=${outputName}; Web Audio ${context.sampleRate} Hz.`);
-    if (sr !== PLAYBACK_SAMPLE_RATE || ksmps !== PLAYBACK_KSMPS || sr !== context.sampleRate) {
+    if (sr !== PLAYBACK_SAMPLE_RATE || ksmps !== requestedKsmps || sr !== context.sampleRate) {
       throw new Error(`Playback overrides did not take effect: sr=${sr}, ksmps=${ksmps}, Web Audio=${context.sampleRate} Hz.`);
     }
 

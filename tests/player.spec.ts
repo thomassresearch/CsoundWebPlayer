@@ -147,6 +147,30 @@ for (const options of ['conflicting', 'missing'] as const) {
   });
 }
 
+test('ksmps dropdown defaults to 64 and applies every value on subsequent plays', async ({ page }) => {
+  const dropdown = page.getByRole('combobox', { name: 'ksmps', exact: true });
+  await expect(dropdown).toHaveValue('64');
+  await expect(dropdown.locator('option')).toHaveText(['1', '16', '32', '64', '128']);
+  // Source header and flags conflict with every selected value.
+  const source = example.replace('sr = 48000', 'sr = 96000\nkr = 96000')
+    .replace('ksmps = 32', 'ksmps = 2')
+    .replace('-odac -d', '-odac -d -r 96000 -k 48000 --ksmps=2');
+  await select(page, source);
+  for (const value of ['1', '16', '32', '64', '128']) {
+    await dropdown.selectOption(value);
+    await page.evaluate(() => { (window as any).__audioPeaks.length = 0; });
+    await play(page);
+    await expect(dropdown).toBeDisabled();
+    await expect(page.locator('#ksmps')).toHaveText(value);
+    await expect(page.locator('#sample-rate')).toHaveText('48000 Hz');
+    await expect(page.locator('#compile-result')).toContainText('0 ·');
+    await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks))).toBeGreaterThan(0.01);
+    await stop(page);
+    await expect(dropdown).toBeEnabled();
+    await expect(dropdown).toHaveValue(value);
+  }
+});
+
 test('local sample copied to virtual FS, missing asset reports errors, and files are never uploaded', async ({ page }) => {
   const requests: string[] = [];
   page.on('request', (request) => {
@@ -190,10 +214,10 @@ test('Stop during startup cancels cleanly and rapid clicks do not start concurre
 
 
 for (const song of [
-  { filename: 'HardTrance.csd', title: 'HardTrance', other: 'Evening at the Lake' },
-  { filename: 'Evening_at_the_Lake.csd', title: 'Evening at the Lake', other: 'HardTrance' },
+  { filename: 'HardTrance.csd', title: 'HardTrance', other: 'Evening at the Lake', ksmps: '64' },
+  { filename: 'Evening_at_the_Lake.csd', title: 'Evening at the Lake', other: 'HardTrance', ksmps: '128' },
 ]) {
-  test(`${song.title} shows its header and plays at 48 kHz with ksmps 64`, async ({ page }) => {
+  test(`${song.title} shows its header and plays at 48 kHz with ksmps ${song.ksmps}`, async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
     const button = page.getByRole('button', { name: `Play ${song.title}`, exact: true });
@@ -203,11 +227,12 @@ for (const song of [
     await expect(page.locator('#examples li > strong')).toHaveText(['HardTrance', 'Evening at the Lake']);
     expect(await page.locator('#examples').evaluate((examples) => Boolean(examples.compareDocumentPosition(document.getElementById('drop-zone')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
     await expect(page.getByRole('button', { name: 'Play Test tone', exact: true })).toHaveCount(0);
+    await page.getByRole('combobox', { name: 'ksmps', exact: true }).selectOption(song.ksmps);
     await button.click();
     await expect(page.locator('#filename')).toHaveText(song.filename);
     await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
     await expect(page.locator('#sample-rate')).toHaveText('48000 Hz');
-    await expect(page.locator('#ksmps')).toHaveText('64');
+    await expect(page.locator('#ksmps')).toHaveText(song.ksmps);
     await expect(page.locator('#audio-context')).toContainText('48000 Hz');
     await expect(page.locator('#compile-result')).toContainText('0 ·');
     await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks)), { timeout: 15_000 }).toBeGreaterThan(0.001);

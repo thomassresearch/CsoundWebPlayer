@@ -1,10 +1,11 @@
 export const PLAYBACK_SAMPLE_RATE = 48000;
 export const PLAYBACK_KSMPS = 64;
-
-const options = `--sample-rate=${PLAYBACK_SAMPLE_RATE} --control-rate=${PLAYBACK_SAMPLE_RATE / PLAYBACK_KSMPS} --ksmps=${PLAYBACK_KSMPS}`;
+export const KSMPS_VALUES = [1, 16, 32, 64, 128] as const;
 
 /** Use Csound's header overrides; preserve orchestra/score and local setksmps. */
-export function prepareCsdForPlayback(source: string): string {
+export function prepareCsdForPlayback(source: string, ksmps: number = PLAYBACK_KSMPS): string {
+  if (!KSMPS_VALUES.some((value) => value === ksmps)) throw new Error('Choose ksmps 1, 16, 32, 64 or 128.');
+  const options = `--sample-rate=${PLAYBACK_SAMPLE_RATE} --control-rate=${PLAYBACK_SAMPLE_RATE / ksmps} --ksmps=${ksmps}`;
   // Ignore example tags inside XML comments without changing source offsets.
   const searchable = source.replace(/<!--[\s\S]*?-->/g, (comment) => ' '.repeat(comment.length));
   const opening = /<CsOptions\s*>/i.exec(searchable);

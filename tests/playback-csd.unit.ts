@@ -26,6 +26,12 @@ e
   const prepared = prepareCsdForPlayback(source);
   assert.equal(prepared.replace(override, ''), source);
   assert.match(prepared, /keep this comment\n\n--sample-rate=48000/);
+  // Selected block sizes must also preserve the entire original CSD, including
+  // local UDO setksmps and conflicting header/option values.
+  for (const [ksmps, kr] of [[1, 48000], [16, 3000], [32, 1500], [64, 750], [128, 375]]) {
+    const selectedOverride = `\n--sample-rate=48000 --control-rate=${kr} --ksmps=${ksmps}\n`;
+    assert.equal(prepareCsdForPlayback(source, ksmps).replace(selectedOverride, ''), source);
+  }
 });
 
 test('missing CsOptions is added without replacing fake tags in XML comments', () => {

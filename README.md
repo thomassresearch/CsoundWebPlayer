@@ -32,8 +32,10 @@ or HTTPS elsewhere; opening `index.html` via `file://` is not supported.
 2. To play your own export, select/drop a `.csd` in the area below the examples.
    Optionally drop its supporting files together with it, or use **Add assets**
    after selecting the CSD.
-3. Click **Play**. Inspect the compile return code, Csound version, effective
-   sample rate, `ksmps` and channel count. Expand **Csound console** before
+3. Choose **ksmps** beside Play/Stop (1, 16, 32, 64 or 128; default 64), then
+   click **Play** for a local file or the song's Play button for an example.
+   Stop playback before changing ksmps. Inspect the compile return code, Csound
+   version, effective sample rate, `ksmps` and channel count. Expand **Csound console** before
    playback if you want to capture output. **Stop** also cancels startup.
 4. Stop and replay, or choose another CSD. Each playback creates a fresh engine,
    virtual filesystem and AudioContext; completion/Stop releases them.
@@ -71,10 +73,12 @@ See [WebKit's Silent Mode behavior and playback audio-session setting](https://b
 This fix has automated policy-ordering and real context suspend/resume coverage;
 physical iPhone audio still needs confirmation on the device.
 
-Every CSD plays with **`sr = 48000` and `ksmps = 64`** (`kr = 750 Hz`), regardless
-of its original header or rate options. Before `compileCSD(text, 1)`, the player
-adds Csound's `--sample-rate=48000 --control-rate=750 --ksmps=64` overrides to the
-end of `CsOptions` in an in-memory copy. If the section is absent, it is added.
+Every CSD plays with **`sr = 48000` and the selected `ksmps`** (default 64),
+regardless of its original header or rate options. The dropdown offers 1, 16, 32,
+64 and 128; it is disabled during startup and performance. Before
+`compileCSD(text, 1)`, the player adds Csound's `--sample-rate=48000`,
+`--control-rate=<48000 / selected ksmps>` and `--ksmps=<selected ksmps>`
+overrides (with calculated numeric values) to the end of `CsOptions` in an in-memory copy. If the section is absent, it is added.
 The selected/bundled file, orchestra, score and local UDO `setksmps` instructions
 are preserved. The console records the overrides and the diagnostics show the
 effective values. HardTrance's stored `ksmps = 1` remains unchanged.
@@ -121,8 +125,8 @@ consistent behavior on Pages and localhost.
   AudioWorklet and Web Audio. Playback needs a click/tap. Chromium is covered by
   automated checks; Safari/iOS and Firefox still need manual verification.
 - The player requests a 48 kHz AudioContext and overrides every CSD to 48 kHz /
-  `ksmps = 64`. It checks the effective engine settings before starting. This
-  changes control-rate timing for scores originally designed with another
+  the selected `ksmps` (default 64). It checks the effective engine settings
+  before starting. This changes control-rate timing for scores originally designed with another
   global `ksmps`; the original file is preserved.
 - Csound 7 and this browser package are beta software. Native-only opcodes,
   binary plugins, OS commands/devices, native audio drivers and arbitrary host
@@ -157,7 +161,9 @@ The trivial self-contained test CSD is kept in `tests/fixtures/test-tone.csd`
 for automated playback checks; it is not a public example.
 Unit tests check preservation of orchestra/score text and local `setksmps`;
 browser tests verify the actual WASM engine overrides conflicting header/rate
-options and supplies the overrides when `CsOptions` is absent.
+options and supplies the overrides when `CsOptions` is absent. They also verify
+every dropdown value across repeated playback and a non-default value for a
+bundled song, while preserving the selected source file.
 Additional tests check the playback audio-session request precedes context
 creation in the Play gesture, recovery with Resume audio after a real context
 suspension, and graceful fallback when the audio-session request is rejected.
@@ -177,8 +183,9 @@ performance still needs evaluation. The bundled CSD now differs from the upload
 only in its `sr` and `ksmps` assignments (48 kHz / 1).
 
 The user subsequently confirmed realtime playback on an iPhone at `ksmps = 64`,
-but reported chopped audio at `ksmps = 1`. Playback now always overrides to
-48 kHz / 64 in memory, while HardTrance keeps its stored `ksmps = 1`.
+but reported chopped audio at `ksmps = 1`. Playback defaults to
+48 kHz / 64 in memory, while HardTrance keeps its stored `ksmps = 1`; the dropdown
+now allows testing other control-block sizes.
 
 A matched 60-second introductory playback check measured about 29.6 seconds of
 score progress at 44.1 kHz / 32 and 29.2 seconds at 48 kHz / 64: approximately
