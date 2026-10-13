@@ -262,6 +262,7 @@ test('Stop during startup cancels cleanly and rapid clicks do not start concurre
 for (const song of [
   { filename: 'HardTrance.csd', title: 'HardTrance', other: 'Evening at the Lake', ksmps: '64' },
   { filename: 'Evening_at_the_Lake.csd', title: 'Evening at the Lake', other: 'HardTrance', ksmps: '128' },
+  { filename: 'Sad_Mad_Cello_Version_2.csd', title: 'Sad Mad Cello — Version 2', other: 'HardTrance', ksmps: '64' },
 ]) {
   test(`${song.title} shows its header and plays at 48 kHz with ksmps ${song.ksmps}`, async ({ page }) => {
     const errors: string[] = [];
@@ -270,7 +271,7 @@ for (const song of [
     await expect(button).toBeEnabled();
     const header = /^\s*<!--([\s\S]*?)-->/.exec(readFileSync(`public/examples/${song.filename}`, 'utf8'))![1].trim();
     await expect(button.locator('..').locator('.example-info')).toHaveText(header);
-    await expect(page.locator('#examples li > strong')).toHaveText(['HardTrance', 'Evening at the Lake']);
+    await expect(page.locator('#examples li > strong')).toHaveText(['HardTrance', 'Evening at the Lake', 'Sad Mad Cello — Version 2']);
     expect(await page.locator('#examples').evaluate((examples) => Boolean(examples.compareDocumentPosition(document.getElementById('drop-zone')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
     await expect(page.getByRole('button', { name: 'Play Test tone', exact: true })).toHaveCount(0);
     await page.getByRole('combobox', { name: 'ksmps', exact: true }).selectOption(song.ksmps);
