@@ -66,7 +66,8 @@ function showExamples() {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const csd = await response.text();
         file = new File([csd], example.filename, { type: 'text/plain' });
-        description.textContent = headerComment(csd) || 'No header comment in this CSD.';
+        const header = headerComment(csd) || 'No header comment in this CSD.';
+        description.textContent = 'warning' in example ? `${example.warning}\n\n${header}` : header;
         button.textContent = 'Play';
         button.setAttribute('aria-label', `Play ${example.title}`);
       } catch (error) {

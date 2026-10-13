@@ -262,7 +262,6 @@ test('Stop during startup cancels cleanly and rapid clicks do not start concurre
 for (const song of [
   { filename: 'HardTrance.csd', title: 'HardTrance', other: 'Evening at the Lake', ksmps: '64' },
   { filename: 'Evening_at_the_Lake.csd', title: 'Evening at the Lake', other: 'HardTrance', ksmps: '128' },
-  { filename: 'Sad_Mad_Cello_Version_2.csd', title: 'Sad Mad Cello — Version 2', other: 'HardTrance', ksmps: '64' },
 ]) {
   test(`${song.title} shows its header and plays at 48 kHz with ksmps ${song.ksmps}`, async ({ page }) => {
     const errors: string[] = [];
@@ -356,4 +355,18 @@ test('an unsupported audio session request does not prevent Csound playback', as
   await expect(page.locator('#console')).toContainText('Could not request playback audio: Policy denied');
   await expect(page.locator('#output-level')).toContainText('dBFS');
   await stop(page);
+});
+
+test('Mad Cello is selectable and reports its known STKBowed compatibility limitation', async ({ page }) => {
+  const button = page.getByRole('button', { name: 'Play Sad Mad Cello — Version 2', exact: true });
+  await expect(button).toBeEnabled();
+  const info = button.locator('..').locator('.example-info');
+  await expect(info).toContainText('Requires STKBowed');
+  const header = /^\s*<!--([\s\S]*?)-->/.exec(readFileSync('public/examples/Sad_Mad_Cello_Version_2.csd', 'utf8'))![1].trim();
+  await expect(info).toContainText(header);
+  await button.click();
+  await expect(page.locator('#filename')).toHaveText('Sad_Mad_Cello_Version_2.csd');
+  await expect(state(page)).toHaveText('error', { timeout: 30_000 });
+  await expect(page.locator('#console')).toContainText('unable to find opcode with name: STKBowed');
+  await expect(button).toBeEnabled();
 });
