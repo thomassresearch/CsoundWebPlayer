@@ -11,7 +11,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test:unit": "node --experimental-strip-types --test tests/*.unit.ts",
-    "test": "npm run test:unit && playwright test"
+    "test": "npm run test:unit && playwright test",
+    "build:stk": "python3 plugins/stk/build.py"
   },
   "dependencies": {
     "@csound/browser": "7.0.0-beta36"

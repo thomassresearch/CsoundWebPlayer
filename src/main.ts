@@ -3,6 +3,8 @@ import './style.css';
 import { examples, headerComment } from './examples';
 import { PLAYBACK_SAMPLE_RATE, prepareCsdForPlayback } from './playback-csd';
 import { audioBufferSettings } from './audio-buffer';
+import { stkOpcodes } from './stk-detection';
+import { loadStk, installStkWaves } from './stk';
 
 type Status = 'loading' | 'compiling' | 'playing' | 'stopped' | 'error';
 type Session = {
@@ -67,7 +69,7 @@ function showExamples() {
         const csd = await response.text();
         file = new File([csd], example.filename, { type: 'text/plain' });
         const header = headerComment(csd) || 'No header comment in this CSD.';
-        description.textContent = 'warning' in example ? `${example.warning}\n\n${header}` : header;
+        description.textContent = header;
         button.textContent = 'Play';
         button.setAttribute('aria-label', `Play ${example.title}`);
       } catch (error) {
@@ -275,8 +277,17 @@ async function play() {
     audioInfo(context);
     await waitFor(resumed, 'AudioContext resume', 15_000, run.abort.signal);
 
+    const text = await waitFor(selected.text(), 'Reading CSD', 30_000, run.abort.signal);
+    const requiredStk = stkOpcodes(text);
+    let stk;
+    if (requiredStk.length) {
+      status('loading', 'Loading optional STK instruments and raw waves…');
+      log(`[STK] Required opcodes: ${requiredStk.join(', ')}.`);
+      stk = await waitFor(loadStk(), 'STK download', 60_000, run.abort.signal);
+    }
     const { Csound } = await waitFor(import('@csound/browser'), 'Loading Csound module', 60_000, run.abort.signal);
-    const initializing = Csound({ audioContext: context, useWorker: true, useSAB: false, autoConnect: true });
+    // beta36 accepts plugin URLs; its declaration incorrectly uses object[].
+    const initializing = Csound({ audioContext: context, useWorker: true, useSAB: false, autoConnect: true, ...(stk ? { withPlugins: [stk.url as unknown as object] } : {}) });
     // If Stop/timeout wins initialization, dispose the late result as well.
     void initializing.then(async (engine) => {
       if (run.abort.signal.aborted && engine) {
@@ -340,7 +351,10 @@ async function play() {
 
     const version = await waitFor(engine.getVersion(), 'Version query', 10_000, run.abort.signal);
     element('version').textContent = `${Math.floor(version / 1000)}.${Math.floor(version % 1000 / 10)}.${version % 10} (${version})`;
-    const text = await waitFor(selected.text(), 'Reading CSD', 30_000, run.abort.signal);
+    if (stk) {
+      await waitFor(installStkWaves(engine, stk), 'STK initialization', 30_000, run.abort.signal);
+      log('[STK] Raw waves installed at /stk/rawwaves/.');
+    }
     for (const [name, file] of assets) {
       const data = await waitFor(file.arrayBuffer(), `Reading ${name}`, 30_000, run.abort.signal);
       await waitFor(engine.fs.writeFile(`/${name}`, new Uint8Array(data)), `Copying ${name}`, 60_000, run.abort.signal);
@@ -355,6 +369,10 @@ async function play() {
     element('compile-result').textContent = `${result} · ${Math.round(performance.now() - startedAt)} ms`;
     log(`[player] compileCSD returned ${result}.`);
     if (result !== 0) throw new Error(`CSD compilation failed (code ${result}). ${consolePanel.open ? 'See the console for opcode, option or asset errors.' : 'Expand the Csound console and retry to capture error messages.'}`);
+
+    if (stk) {
+      log('[STK] STK 5.0.1 plugin registered.');
+    }
 
     // Apply after CsOptions so an exported -o output.wav becomes realtime output.
     const optionResult = await waitFor(engine.setOption('-odac'), 'Realtime output option', 10_000, run.abort.signal);

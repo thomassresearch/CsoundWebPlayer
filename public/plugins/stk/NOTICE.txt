@@ -1,0 +1,26 @@
+Optional STK instrument plugin for CsoundWebPlayer
+
+Csound 7 adapter: derived from Michael Gogins' Csound STK wrapper,
+Copyright (c) 2005 Michael Gogins, LGPL-2.1-or-later.
+Csound C++ plugin headers: the Csound Developers, LGPL-2.1-or-later.
+Adapter changes and allocator bridge: CsoundWebPlayer contributors,
+LGPL-2.1-or-later. Sources and build instructions:
+https://github.com/thomassresearch/CsoundWebPlayer/tree/main/plugins/stk
+
+STK 5.0.1 DSP and raw waves:
+Copyright (c) 1995-2023 Perry R. Cook and Gary P. Scavone.
+See licenses/STK.txt (permissive STK license).
+https://github.com/thestk/stk/tree/5.0.1
+
+LLVM libc++, libc++abi, libunwind and compiler-rt from WASI SDK 34.0:
+Copyright LLVM project contributors, Apache-2.0 WITH LLVM-exception.
+See licenses/LLVM.txt.
+https://github.com/WebAssembly/wasi-sdk/releases/tag/wasi-sdk-34
+
+wasi-libc 2e6fb9d8ee0cdf9e431fbcabe8af3115de000a13 and bundled musl/cloudlibc:
+See licenses/WASI-libc.txt and accompanying WASI/musl/cloudlibc license texts.
+https://github.com/WebAssembly/wasi-libc/tree/2e6fb9d8ee0cdf9e431fbcabe8af3115de000a13
+
+This plugin shares Csound's heap and virtual filesystem. It is optional and is
+loaded only when the selected orchestra references STK opcodes. No native STK
+or Csound installation is needed. No warranty; see the full licenses.

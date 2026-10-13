@@ -1,0 +1,35 @@
+name: Build optional STK plugin
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['plugins/stk/**', '.github/workflows/stk.yml']
+  pull_request:
+    paths: ['plugins/stk/**', '.github/workflows/stk.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  plugin:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build:stk
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test -g 'plugin|STK|Mad Cello'
+      - uses: actions/upload-artifact@v7.0.1
+        with:
+          name: stkops-csound7-beta36
+          path: |
+            public/plugins/stk/
+            tests/plugins/
+            plugins/stk/
+          retention-days: 30

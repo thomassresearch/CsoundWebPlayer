@@ -26,8 +26,9 @@ or HTTPS elsewhere; opening `index.html` via `file://` is not supported.
 
 ## Test a CSD
 
-1. In **CSD examples**, click **Play** beside **HardTrance** or **Evening at
-   the Lake**. Both are self-contained Orchestron exports. Each song's leading
+1. In **CSD examples**, click **Play** beside **HardTrance**, **Evening at
+   the Lake**, or **Sad Mad Cello — Version 2**. Mad Cello automatically loads
+   the optional STK instrument plugin. Each song's leading
    CSD header comment appears beside its title (below it on small screens).
 2. To play your own export, select/drop a `.csd` in the area below the examples.
    Optionally drop its supporting files together with it, or use **Add assets**
@@ -161,7 +162,8 @@ development-only dependency for the Vite buffering plugin.
   global `ksmps`; the original file is preserved.
 - Csound 7 and this browser package are beta software. Native-only opcodes,
   binary plugins, OS commands/devices, native audio drivers and arbitrary host
-  filesystem paths may be unavailable. Additional WASM plugins are not loaded.
+  filesystem paths may be unavailable. The optional STK WASM plugin is loaded
+  automatically for visible `STK...` opcode references; other plugins are not loaded.
   A missing opcode or sample is diagnosed in the console. Microphone/MIDI-driven
   scores are outside this playback milestone; retained options may request the
   browser's corresponding permission.
@@ -174,6 +176,21 @@ development-only dependency for the Vite buffering plugin.
   result directly; errors also remain visible in the console. Pending calls have
   timeouts (compilation: 120 seconds). Reload if a WASM initialization failure
   leaves an unresponsive worker that never returns an engine handle.
+
+## Optional STK instruments
+
+Mad Cello's `STKBowed` now uses a separately built `stkops.wasm` (STK 5.0.1).
+Only CSDs with STK opcode references download it and the raw wave pack. Required
+waves are copied to Csound's virtual filesystem before compilation. Standard CSDs
+follow the existing playback path. Local CSDs remain local.
+
+Prebuilt artifacts are included; ordinary development requires no C++ toolchain.
+For pinned rebuild instructions, ABI details, supported instruments and detection
+limits, see [plugins/stk/README.md](plugins/stk/README.md). The separate STK Actions
+workflow publishes a rebuild artifact. Browser checks cover the minimal C++ ABI
+probe, C++ exception handling, wave access, Mad Cello PCM, replay, download failure
+recovery, and zero STK requests for standard playback. Audible iPhone verification
+of the new STK path is still needed.
 
 ## Validation
 

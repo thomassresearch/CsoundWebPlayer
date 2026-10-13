@@ -357,16 +357,73 @@ test('an unsupported audio session request does not prevent Csound playback', as
   await stop(page);
 });
 
-test('Mad Cello is selectable and reports its known STKBowed compatibility limitation', async ({ page }) => {
+test('Mad Cello loads optional STK and produces PCM', async ({ page }) => {
+  const requests: string[] = [];
+  page.on('request', (r) => { if (r.url().includes('/plugins/stk/')) requests.push(r.url()); });
   const button = page.getByRole('button', { name: 'Play Sad Mad Cello — Version 2', exact: true });
   await expect(button).toBeEnabled();
-  const info = button.locator('..').locator('.example-info');
-  await expect(info).toContainText('Requires STKBowed');
   const header = /^\s*<!--([\s\S]*?)-->/.exec(readFileSync('public/examples/Sad_Mad_Cello_Version_2.csd', 'utf8'))![1].trim();
-  await expect(info).toContainText(header);
+  await expect(button.locator('..').locator('.example-info')).toHaveText(header);
   await button.click();
-  await expect(page.locator('#filename')).toHaveText('Sad_Mad_Cello_Version_2.csd');
-  await expect(state(page)).toHaveText('error', { timeout: 30_000 });
-  await expect(page.locator('#console')).toContainText('unable to find opcode with name: STKBowed');
-  await expect(button).toBeEnabled();
+  await expect(state(page)).toHaveText('playing', { timeout: 45_000 });
+  await expect(page.locator('#compile-result')).toContainText('0 ·');
+  await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks)), { timeout: 15_000 }).toBeGreaterThan(0.001);
+  await expect(page.locator('#console')).toContainText('STK 5.0.1 plugin registered');
+  await expect(page.locator('#console')).not.toContainText('INIT ERROR');
+  await stop(page);
+  expect(requests).toHaveLength(3);
+  await button.click();
+  await expect(state(page)).toHaveText('playing', { timeout: 45_000 });
+  await stop(page);
+  expect(requests).toHaveLength(3); // Reuse downloaded bytes, initialize each fresh engine once.
+  await select(page, example);
+  await play(page);
+  await stop(page);
+  expect(requests).toHaveLength(3);
+});
+
+const stkScore = (opcode: string) => `<CsoundSynthesizer>
+<CsOptions>-d -m0 -odac</CsOptions>
+<CsInstruments>
+sr=48000
+ksmps=64
+nchnls=2
+0dbfs=1
+instr 1
+ aSig ${opcode} 440, .5
+ outs aSig, aSig
+endin
+</CsInstruments>
+<CsScore>
+i 1 0 4
+e
+</CsScore>
+</CsoundSynthesizer>`;
+
+test('STK wave-based instrument reads virtual raw waves and ends cleanly', async ({ page }) => {
+  await select(page, stkScore('STKModalBar'));
+  await play(page);
+  await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks))).toBeGreaterThan(0.001);
+  await expect(state(page)).toHaveText('stopped', { timeout: 15_000 });
+  await expect(page.locator('#console')).not.toContainText('INIT ERROR');
+  await play(page);
+  await stop(page);
+});
+
+test('standard playback never downloads STK and failed STK downloads can be retried', async ({ page }) => {
+  const requests: string[] = [];
+  page.on('request', (r) => { if (r.url().includes('/plugins/stk/')) requests.push(r.url()); });
+  await select(page, example);
+  await play(page);
+  await stop(page);
+  expect(requests).toEqual([]);
+  await page.route('**/plugins/stk/stkops.wasm', (route) => route.fulfill({ status: 503, body: 'Unavailable' }));
+  await select(page, stkScore('STKBowed'));
+  await page.getByRole('button', { name: 'Play', exact: true }).click();
+  await expect(state(page)).toHaveText('error');
+  await expect(page.locator('#detail')).toContainText('STK stkops.wasm: HTTP 503');
+  await page.unroute('**/plugins/stk/stkops.wasm');
+  await play(page);
+  await expect(page.locator('#output-level')).toContainText('dBFS');
+  await stop(page);
 });

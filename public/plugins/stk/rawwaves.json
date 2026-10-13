@@ -1,0 +1,210 @@
+{
+  "version": "5.0.1",
+  "files": [
+    {
+      "name": "ahh.raw",
+      "offset": 0,
+      "size": 184
+    },
+    {
+      "name": "bassdrum.raw",
+      "offset": 184,
+      "size": 4288
+    },
+    {
+      "name": "britestk.raw",
+      "offset": 4472,
+      "size": 4096
+    },
+    {
+      "name": "cowbell1.raw",
+      "offset": 8568,
+      "size": 6438
+    },
+    {
+      "name": "crashcym.raw",
+      "offset": 15006,
+      "size": 40776
+    },
+    {
+      "name": "dope.raw",
+      "offset": 55782,
+      "size": 20480
+    },
+    {
+      "name": "eee.raw",
+      "offset": 76262,
+      "size": 184
+    },
+    {
+      "name": "fwavblnk.raw",
+      "offset": 76446,
+      "size": 512
+    },
+    {
+      "name": "halfwave.raw",
+      "offset": 76958,
+      "size": 512
+    },
+    {
+      "name": "hihatcym.raw",
+      "offset": 77470,
+      "size": 4976
+    },
+    {
+      "name": "impuls10.raw",
+      "offset": 82446,
+      "size": 512
+    },
+    {
+      "name": "impuls20.raw",
+      "offset": 82958,
+      "size": 512
+    },
+    {
+      "name": "impuls40.raw",
+      "offset": 83470,
+      "size": 512
+    },
+    {
+      "name": "mand1.raw",
+      "offset": 83982,
+      "size": 2048
+    },
+    {
+      "name": "mand10.raw",
+      "offset": 86030,
+      "size": 2048
+    },
+    {
+      "name": "mand11.raw",
+      "offset": 88078,
+      "size": 2048
+    },
+    {
+      "name": "mand12.raw",
+      "offset": 90126,
+      "size": 2048
+    },
+    {
+      "name": "mand2.raw",
+      "offset": 92174,
+      "size": 2048
+    },
+    {
+      "name": "mand3.raw",
+      "offset": 94222,
+      "size": 2048
+    },
+    {
+      "name": "mand4.raw",
+      "offset": 96270,
+      "size": 2048
+    },
+    {
+      "name": "mand5.raw",
+      "offset": 98318,
+      "size": 2048
+    },
+    {
+      "name": "mand6.raw",
+      "offset": 100366,
+      "size": 2048
+    },
+    {
+      "name": "mand7.raw",
+      "offset": 102414,
+      "size": 2048
+    },
+    {
+      "name": "mand8.raw",
+      "offset": 104462,
+      "size": 2048
+    },
+    {
+      "name": "mand9.raw",
+      "offset": 106510,
+      "size": 2048
+    },
+    {
+      "name": "mandpluk.raw",
+      "offset": 108558,
+      "size": 8900
+    },
+    {
+      "name": "marmstk1.raw",
+      "offset": 117458,
+      "size": 512
+    },
+    {
+      "name": "ooo.raw",
+      "offset": 117970,
+      "size": 184
+    },
+    {
+      "name": "peksblnk.raw",
+      "offset": 118154,
+      "size": 512
+    },
+    {
+      "name": "ppksblnk.raw",
+      "offset": 118666,
+      "size": 512
+    },
+    {
+      "name": "ridecymb.raw",
+      "offset": 119178,
+      "size": 32394
+    },
+    {
+      "name": "silence.raw",
+      "offset": 151572,
+      "size": 448
+    },
+    {
+      "name": "sineblnk.raw",
+      "offset": 152020,
+      "size": 512
+    },
+    {
+      "name": "sinewave.raw",
+      "offset": 152532,
+      "size": 2048
+    },
+    {
+      "name": "snardrum.raw",
+      "offset": 154580,
+      "size": 16660
+    },
+    {
+      "name": "snglpeak.raw",
+      "offset": 171240,
+      "size": 512
+    },
+    {
+      "name": "tambourn.raw",
+      "offset": 171752,
+      "size": 9240
+    },
+    {
+      "name": "tomhidrm.raw",
+      "offset": 180992,
+      "size": 27642
+    },
+    {
+      "name": "tomlowdr.raw",
+      "offset": 208634,
+      "size": 39200
+    },
+    {
+      "name": "tommiddr.raw",
+      "offset": 247834,
+      "size": 28292
+    },
+    {
+      "name": "twopeaks.raw",
+      "offset": 276126,
+      "size": 512
+    }
+  ]
+}
