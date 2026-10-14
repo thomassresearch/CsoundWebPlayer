@@ -1,7 +1,7 @@
 <!--
-Performance: Mad Cello & Violent Violin — Version 2
+Performance: Mad Cello &amp; Violent Violin — Version 2
 Description: Seven-minute D-minor duet with a slightly distorted cello and violin, and a second, more distorted violin through its own Tube Overdrive at 24 dB Drive. Original opening through bar 56; three-minute thematic escalation, 32nd-note climax and distorted return; original calm ending shifted to 6:06.667. Latest source mixer/effects retained, with final Master headroom adjustment if required.
-Created: 2026-10-14T03:31:26.262Z
+Created: 2026-10-14T07:34:20.043Z
 
 This CSD was created with Orchestron.
 Design instruments visually and hear ideas take shape.
@@ -12,12 +12,12 @@ GitHub: https://github.com/thomassresearch/orchestron
 -->
 <CsoundSynthesizer>
 <CsOptions>
-;-d -W -f -o Sad_Mad_Cello_Version_2.wav
+;-d -W -f -o Mad_Cello_Violent_Violin_Version_2.wav
 -m 16 -b 16384 -o dsp
 </CsOptions>
 <CsInstruments>
 sr = 48000
-ksmps = 32
+ksmps = 16
 nchnls = 2
 0dbfs = 1.0
 ; Mixer routing: patch, strip and route instruments execute in signal-flow order.
@@ -189,7 +189,7 @@ chnset 0.40000000000000002, "__vcs_perf_69192bfed8a9ba2d4a8072cebf81ba025fda49fb
 chnset 1, "__vcs_perf_f7b68dbe403286f84b134038c0d337a0cd782d6f7cebbcb9af1dd332e625d728"
 chnset 0.0032784240542678162, "__vcs_perf_510f010bbfbd8759f3bf511f47a5e9ded5e63cb7686901f80efcc2e17034d055"
 chnset 24, "__vcs_perf_188af0eff372da57588edb948422d75385f5aed1f9be9db97092c35998d1157e"
-chnset -1.5477282143607738, "__vcs_perf_2d8d04790676dd1ec6cc50e96c155fad42a6aa17df90e6f556fef7e851dae9e5"
+chnset -5.0219927131608131, "__vcs_perf_2d8d04790676dd1ec6cc50e96c155fad42a6aa17df90e6f556fef7e851dae9e5"
 chnset 12000, "__vcs_perf_c99757b9635190472a7732b041d9347158ae6ea3bdf530c78a2b7e7dbc3ac373"
 connect "vcs_mix_e0634619c0e14e989f81a934", "left", "vcs_mix_6ba4ca57942e2e36cc9c22e5", "p_360f84035942243c6a36537a"
 connect "vcs_mix_e0634619c0e14e989f81a934", "right", "vcs_mix_6ba4ca57942e2e36cc9c22e5", "p_27042f4e6eca7d0b2a7ee402"
@@ -893,10 +893,10 @@ endin
 
 ; mixer stage strip:violin-distorted
 ; mixer strip: Violin — Bowed Physical Model [violin-distorted]
-; initial gain: 8.2 dB; balance/pan: -0.23; mute: false; solo: false
+; initial gain: 6 dB; balance/pan: -0.23; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_3bb873e80f810966fc1b0096
- a_gain = 2.5703957827688635
+ a_gain = 1.9952623149688795
  a_left = 1
  a_right = 0.77000000000000002
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
@@ -942,14 +942,14 @@ endin
 ; mixer stage route:a4811bcf-5840-4bf0-871a-7aa5afcf21db
 ; audio route:a4811bcf-5840-4bf0-871a-7aa5afcf21db kind:send
 ; from: Violin — Bowed Physical Model [violin-distorted] port:right stage:strip -> Reverb Effect [27d15955-f3d1-42c0-9bc9-98a8cca94550] port:right stage:input
-; tap: post-fader; initial route gain: -35.9 dB; source mute and mixer solo gate this route.
+; tap: post-fader; initial route gain: -32.4 dB; source mute and mixer solo gate this route.
 instr vcs_mix_9bde7ff9779b5fac821c2b58
  a_post = 1
  a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- a_send = 0.016032453906900418
+ a_send = 0.023988329190194911
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -957,14 +957,14 @@ endin
 ; mixer stage route:e299b62a-5396-4077-a175-3b8bf462706e
 ; audio route:e299b62a-5396-4077-a175-3b8bf462706e kind:send
 ; from: Violin — Bowed Physical Model [violin-distorted] port:left stage:strip -> Reverb Effect [27d15955-f3d1-42c0-9bc9-98a8cca94550] port:left stage:input
-; tap: post-fader; initial route gain: -35.9 dB; source mute and mixer solo gate this route.
+; tap: post-fader; initial route gain: -32.4 dB; source mute and mixer solo gate this route.
 instr vcs_mix_51cd333b02ba4c96c978aed2
  a_post = 1
  a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- a_send = 0.016032453906900418
+ a_send = 0.023988329190194911
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
