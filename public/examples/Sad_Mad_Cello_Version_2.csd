@@ -1,7 +1,7 @@
 <!--
-Performance: Sad Mad Cello — Version 2
-Description: Seven-minute D-minor duet with a second violin through its own Tube Overdrive at 24 dB Drive. Original opening through bar 56; three-minute thematic escalation, 32nd-note climax and distorted return; original calm ending shifted to 6:06.667. Latest source mixer/effects retained, with final Master headroom adjustment if required.
-Created: 2026-10-13T15:12:36.966Z
+Performance: Mad Cello & Violent Violin — Version 2
+Description: Seven-minute D-minor duet with a slightly distorted cello and violin, and a second, more distorted violin through its own Tube Overdrive at 24 dB Drive. Original opening through bar 56; three-minute thematic escalation, 32nd-note climax and distorted return; original calm ending shifted to 6:06.667. Latest source mixer/effects retained, with final Master headroom adjustment if required.
+Created: 2026-10-14T03:31:26.262Z
 
 This CSD was created with Orchestron.
 Design instruments visually and hear ideas take shape.
@@ -12,8 +12,8 @@ GitHub: https://github.com/thomassresearch/orchestron
 -->
 <CsoundSynthesizer>
 <CsOptions>
--d -W -f -o Sad_Mad_Cello_Version_2.wav
-;-m 16 -b 16384 -o dac
+;-d -W -f -o Sad_Mad_Cello_Version_2.wav
+-m 16 -b 16384 -o dsp
 </CsOptions>
 <CsInstruments>
 sr = 48000
@@ -170,7 +170,7 @@ chnset 0.8799414014851209, "__vcs_perf_f9266fd76e756c6a05ed46b97f9f8b537ed621142
 chnset 3231.0311115618661, "__vcs_perf_3c36cd5bce5bb1006444b99e9bb745945ddf03d9031d1821d743a64d686e2c6b"
 connect "vcs_mix_fbb8a5d6b07e818b12093ef4", "left", "vcs_mix_ba99917a15c479fd5286a077", "p_360f84035942243c6a36537a"
 connect "vcs_mix_fbb8a5d6b07e818b12093ef4", "right", "vcs_mix_ba99917a15c479fd5286a077", "p_27042f4e6eca7d0b2a7ee402"
-chnset 14.902390248142183, "__vcs_perf_4ff61364d251b0d824001e651f27707854df11840f9171c354e3515911a29697"
+chnset 12.709191849455237, "__vcs_perf_4ff61364d251b0d824001e651f27707854df11840f9171c354e3515911a29697"
 chnset 1.1784923980012536, "__vcs_perf_d9cc200cecf31415bf8c0352cf7f963342e7dda9b023380ac013cac8b583eb6e"
 chnset 8842.7342538111061, "__vcs_perf_ce18956c494704ce53c2f5c64011b32e98a9cc9f1d6e1d30d7404b9020caae83"
 connect "vcs_mix_1c1a3a2ca316aee9c74f0d03", "left", "vcs_mix_ff2de93e1732c6035468789d", "p_360f84035942243c6a36537a"
@@ -184,13 +184,13 @@ chnset 0.7792594054709715, "__vcs_perf_d2e6d30cbca7ca3e45d2a3fe05df3e3fadd5251d9
 chnset 0.10000000000000001, "__vcs_perf_c7a2f054fd783cf1e8103636ec17b0d09f33c0b1b9caedf5bf924f1920181172"
 connect "vcs_mix_bd677deeb3a0ab97ae5143a9", "left", "vcs_mix_6f94664d648353da23514687", "p_360f84035942243c6a36537a"
 connect "vcs_mix_bd677deeb3a0ab97ae5143a9", "right", "vcs_mix_6f94664d648353da23514687", "p_27042f4e6eca7d0b2a7ee402"
-chnset 0.11341774234315381, "__vcs_perf_a9e6644c11227ca68373c9abb6d31c26b54a6ddc400afc121870e8c4e7f87b12"
-chnset 0.41141452137846501, "__vcs_perf_69192bfed8a9ba2d4a8072cebf81ba025fda49fb269069fc1ff39fa0c9f97d83"
-chnset 0.75, "__vcs_perf_f7b68dbe403286f84b134038c0d337a0cd782d6f7cebbcb9af1dd332e625d728"
-chnset 0.0089999999999999993, "__vcs_perf_510f010bbfbd8759f3bf511f47a5e9ded5e63cb7686901f80efcc2e17034d055"
+chnset 0.10000000000000001, "__vcs_perf_a9e6644c11227ca68373c9abb6d31c26b54a6ddc400afc121870e8c4e7f87b12"
+chnset 0.40000000000000002, "__vcs_perf_69192bfed8a9ba2d4a8072cebf81ba025fda49fb269069fc1ff39fa0c9f97d83"
+chnset 1, "__vcs_perf_f7b68dbe403286f84b134038c0d337a0cd782d6f7cebbcb9af1dd332e625d728"
+chnset 0.0032784240542678162, "__vcs_perf_510f010bbfbd8759f3bf511f47a5e9ded5e63cb7686901f80efcc2e17034d055"
 chnset 24, "__vcs_perf_188af0eff372da57588edb948422d75385f5aed1f9be9db97092c35998d1157e"
-chnset -6.1310000000000002, "__vcs_perf_2d8d04790676dd1ec6cc50e96c155fad42a6aa17df90e6f556fef7e851dae9e5"
-chnset 8842.7342538111061, "__vcs_perf_c99757b9635190472a7732b041d9347158ae6ea3bdf530c78a2b7e7dbc3ac373"
+chnset -1.5477282143607738, "__vcs_perf_2d8d04790676dd1ec6cc50e96c155fad42a6aa17df90e6f556fef7e851dae9e5"
+chnset 12000, "__vcs_perf_c99757b9635190472a7732b041d9347158ae6ea3bdf530c78a2b7e7dbc3ac373"
 connect "vcs_mix_e0634619c0e14e989f81a934", "left", "vcs_mix_6ba4ca57942e2e36cc9c22e5", "p_360f84035942243c6a36537a"
 connect "vcs_mix_e0634619c0e14e989f81a934", "right", "vcs_mix_6ba4ca57942e2e36cc9c22e5", "p_27042f4e6eca7d0b2a7ee402"
 connect "vcs_mix_ffb3434f4ca77f81c225da20", "pre_p_360f84035942243c6a36537a", "vcs_mix_92a0f30cf25dfef51702244b", "pre"
@@ -893,12 +893,12 @@ endin
 
 ; mixer stage strip:violin-distorted
 ; mixer strip: Violin — Bowed Physical Model [violin-distorted]
-; initial gain: -2.3 dB; balance/pan: -0.54; mute: false; solo: false
+; initial gain: 8.2 dB; balance/pan: -0.23; mute: false; solo: false
 ; Voices and insert returns sum before the strip; pre taps precede balance/fader, post taps follow them.
 instr vcs_mix_3bb873e80f810966fc1b0096
- a_gain = 0.76736148936181892
+ a_gain = 2.5703957827688635
  a_left = 1
- a_right = 0.45999999999999996
+ a_right = 0.77000000000000002
  a_p_360f84035942243c6a36537a inleta "p_360f84035942243c6a36537a"
  a_p_360f84035942243c6a36537a_post = a_p_360f84035942243c6a36537a * a_gain * a_left
  a_p_27042f4e6eca7d0b2a7ee402 inleta "p_27042f4e6eca7d0b2a7ee402"
@@ -942,14 +942,14 @@ endin
 ; mixer stage route:a4811bcf-5840-4bf0-871a-7aa5afcf21db
 ; audio route:a4811bcf-5840-4bf0-871a-7aa5afcf21db kind:send
 ; from: Violin — Bowed Physical Model [violin-distorted] port:right stage:strip -> Reverb Effect [27d15955-f3d1-42c0-9bc9-98a8cca94550] port:right stage:input
-; tap: post-fader; initial route gain: -9 dB; source mute and mixer solo gate this route.
+; tap: post-fader; initial route gain: -35.9 dB; source mute and mixer solo gate this route.
 instr vcs_mix_9bde7ff9779b5fac821c2b58
  a_post = 1
  a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- a_send = 0.35481338923357547
+ a_send = 0.016032453906900418
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
@@ -957,14 +957,14 @@ endin
 ; mixer stage route:e299b62a-5396-4077-a175-3b8bf462706e
 ; audio route:e299b62a-5396-4077-a175-3b8bf462706e kind:send
 ; from: Violin — Bowed Physical Model [violin-distorted] port:left stage:strip -> Reverb Effect [27d15955-f3d1-42c0-9bc9-98a8cca94550] port:left stage:input
-; tap: post-fader; initial route gain: -9 dB; source mute and mixer solo gate this route.
+; tap: post-fader; initial route gain: -35.9 dB; source mute and mixer solo gate this route.
 instr vcs_mix_51cd333b02ba4c96c978aed2
  a_post = 1
  a_pan = 1
  a_pre inleta "pre"
  a_post_signal inleta "post"
  a_signal = a_pre * (1 - a_post) + a_post_signal * a_post * a_pan
- a_send = 0.35481338923357547
+ a_send = 0.016032453906900418
  a_route_output = a_signal * a_send
  outleta "out", a_route_output
 endin
