@@ -28,7 +28,8 @@ or HTTPS elsewhere; opening `index.html` via `file://` is not supported.
 
 1. In **CSD examples**, click **Play** beside **HardTrance**, **Evening at
    the Lake**, or **Sad Mad Cello — Version 2**. Mad Cello automatically loads
-   the optional STK instrument plugin. Each song's leading
+   the optional STK instrument plugin. **After Hours, One More Chorus** automatically
+   downloads and installs its bundled SF2 SoundFont before playback. Each song's leading
    CSD header comment appears beside its title (below it on small screens).
 2. To play your own export, select/drop a `.csd` in the area below the examples.
    Optionally drop its supporting files together with it, or use **Add assets**
@@ -247,3 +248,8 @@ messages, not audible playback. The browser AudioContext advanced about 59 secon
 Upstream source/API: [Csound browser package](https://github.com/csound/csound/tree/develop/platform/wasm-wasi/browser).
 `@csound/browser` is Apache-2.0; the embedded Csound engine is LGPL-2.1. See the
 upstream package's `LICENSE` and `THIRD_PARTY.md` for dependency notices.
+
+Bundled examples can declare supporting filenames in `src/examples.ts` (`assets`).
+Place those files beside the CSD in `public/examples/`; keep filenames identical
+to the CSD references. Play becomes available after all required downloads finish.
+A failed CSD or asset download exposes Retry.

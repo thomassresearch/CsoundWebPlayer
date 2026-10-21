@@ -270,7 +270,7 @@ for (const song of [
     await expect(button).toBeEnabled();
     const header = /^\s*<!--([\s\S]*?)-->/.exec(readFileSync(`public/examples/${song.filename}`, 'utf8'))![1].trim();
     await expect(button.locator('..').locator('.example-info')).toHaveText(header);
-    await expect(page.locator('#examples li > strong')).toHaveText(['HardTrance', 'Evening at the Lake', 'Sad Mad Cello — Version 2']);
+    await expect(page.locator('#examples li > strong')).toHaveText(['HardTrance', 'Evening at the Lake', 'Sad Mad Cello — Version 2', 'After Hours, One More Chorus']);
     expect(await page.locator('#examples').evaluate((examples) => Boolean(examples.compareDocumentPosition(document.getElementById('drop-zone')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
     await expect(page.getByRole('button', { name: 'Play Test tone', exact: true })).toHaveCount(0);
     await page.getByRole('combobox', { name: 'ksmps', exact: true }).selectOption(song.ksmps);
@@ -425,5 +425,45 @@ test('standard playback never downloads STK and failed STK downloads can be retr
   await page.unroute('**/plugins/stk/stkops.wasm');
   await play(page);
   await expect(page.locator('#output-level')).toContainText('dBFS');
+  await stop(page);
+});
+
+const afterHoursTitle = 'After Hours, One More Chorus';
+const afterHoursFont = '9523d0c6-6d27-48c3-83e6-5e1902bf6834.sf2';
+
+test('After Hours automatically installs its SoundFont and plays, then clears assets for another song', async ({ page }) => {
+  const button = page.getByRole('button', { name: `Play ${afterHoursTitle}`, exact: true });
+  await expect(button).toBeEnabled();
+  await expect(button.locator('..').locator('.example-info')).toContainText('Performance: After Hours, One More Chorus');
+  await button.click();
+  await expect(state(page)).toHaveText('playing', { timeout: 45_000 });
+  await expect(page.locator('#filename')).toHaveText('After_Hours_One_More_Chorus.csd');
+  await expect(page.locator('#asset-list')).toContainText(afterHoursFont);
+  await expect(page.locator('#console')).toContainText(`[filesystem] /${afterHoursFont}`);
+  await expect(page.locator('#compile-result')).toContainText('0 ·');
+  await expect.poll(() => page.evaluate(() => Math.max(0, ...(window as any).__audioPeaks)), { timeout: 15_000 }).toBeGreaterThan(0.001);
+  await expect(page.locator('#console')).not.toContainText('INIT ERROR');
+  await stop(page);
+  await page.getByRole('button', { name: 'Play HardTrance', exact: true }).click();
+  await expect(state(page)).toHaveText('playing', { timeout: 30_000 });
+  await expect(page.locator('#asset-list')).toBeEmpty();
+  await stop(page);
+});
+
+test('a failed example SoundFont download can be retried before playback', async ({ page }) => {
+  const pattern = `**/examples/${afterHoursFont}`;
+  await page.route(pattern, (route) => route.fulfill({ status: 503, body: 'Unavailable' }));
+  await page.reload();
+  const retry = page.getByRole('button', { name: `Retry ${afterHoursTitle}`, exact: true });
+  await expect(retry).toBeEnabled();
+  await expect(retry.locator('..').locator('.example-info')).toContainText(`${afterHoursFont}: HTTP 503`);
+  await expect(page.getByRole('button', { name: `Play ${afterHoursTitle}`, exact: true })).toHaveCount(0);
+  await page.unroute(pattern);
+  await retry.click();
+  const button = page.getByRole('button', { name: `Play ${afterHoursTitle}`, exact: true });
+  await expect(button).toBeEnabled();
+  await button.click();
+  await expect(state(page)).toHaveText('playing', { timeout: 45_000 });
+  await expect(page.locator('#asset-list')).toContainText(afterHoursFont);
   await stop(page);
 });

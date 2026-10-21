@@ -58,21 +58,31 @@ function showExamples() {
     const row = { button, loading: true };
     exampleRows.push(row);
     let file: File | undefined;
+    let exampleAssets: File[] = [];
     const load = async () => {
       row.loading = true;
       button.textContent = 'Loading…';
       button.setAttribute('aria-label', `Loading ${example.title}`);
       controls();
       try {
-        const response = await fetch(`${import.meta.env.BASE_URL}examples/${encodeURIComponent(example.filename)}`, { signal: AbortSignal.timeout(30_000) });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const csd = await response.text();
-        file = new File([csd], example.filename, { type: 'text/plain' });
+        const [csdFile, ...supportingFiles] = await Promise.all(
+          [example.filename, ...(example.assets ?? [])].map(async (name) => {
+            const response = await fetch(`${import.meta.env.BASE_URL}examples/${encodeURIComponent(name)}`, { signal: AbortSignal.timeout(30_000) });
+            if (!response.ok) throw new Error(`${name}: HTTP ${response.status}`);
+            return new File([await response.arrayBuffer()], name);
+          }),
+        );
+        const csd = await csdFile.text();
+        // Publish the selection only after every required asset has downloaded.
+        file = csdFile;
+        exampleAssets = supportingFiles;
         const header = headerComment(csd) || 'No header comment in this CSD.';
         description.textContent = header;
         button.textContent = 'Play';
         button.setAttribute('aria-label', `Play ${example.title}`);
       } catch (error) {
+        file = undefined;
+        exampleAssets = [];
         description.textContent = `Could not load example: ${describe(error)}. Retry to download it again.`;
         button.textContent = 'Retry';
         button.setAttribute('aria-label', `Retry ${example.title}`);
@@ -84,7 +94,7 @@ function showExamples() {
     button.addEventListener('click', () => {
       if (active || row.loading) return;
       if (!file) { void load(); return; }
-      selectFiles([file]);
+      selectFiles([file, ...exampleAssets]);
       void play();
     });
     item.append(title, description, button);
